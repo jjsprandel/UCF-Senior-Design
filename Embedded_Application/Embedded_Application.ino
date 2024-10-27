@@ -1,21 +1,18 @@
-#include "PIRSensor.h"
 #include <Arduino.h>
+#include "PIRSensor.h"
 
-volatile int PIRSensor::motionDetected = 0;
-int PIRSensor::pirPin = 0;
+// Pin defines
+const int pirPin = 4;
+const int ledPin = 2;   // Blue on board LED (dev module)
 
-// Constructor to initialize the pin and state
-PIRSensor::PIRSensor(int pin) {
-  pirPin = pin;
+PIRSensor pirSensor(pirPin);
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ledPin, OUTPUT); // Set LED pin as output
+  pirSensor.begin(); // Initialize the PIR sensor
 }
 
-// Method to set up the sensor
-void PIRSensor::begin() {
-  pinMode(pirPin, INPUT);
-  // Attach interrupt to the PIR pin, triggering on either edge
-  attachInterrupt(digitalPinToInterrupt(pirPin), handleMotion, CHANGE);
-}
-
-void PIRSensor::handleMotion() {
-  motionDetected = digitalRead(pirPin);
+void loop() {
+  digitalWrite(ledPin, pirSensor.motionDetected);
 }
