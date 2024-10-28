@@ -15,4 +15,5 @@ void setup() {
 
 void loop() {
   digitalWrite(ledPin, pirSensor.motionDetected);
+  Serial.println("Joe mama")
 }
