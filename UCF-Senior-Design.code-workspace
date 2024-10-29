@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "UCF-Senior-Design",
+      "path": "../../../../Desktop/UCF-Senior-Design"
+    },
+    {
+      "name": "SCAN_PIO",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "functional": "cpp"
+    }
+  }
+}
