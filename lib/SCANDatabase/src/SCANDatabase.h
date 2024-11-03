@@ -12,7 +12,6 @@ public:
     void begin(const String &wifiSSID, const String &wifiPassword, const String &apiKey, const String &databaseUrl);
 private:
     FirebaseData *fbdo;
-    String lastCheckInId;
     FirebaseAuth auth;
     FirebaseConfig config;
     bool signupOK;

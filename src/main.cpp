@@ -2,20 +2,19 @@
 #include "PIRSensor.h"
 #include "SCANDatabase.h"
 
+
 // Network credentials
 #define WIFI_SSID "Boardwalk_Free_WiFi"
 #define WIFI_PASSWORD "Pingas01"
 
-// Project API Key
+// API Key and RTDB URL
 #define API_KEY "AIzaSyBoHGBRg7e_thFtbURSlMAmlvfFNAQ8X1M"
-
-// RTDB URLefine the RTDB URL */
 #define DATABASE_URL "https://scan-9ee0b-default-rtdb.firebaseio.com/"
 
 // Define Firebase Data object
 FirebaseData fbdo;
 
-// Define a global instance of SCANLibrary
+// SCAN database custom drivers
 SCANDatabase mySCANDatabase(fbdo);
 
 // Pin defines
@@ -70,7 +69,5 @@ void loop() {
 
 void handleMotion() {
   // pirState = digitalRead(pirPin); // Read the state of the PIR sensor
-
-
 
 }
