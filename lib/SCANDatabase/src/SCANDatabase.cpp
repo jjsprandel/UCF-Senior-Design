@@ -9,7 +9,7 @@
 SCANDatabase::SCANDatabase(FirebaseData &fbdo)
     : fbdo(&fbdo), signupOK(false) {}
 
-void SCANLibrary::begin(const String &wifiSSID, const String &wifiPassword, const String &apiKey, const String &databaseUrl) {
+void SCANDatabase::begin(const String &wifiSSID, const String &wifiPassword, const String &apiKey, const String &databaseUrl) {
     // Initialize WiFi
     WiFi.begin(wifiSSID.c_str(), wifiPassword.c_str());
     Serial.print("Connecting to Wi-Fi");
