@@ -1,0 +1,6 @@
+[submodule "tft-display/tft-display/lib/Adafruit_GC9A01A"]
+	path = tft-display/tft-display/lib/Adafruit_GC9A01A
+	url = https://github.com/adafruit/Adafruit_GC9A01A.git
+[submodule "tft-display/lib/Adafruit_GC9A01A"]
+	path = tft-display/lib/Adafruit_GC9A01A
+	url = https://github.com/adafruit/Adafruit_GC9A01A.git
