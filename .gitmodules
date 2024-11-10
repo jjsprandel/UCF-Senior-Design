@@ -1,0 +1,3 @@
+[submodule "nfc-reader/nfc-reader/nfc-reader/nfc-reader/lib/NDEF"]
+	path = nfc-reader/nfc-reader/nfc-reader/nfc-reader/lib/NDEF
+	url = https://github.com/haldean/ndef.git

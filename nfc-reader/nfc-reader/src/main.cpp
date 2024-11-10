@@ -1,108 +1,162 @@
-#include <Arduino.h>
+#define USING_SPI 1
+
+#if USING_SPI
+#include <SPI.h>
+#include <PN532_SPI.h>
+#include <PN532.h>
+#include <NfcAdapter.h>
+
+PN532_SPI pn532spi(SPI, 5);
+NfcAdapter nfc = NfcAdapter(pn532spi);
+#else
+
 #include <Wire.h>
-// #include <SPI.h>
-#include <Adafruit_PN532.h>
+#include <PN532_I2C.h>
+#include <PN532.h>
+#include <NfcAdapter.h>
 
-#define PN532_IRQ (2)
-#define PN532_RESET (3)
+PN532_I2C pn532_i2c(Wire);
+NfcAdapter nfc = NfcAdapter(pn532_i2c);
+#endif
 
-Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
+String processRecord(NdefRecord record){
+  // Serial.print("  TNF: ");
+  // Serial.println(record.getTnf());
+  // Serial.print("  Type: ");
+  // Serial.println(record.getType());
 
-void setup() {
-  // put your setup code here, to run once:
-    Serial.begin(115200);
-    Serial.println("Begin");
-    
-    uint32_t versiondata = nfc.getFirmwareVersion();
-    if (! versiondata) {
-      Serial.print("Didn't find PN53x board");
-      while (1); // halt
-    }
-    Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX);
-    Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC);
-    Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  // The TNF and Type should be used to determine how the application processes payload
+  int payloadLength = record.getPayloadLength();
+  byte payload[payloadLength];
+  record.getPayload(payload);
 
-    Serial.println("Waiting for an ISO14443A Card ...");
+  // Print the Hex and Printable Characters
+  // Serial.print("  Payload (HEX): ");
+  // PrintHexChar(payload, payloadLength);
+
+  // Force the data into a String (might work depending on the content)
+  // Real code should use smarter processing
+  String payloadAsString(reinterpret_cast<char*>(payload+3), payloadLength-3);
+  // String payloadAsString = "";
+  // for (int c = 0; c < payloadLength; c++)
+  //   payloadAsString += (char)payload[c];
+
+  // id is probably blank and will return ""
+  // String uid = record.getId();
+  // if (uid != "") {
+  //   Serial.print("  ID: ");Serial.println(uid);
+  // }
+  return payloadAsString;
 }
 
-void loop() {
-  uint8_t success;
-  uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
-  uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
+void readNDEF(){
+  NfcTag tag = nfc.read();
+  Serial.println(tag.getTagType());
+  Serial.print("UID: ");Serial.println(tag.getUidString());
 
-  // Wait for an NTAG203 card.  When one is found 'uid' will be populated with
-  // the UID, and uidLength will indicate the size of the UUID (normally 7)
-  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+  if (tag.hasNdefMessage()) // every tag won't have a message
+  {
+    NdefMessage message = tag.getNdefMessage();
+    int recordCount = message.getRecordCount();
+    if (recordCount == 3){
+      Serial.println("Valid ID tag detected!");
 
-  if (success) {
-    // Display some basic information about the card
-    Serial.println("Found an ISO14443A card");
-    Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
-    Serial.print("  UID Value: ");
-    nfc.PrintHex(uid, uidLength);
-    Serial.println("");
+      NdefRecord nameRecord = message[0];
+      
+      String userName = processRecord(message[0]);
+      String userID = processRecord(message[1]);
+      String userPassword = processRecord(message[2]);
 
-    if (uidLength == 7)
-    {
-      uint8_t data[32];
+      Serial.print("User's name: ");
+      Serial.println(userName);
 
-      // We probably have an NTAG2xx card (though it could be Ultralight as well)
-      Serial.println("Seems to be an NTAG2xx tag (7 byte UID)");
+      Serial.print("User ID: ");
+      Serial.println(userID);
 
-      // NTAG2x3 cards have 39*4 bytes of user pages (156 user bytes),
-      // starting at page 4 ... larger cards just add pages to the end of
-      // this range:
+      Serial.print("User password: ");
+      Serial.println(userPassword);
 
-      // See: http://www.nxp.com/documents/short_data_sheet/NTAG203_SDS.pdf
-
-      // TAG Type       PAGES   USER START    USER STOP
-      // --------       -----   ----------    ---------
-      // NTAG 203       42      4             39
-      // NTAG 213       45      4             39
-      // NTAG 215       135     4             129
-      // NTAG 216       231     4             225
-
-      for (uint8_t i = 0; i < 42; i++)
+      /* for (int i = 0; i < recordCount; i++)
       {
-        success = nfc.ntag2xx_ReadPage(i, data);
+        Serial.print("\nNDEF Record ");Serial.println(i+1);
+        NdefRecord record = message.getRecord(i);
+        // NdefRecord record = message[i]; // alternate syntax
 
-        // Display the current page number
-        Serial.print("PAGE ");
-        if (i < 10)
-        {
-          Serial.print("0");
-          Serial.print(i);
-        }
-        else
-        {
-          Serial.print(i);
-        }
-        Serial.print(": ");
+        Serial.print("  TNF: ");Serial.println(record.getTnf());
+        Serial.print("  Type: ");Serial.println(record.getType()); // will be "" for TNF_EMPTY
 
-        // Display the results, depending on 'success'
-        if (success)
-        {
-          // Dump the page data
-          nfc.PrintHexChar(data, 4);
+        // The TNF and Type should be used to determine how your application processes the payload
+        // There's no generic processing for the payload, it's returned as a byte[]
+        int payloadLength = record.getPayloadLength();
+        byte payload[payloadLength];
+        record.getPayload(payload);
+
+        // Print the Hex and Printable Characters
+        Serial.print("  Payload (HEX): ");
+        PrintHexChar(payload, payloadLength);
+
+        // Force the data into a String (might work depending on the content)
+        // Real code should use smarter processing
+        String payloadAsString = "";
+        for (int c = 0; c < payloadLength; c++) {
+          payloadAsString += (char)payload[c];
         }
-        else
-        {
-          Serial.println("Unable to read the requested page!");
+        Serial.print("  Payload (as String): ");
+        Serial.println(payloadAsString);
+
+        // id is probably blank and will return ""
+        String uid = record.getId();
+        if (uid != "") {
+          Serial.print("  ID: ");Serial.println(uid);
         }
-      }
+      } */
     }
-    else
+    else{
+      Serial.print("ERROR! Tag has invalid number of records. Expected 3, received ");
+      Serial.println(recordCount);
+    }
+  }
+  else
+    Serial.println("ERROR! Tag is not in NDEF format.");
+}
+
+void formatNDEF(){ 
+  bool success = nfc.format();
+  if (success)
+    Serial.println("\nSuccess, tag formatted as NDEF.");
+  else
+    Serial.println("\nFormat failed.");
+}
+
+void writeNDEF(){
+  NdefMessage message = NdefMessage();
+  message.addTextRecord("Cory Brynds");
+  message.addTextRecord("5387541");
+  message.addTextRecord("C5Q2CK2d3C3xL3f)8x3)");
+
+  bool success = nfc.write(message);
+  if (success)
+    Serial.println("Success writing ID card.");        
+  else
+    Serial.println("ID card write failed.");
+}
+
+void setup(void) {
+  Serial.begin(9600);
+  Serial.println("NFC Reader Application");
+  nfc.begin();
+}
+
+void loop(void) {
+  bool nfcReaderActive = true;
+
+  // If proximity sensor has been triggered. Better method than polling?
+  if (nfcReaderActive){
+    if (nfc.tagPresent())
     {
-      Serial.println("This doesn't seem to be an NTAG203 tag (UUID length != 7 bytes)!");
+      // readNDEF();
+      // writeNDEF();
+      formatNDEF();
     }
-
-    // Wait a bit before trying again
-    Serial.println("\n\nSend a character to scan another tag!");
-    Serial.flush();
-    while (!Serial.available());
-    while (Serial.available()) {
-    Serial.read();
-    }
-    Serial.flush();
   }
 }
