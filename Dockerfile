@@ -39,6 +39,9 @@ RUN : \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
   && :
 
+# Expose a port for RFC2217 server communication
+EXPOSE 4000
+
 # To build the image for a branch or a tag of IDF, pass --build-arg IDF_CLONE_BRANCH_OR_TAG=name.
 # To build the image with a specific commit ID of IDF, pass --build-arg IDF_CHECKOUT_REF=commit-id.
 # It is possibe to combine both, e.g.:
@@ -101,6 +104,10 @@ ENV IDF_PYTHON_CHECK_CONSTRAINTS=no
 # Ccache is installed, enable it by default
 ENV IDF_CCACHE_ENABLE=1
 
-COPY entrypoint.sh /opt/esp/entrypoint.sh
-ENTRYPOINT [ "/opt/esp/entrypoint.sh" ]
+#COPY entrypoint.sh /opt/esp/entrypoint.sh
+#ENTRYPOINT [ "/opt/esp/entrypoint.sh" ]
+
+# Start the RFC2217 server in the background and keep the container running with bash
+ENTRYPOINT ["sh", "-c", "python3 /opt/esp/python_env/idf5.5_py3.12_env/bin/esp_rfc2217_server.py -v -p 4000 /dev/ttyUSB0 & exec /bin/bash"]
+
 CMD [ "/bin/bash" ]
