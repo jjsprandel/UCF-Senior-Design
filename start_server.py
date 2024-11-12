@@ -9,12 +9,7 @@ def list_serial_ports():
     return ports
 
 def get_current_directory():
-    if sys.platform == "win32":
-        # Windows uses os.getcwd() to get the current directory
-        return os.getcwd()
-    else:
-        # Linux/Mac uses os.getcwd() to get the current directory
-        return os.getcwd()
+    return os.getcwd()
 
 def run_docker_command(is_flash=False):
     current_directory = get_current_directory()
@@ -22,7 +17,7 @@ def run_docker_command(is_flash=False):
     # Base Docker run command
     docker_command = [
         "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
-        "-e", "HOME=/tmp", "espressif/idf"
+        "-e", "HOME=/tmp", "--name", "UCF-Senior-Design", "espressif/idf"
     ]
     
     if is_flash:
@@ -35,13 +30,8 @@ def run_docker_command(is_flash=False):
     # Wait for 1 second before executing the command
     time.sleep(1)
 
-    # Open a new terminal to run the Docker command
-    if sys.platform == "win32":
-        subprocess.Popen(["start", "cmd", "/K", " ".join(docker_command)], shell=True)
-    elif sys.platform == "darwin":  # macOS
-        subprocess.Popen(["osascript", "-e", f'tell app "Terminal" to do script "{ " ".join(docker_command) }"'])
-    else:  # Linux
-        subprocess.Popen(["gnome-terminal", "--", "bash", "-c", " ".join(docker_command)])
+    # Run Docker command in the same terminal
+    subprocess.run(docker_command)
 
 def run_rfc2217_server(serial_port):
     print(f"\nStarting RFC2217 server on {serial_port}...\n")
@@ -100,7 +90,7 @@ def main():
                     current_directory = get_current_directory()
                     docker_command = [
                         "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
-                        "-e", "HOME=/tmp", "-it", "espressif/idf"
+                        "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "espressif/idf"
                     ]
                     # Print the docker command that will be executed
                     print(f"\nRunning Docker command:\n{' '.join(docker_command)}\n")
@@ -108,19 +98,11 @@ def main():
                     # Wait for 1 second before executing the command
                     time.sleep(1)
 
-                    # Open a new terminal to run the Docker command
-                    if sys.platform == "win32":
-                        subprocess.Popen(["start", "cmd", "/K", " ".join(docker_command)], shell=True)
-                    elif sys.platform == "darwin":  # macOS
-                        subprocess.Popen(["osascript", "-e", f'tell app "Terminal" to do script "{ " ".join(docker_command) }"'])
-                    else:  # Linux
-                        subprocess.Popen(["gnome-terminal", "--", "bash", "-c", " ".join(docker_command)])
+                    # Run Docker command in the same terminal
+                    subprocess.run(docker_command)
                 else:
                     print("Exiting the program.")
                     sys.exit(0)
 
 if __name__ == "__main__":
     main()
-
-
-

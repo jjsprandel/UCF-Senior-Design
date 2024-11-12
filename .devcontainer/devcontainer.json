@@ -1,0 +1,29 @@
+{
+    "name": "ESP32 Development",
+    "dockerFile": "Dockerfile",  // Assuming you're using a Dockerfile to build the container
+    "postCreateCommand": "source /opt/esp/esp/idf/export.sh",  // This sets up ESP-IDF tools
+    "runArgs": [
+        "--env", "IDF_PATH=/opt/esp/esp/idf"
+    ],
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/project,type=bind"
+    ],
+    "workspaceFolder": "/project",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash",  // Default shell
+                "python.pythonPath": "/usr/bin/python3",  // Optional: set python path if needed
+                "C_Cpp.intelliSenseEngine": "default"  // Removed problematic setting
+            },
+            "extensions": [
+                "espressif.esp-idf-extension",  // ESP-IDF extension for VS Code
+                "ms-vscode.cpptools",  // C++ extension for better IDE support
+                "ms-python.python",  // Python extension for Python support
+                "ms-python.vscode-pylance",  // Python language server for better performance
+                "ms-vscode.cpptools-extension-pack",  // C++ development pack
+                "ms-vscode.cpptools-themes"  // Optional C++ theme extensions
+            ]
+        }
+    }
+}
