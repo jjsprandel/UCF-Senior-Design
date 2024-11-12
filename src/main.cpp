@@ -15,6 +15,7 @@
 FirebaseData fbdo;
 
 // SCAN database custom drivers
+// !! Pass in WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL here instead
 SCANDatabase mySCANDatabase(fbdo);
 
 // Pin defines
@@ -36,6 +37,8 @@ void setup() {
   // attachInterrupt(digitalPinToInterrupt(pirPin), handleMotion, CHANGE);
 
   Serial.begin(115200);
+
+  // !! Remove parameters here and pass in through instantiation instead
   mySCANDatabase.begin(WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL);
 }
 
@@ -47,24 +50,25 @@ void loop() {
 
 
   String userUcfId = "6942069420";
-  // Test check-in functionality every 30 seconds
-    static unsigned long lastCheckInMillis = 0;
-    if (millis() - lastCheckInMillis >= 10000) { // 10 seconds
-        lastCheckInMillis = millis();
-        mySCANDatabase.checkIn(userUcfId); // Call checkIn method
-        Serial.println("Checked In");
+
+  // Check if data is available in the Serial Monitor
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n');
+
+    // Check-in if input is "1"
+    if (input == "1") {
+      mySCANDatabase.checkIn(userUcfId);
+      Serial.println("Checked In Command processed");
     }
 
-    // Test check-out functionality every 15 seconds
-    static unsigned long lastCheckOutMillis = 0;
-    if (millis() - lastCheckOutMillis >= 15000) { // 15 seconds
-        lastCheckOutMillis = millis();
-        mySCANDatabase.checkOut(userUcfId); // Call checkOut method
-        Serial.println("Checked Out");
+    // Check-out if input is "2"
+    else if (input == "2") {
+      mySCANDatabase.checkOut(userUcfId);
+      Serial.println("Checked Out command processed");
     }
+  }
 
-    // You can add more tests or read data from Firebase if needed
-    delay(1000); // Just a delay to avoid flooding the Serial Monitor
+  delay(100); // Small delay to avoid flooding the Serial Monitor
 }
 
 void handleMotion() {

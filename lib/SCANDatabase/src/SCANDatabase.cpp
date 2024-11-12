@@ -31,8 +31,31 @@ String getCurrentDateTimeString() {
     return String(buffer);
 }
 
+// !! Change this to pass in WiFi_SSID, WiFi_password, API_key, database_url
 SCANDatabase::SCANDatabase(FirebaseData &fbdo)
     : fbdo(&fbdo), signupOK(false) {}
+
+// // !! Create a getUserInfo(userID) function to get user information from the database
+// void SCANDatabase::getUserInfo() {
+//     // Get user information
+//     if (Firebase.RTDB.getString(fbdo, "users/6942069420/firstName")) {
+//         Serial.println("First name: " + fbdo->to<String>());
+//     } else {
+//         Serial.println("Failed to get first name: " + fbdo->errorReason());
+//     }
+
+//     if (Firebase.RTDB.getString(fbdo, "users/6942069420/lastName")) {
+//         Serial.println("Last name: " + fbdo->to<String>());
+//     } else {
+//         Serial.println("Failed to get last name: " + fbdo->errorReason());
+//     }
+
+//     if (Firebase.RTDB.getString(fbdo, "users/6942069420/email")) {
+//         Serial.println("Email: " + fbdo->to<String>());
+//     } else {
+//         Serial.println("Failed to get email: " + fbdo->errorReason());
+//     }
+// }
 
 void SCANDatabase::begin(const String &wifiSSID, const String &wifiPassword, const String &apiKey, const String &databaseUrl) {
     // Initialize WiFi
