@@ -16,7 +16,7 @@ FirebaseData fbdo;
 
 // SCAN database custom drivers
 // !! Pass in WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL here instead
-SCANDatabase mySCANDatabase(fbdo);
+SCANDatabase mySCANDatabase(fbdo, WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL);
 
 // Pin defines
 const int pirPin = 4;  // Use the GPIO pin where the AM312 OUT pin is connected
@@ -37,9 +37,7 @@ void setup() {
   // attachInterrupt(digitalPinToInterrupt(pirPin), handleMotion, CHANGE);
 
   Serial.begin(115200);
-
-  // !! Remove parameters here and pass in through instantiation instead
-  mySCANDatabase.begin(WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL);
+  mySCANDatabase.begin();
 }
 
 void loop() {
@@ -65,6 +63,12 @@ void loop() {
     else if (input == "2") {
       mySCANDatabase.checkOut(userUcfId);
       Serial.println("Checked Out command processed");
+    }
+    
+    else if (input == "3") {
+      UserInfo userInfo = mySCANDatabase.getUserInfo(userUcfId);
+      Serial.println("Passkey: " + userInfo.passkey);
+      Serial.println("Check-in Status: " + String(userInfo.checkInStatus));
     }
   }
 

@@ -31,33 +31,7 @@ String getCurrentDateTimeString() {
     return String(buffer);
 }
 
-// !! Change this to pass in WiFi_SSID, WiFi_password, API_key, database_url
-SCANDatabase::SCANDatabase(FirebaseData &fbdo)
-    : fbdo(&fbdo), signupOK(false) {}
-
-// // !! Create a getUserInfo(userID) function to get user information from the database
-// void SCANDatabase::getUserInfo() {
-//     // Get user information
-//     if (Firebase.RTDB.getString(fbdo, "users/6942069420/firstName")) {
-//         Serial.println("First name: " + fbdo->to<String>());
-//     } else {
-//         Serial.println("Failed to get first name: " + fbdo->errorReason());
-//     }
-
-//     if (Firebase.RTDB.getString(fbdo, "users/6942069420/lastName")) {
-//         Serial.println("Last name: " + fbdo->to<String>());
-//     } else {
-//         Serial.println("Failed to get last name: " + fbdo->errorReason());
-//     }
-
-//     if (Firebase.RTDB.getString(fbdo, "users/6942069420/email")) {
-//         Serial.println("Email: " + fbdo->to<String>());
-//     } else {
-//         Serial.println("Failed to get email: " + fbdo->errorReason());
-//     }
-// }
-
-void SCANDatabase::begin(const String &wifiSSID, const String &wifiPassword, const String &apiKey, const String &databaseUrl) {
+void SCANDatabase::begin() {
     // Initialize WiFi
     WiFi.begin(wifiSSID.c_str(), wifiPassword.c_str());
     Serial.print("Connecting to Wi-Fi");
@@ -103,6 +77,40 @@ void SCANDatabase::begin(const String &wifiSSID, const String &wifiPassword, con
     Firebase.reconnectWiFi(true);
 }
 
+// !! Change this to pass in WiFi_SSID, WiFi_password, API_key, database_url
+SCANDatabase::SCANDatabase(FirebaseData &fbdo, const String &wifiSSID, const String &wifiPassword, const String &apiKey, const String &databaseUrl)
+    : fbdo(&fbdo), wifiSSID(wifiSSID), wifiPassword(wifiPassword), apiKey(apiKey), databaseUrl(databaseUrl), signupOK(false) {}
+
+// !! Create a getUserInfo(userID) function to get user information from the database
+UserInfo SCANDatabase::getUserInfo(const String &userUcfId) {
+    UserInfo userInfo;
+
+    // Paths for passkey and check-in status
+    String passkeyPath = "users/" + userUcfId + "/passkey";
+    String checkInStatusPath = "users/" + userUcfId + "/checkInStatus";
+
+    // Retrieve the passkey
+    if (Firebase.RTDB.getString(fbdo, passkeyPath)) {
+        if (fbdo->dataType() == "string") {
+            userInfo.passkey = fbdo->stringData();
+            Serial.println("Passkey: " + userInfo.passkey);
+        }
+    } else {
+        Serial.println("Failed to get passkey: " + fbdo->errorReason());
+    }
+
+    // Retrieve the check-in status
+    if (Firebase.RTDB.getBool(fbdo, checkInStatusPath)) {
+        if (fbdo->dataType() == "boolean") {
+            userInfo.checkInStatus = fbdo->boolData();
+            Serial.println("Check-in Status: " + String(userInfo.checkInStatus));
+        }
+    } else {
+        Serial.println("Failed to get check-in status: " + fbdo->errorReason());
+    }
+
+    return userInfo;
+}
 
 void SCANDatabase::checkIn(const String &userUcfId) {
     // Get and write the current timestamp
@@ -111,7 +119,7 @@ void SCANDatabase::checkIn(const String &userUcfId) {
     // Create a unique check-in ID
     String checkInId = "checkIn_" + currentTimestamp; // Use date and time for uniqueness
 
-    // Log the check-in event
+    // Log the event in check-ins
     if (Firebase.RTDB.setString(fbdo, "checkIns/" + checkInId + "/userId", userUcfId)) {
         Serial.println("Check-in userUcfId logged successfully.");
     } else {
@@ -124,11 +132,17 @@ void SCANDatabase::checkIn(const String &userUcfId) {
         Serial.println("Failed to log check-in: " + fbdo->errorReason());
     }
 
-    // Update user's last check-in ID
+    // Update user's last check-in ID and status
     if (Firebase.RTDB.setString(fbdo, "users/" + userUcfId + "/lastCheckInId", checkInId)) {
         Serial.println("Last check-in ID written successfully.");
     } else {
         Serial.println("Failed to write last check-in ID: " + fbdo->errorReason());
+    }
+
+    if (Firebase.RTDB.setBool(fbdo, "users/" + userUcfId + "/checkInStatus", true)) {
+        Serial.println("Check-in status written successfully.");
+    } else {
+        Serial.println("Failed to write check-in status: " + fbdo->errorReason());
     }
 }
 
