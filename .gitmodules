@@ -7,3 +7,9 @@
 [submodule "tft-display/lib/Adafruit_GC9A01A"]
 	path = tft-display/lib/Adafruit_GC9A01A
 	url = https://github.com/adafruit/Adafruit_GC9A01A.git
+[submodule "nfc-reader/lib/Adafruit_GC9A01A"]
+	path = nfc-reader/lib/Adafruit_GC9A01A
+	url = https://github.com/adafruit/Adafruit_GC9A01A.git
+[submodule "nfc-reader/lib/NDEF"]
+	path = nfc-reader/lib/NDEF
+	url = https://github.com/don/NDEF.git
