@@ -37,8 +37,20 @@ def run_rfc2217_server(serial_port):
     print(f"\nStarting RFC2217 server on {serial_port}...\n")
     rfc_command = ["python", "esp_rfc2217_server.py", "-v", "-p", "4000", serial_port]
     
-    # Run RFC2217 server in the background and suppress the output
-    subprocess.Popen(rfc_command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # Run RFC2217 server in the background and wait a moment to check for success
+    try:
+        rfc_process = subprocess.Popen(rfc_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        time.sleep(1)  # Allow time for the server to start
+
+        # Check if the server started successfully
+        if rfc_process.poll() is None:
+            print("RFC2217 server started successfully.\n")
+        else:
+            print("Failed to start RFC2217 server. Check the serial port and try again.\n")
+            sys.exit(1)  # Exit if the server couldn't start
+    except Exception as e:
+        print(f"Error starting RFC2217 server: {e}\n")
+        sys.exit(1)
 
 def main():
     ports = list_serial_ports()
@@ -106,3 +118,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
