@@ -2,7 +2,6 @@
 #include "PIRSensor.h"
 #include "SCANDatabase.h"
 
-
 // Network credentials
 #define WIFI_SSID "Boardwalk_Free_WiFi"
 #define WIFI_PASSWORD "Pingas01"
@@ -15,7 +14,6 @@
 FirebaseData fbdo;
 
 // SCAN database custom drivers
-// !! Pass in WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL here instead
 SCANDatabase mySCANDatabase(fbdo, WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL);
 
 // Pin defines
@@ -29,22 +27,20 @@ void handleMotion();
 void setup() {
   // Make function for PIR sensor setup
 
-  // Serial.begin(115200);
-  // pinMode(pirPin, INPUT);    // Set PIR sensor pin as input
-  // pinMode(ledPin, OUTPUT);    // Set LED pin as output
-
-  // // // // Attach interrupt to the PIR pin, triggering on either edge
-  // attachInterrupt(digitalPinToInterrupt(pirPin), handleMotion, CHANGE);
-
   Serial.begin(115200);
+  pinMode(pirPin, INPUT);    // Set PIR sensor pin as input
+  pinMode(ledPin, OUTPUT);    // Set LED pin as output
+
+  // Attach interrupt to the PIR pin, triggering on either edge
+  attachInterrupt(digitalPinToInterrupt(pirPin), handleMotion, CHANGE);
+
   mySCANDatabase.begin();
 }
 
 void loop() {
-  // // Turn the LED on or off based on PIR state
-  // digitalWrite(ledPin, pirState);
-  // // Serial.println(pirState);
-  // // delay(500);
+  // Turn the LED on or off based on PIR state
+  digitalWrite(ledPin, pirState);
+  // Serial.println(pirState);
 
 
   String userUcfId = "6942069420";
@@ -64,7 +60,7 @@ void loop() {
       mySCANDatabase.checkOut(userUcfId);
       Serial.println("Checked Out command processed");
     }
-    
+
     else if (input == "3") {
       UserInfo userInfo = mySCANDatabase.getUserInfo(userUcfId);
       Serial.println("Passkey: " + userInfo.passkey);
@@ -76,6 +72,5 @@ void loop() {
 }
 
 void handleMotion() {
-  // pirState = digitalRead(pirPin); // Read the state of the PIR sensor
-
+  pirState = digitalRead(pirPin); // Read the state of the PIR sensor
 }
