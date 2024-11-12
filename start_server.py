@@ -17,7 +17,7 @@ def run_docker_command(is_flash=False):
     # Base Docker run command
     docker_command = [
         "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
-        "-e", "HOME=/tmp", "--name", "UCF-Senior-Design", "espressif/idf"
+        "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "espressif/idf"
     ]
     
     if is_flash:
