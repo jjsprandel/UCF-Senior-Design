@@ -123,7 +123,7 @@ void writeNDEF(){
   message.addTextRecord("Cory Brynds");
   message.addTextRecord("5387541");
   message.addTextRecord("C5Q2CK2d3C3xL3f)8x3)");
-
+  
   bool success = nfc.write(message);
   if (success)
     Serial.println("Success writing ID card.");        
