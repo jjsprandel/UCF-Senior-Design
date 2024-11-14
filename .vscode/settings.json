@@ -2,5 +2,5 @@
     "files.associations": {
         "gpio.h": "c"
     },
-    "idf.adapterTargetName": "esp32c3"
+    "idf.adapterTargetName": "esp32"
 }
