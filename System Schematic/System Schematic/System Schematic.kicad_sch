@@ -6337,7 +6337,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "d5943cff-7c7a-4274-96ef-25e051371bc2")
-		(property "Sheetname" "Untitled Sheet"
+		(property "Sheetname" "power"
 			(at 147.32 33.5784 0)
 			(effects
 				(font
@@ -6346,7 +6346,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "untitled.kicad_sch"
+		(property "Sheetfile" "power.kicad_sch"
 			(at 147.32 38.6846 0)
 			(effects
 				(font
