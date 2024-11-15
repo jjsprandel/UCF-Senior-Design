@@ -27,14 +27,17 @@
 #include "Adafruit_GC9A01A.h"
 #include "Arduino.h"
 #include "tft_frames.h"
+#include <map>
 
-#define TFT_DC 32
-#define TFT_CS 33
+#define SPI_CLK 18
+#define SPI_MOSI 23
+#define SPI_MISO 19
+#define SPI_CS_NFC 5
 
 // Device Instantiations
-PN532_SPI pn532spi(SPI, 5);
+PN532_SPI pn532spi(SPI, SPI_CS_NFC);
 NfcAdapter nfc = NfcAdapter(pn532spi);
-Adafruit_GC9A01A tft(TFT_CS, TFT_DC);
+Adafruit_GC9A01A tft(SPI_CS_TFT, DC_TFT);
 
 // Extract a message string from a text record
 String processRecord(NdefRecord record){
@@ -67,8 +70,8 @@ String processRecord(NdefRecord record){
   return payloadAsString;
 }
 
-// Read an NFC tag in NDEF format
-bool readNDEF(){
+// Read an NFC tag in NDEF format and return userID
+String readNDEF(){
   NfcTag tag = nfc.read();
   Serial.println(tag.getTagType());
   Serial.print("UID: ");Serial.println(tag.getUidString());
@@ -95,17 +98,17 @@ bool readNDEF(){
       Serial.print("User password: ");
       Serial.println(userPassword);
 
-      return true;
+      return userID;
     }
     else{
       Serial.print("ERROR! Tag has invalid number of records. Expected 3, received ");
       Serial.println(recordCount);
-      return false;
+      return "";
     }
   }
   else
     Serial.println("ERROR! Tag is not in NDEF format.");
-    return false;
+    return "";
 }
 
 // Format an NFC tag according to NDEF
@@ -134,37 +137,52 @@ void writeNDEF(){
 void setup(void) {
   Serial.begin(9600);
   Serial.println("NFC Reader Application");
-  nfc.begin();
+
+  pinMode(SPI_CS_TFT, OUTPUT);
+  pinMode(SPI_CS_NFC, OUTPUT);
+
   tft.begin();
-  // drawNFCWatingScreen(tft);
+
+  delay(500);
+  nfc.begin();
+  delay(3000);
 }
 
-void loop(void) {
-  bool nfcReaderActive = true;
-  bool screenDrawn = false;
+std::map<String, bool> userStatus;
 
-  // If proximity sensor has been triggered. Better method than polling?
-  if (nfcReaderActive){
-    bool authSuccess = false;
-    if (nfc.tagPresent())
-    {
-      authSuccess = readNDEF();
-      // writeNDEF();
-      // formatNDEF();
-      if (authSuccess){
-        // drawAuthSuccessScreen(tft);
-      }
-      else{
-        // drawAuthFailedScreen(tft);
-      }
-      screenDrawn = false;
-      delay(3000);
+void loop(void) {
+    bool nfcReaderActive = true;
+
+    // If proximity sensor has been triggered. Better method than polling?
+    while (nfcReaderActive) {
+        unsigned long currentTime = millis();
+
+        bool authSuccess = false;
+        if (nfc.tagPresent()) {
+            Serial.println("Inner loop reached");
+            String userID = readNDEF();
+
+            if (userID != "") {
+                // Check if the userID exists in the dictionary
+                if (userStatus.find(userID) != userStatus.end()) {
+                    userStatus[userID] = !userStatus[userID];
+                } else {
+                    userStatus[userID] = true;
+                }
+
+                // Display the appropriate screen based on the check-in status
+                if (userStatus[userID]) {
+                    drawCheckInSuccessScreen(tft);
+                } else {
+                    drawCheckOutSuccessScreen(tft);
+                }
+            } else {
+                drawCheckInFailedScreen(tft);
+            }
+
+            delay(2000);
+            drawNFCWatingScreen(tft);
+            nfc.begin();  // Reinitialize the NFC reader
+        }
     }
-    // else{
-    //   if (!screenDrawn){
-    //     drawNFCWatingScreen(tft);
-    //     screenDrawn = true;
-    //   }
-    // }
-  }
 }
