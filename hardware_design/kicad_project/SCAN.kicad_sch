@@ -5971,7 +5971,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "Programming.kicad_sch"
+		(property "Sheetfile" "programming.kicad_sch"
 			(at 202.565 38.0496 0)
 			(effects
 				(font
@@ -5981,7 +5981,7 @@
 			)
 		)
 		(instances
-			(project "System Schematic"
+			(project "SCAN"
 				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
 					(page "3")
 				)
@@ -6019,7 +6019,7 @@
 			)
 		)
 		(instances
-			(project "System Schematic"
+			(project "SCAN"
 				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
 					(page "2")
 				)
