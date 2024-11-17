@@ -106,7 +106,7 @@
 		(symbol "CYPD3177-24LQXQ_1_1"
 			(rectangle
 				(start 5.08 25.4)
-				(end 66.04 -27.94)
+				(end 66.04 -36.83)
 				(stroke
 					(width 0.254)
 					(type default)
@@ -116,7 +116,7 @@
 				)
 			)
 			(text_box "Power Sink Controller"
-				(at 22.86 5.08 0)
+				(at 22.86 0 0)
 				(size 26.67 -10.16)
 				(stroke
 					(width -0.0001)
@@ -134,7 +134,7 @@
 				)
 			)
 			(text_box "USB PD"
-				(at 45.72 -19.05 0)
+				(at 45.72 -27.94 0)
 				(size 19.05 -7.62)
 				(stroke
 					(width -0.0001)
@@ -332,7 +332,7 @@
 				)
 			)
 			(pin passive line
-				(at 38.1 -33.02 90)
+				(at 31.75 -41.91 90)
 				(length 5.08)
 				(name "GND_1"
 					(effects
@@ -404,7 +404,7 @@
 				)
 			)
 			(pin passive line
-				(at 35.56 -33.02 90)
+				(at 35.56 -41.91 90)
 				(length 5.08)
 				(name "GND_2"
 					(effects
@@ -458,7 +458,7 @@
 				)
 			)
 			(pin passive line
-				(at 33.02 -33.02 90)
+				(at 39.37 -41.91 90)
 				(length 5.08)
 				(name "GND_3"
 					(effects
@@ -512,7 +512,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -19.05 0)
+				(at 0 -24.13 0)
 				(length 5.08)
 				(name "ISNK_COARSE"
 					(effects
@@ -530,7 +530,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -22.86 0)
+				(at 0 -27.94 0)
 				(length 5.08)
 				(name "ISNK_FINE"
 					(effects

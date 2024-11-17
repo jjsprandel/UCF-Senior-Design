@@ -7,7 +7,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 67.056 19.05 0)
+			(at 68.072 32.004 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16,7 +16,7 @@
 			)
 		)
 		(property "Value" "CYPD3177-24LQXQ"
-			(at 67.056 16.51 0)
+			(at 68.072 29.464 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -105,8 +105,8 @@
 		)
 		(symbol "CYPD3177-24LQXQ_1_1"
 			(rectangle
-				(start 5.08 25.4)
-				(end 66.04 -27.94)
+				(start 5.08 16.51)
+				(end 66.04 -36.83)
 				(stroke
 					(width 0.254)
 					(type default)
@@ -116,7 +116,7 @@
 				)
 			)
 			(text_box "Power Sink Controller"
-				(at 22.86 5.08 0)
+				(at 22.86 -3.81 0)
 				(size 26.67 -10.16)
 				(stroke
 					(width -0.0001)
@@ -134,7 +134,7 @@
 				)
 			)
 			(text_box "USB PD"
-				(at 45.72 -19.05 0)
+				(at 45.72 -27.94 0)
 				(size 19.05 -7.62)
 				(stroke
 					(width -0.0001)
@@ -152,7 +152,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -3.81 0)
+				(at 0 -8.89 0)
 				(length 5.08)
 				(name "VBUS_MIN"
 					(effects
@@ -170,7 +170,7 @@
 				)
 			)
 			(pin passive line
-				(at 20.32 -33.02 90)
+				(at 71.12 -16.51 180)
 				(length 5.08)
 				(name "FLIP"
 					(effects
@@ -188,7 +188,7 @@
 				)
 			)
 			(pin passive line
-				(at 22.86 -33.02 90)
+				(at 71.12 20.32 180)
 				(length 5.08)
 				(name "VDC_OUT"
 					(effects
@@ -206,7 +206,7 @@
 				)
 			)
 			(pin passive line
-				(at 25.4 -33.02 90)
+				(at 71.12 6.35 180)
 				(length 5.08)
 				(name "HPI_SDA"
 					(effects
@@ -224,7 +224,7 @@
 				)
 			)
 			(pin passive line
-				(at 71.12 -12.7 180)
+				(at 71.12 1.27 180)
 				(length 5.08)
 				(name "HPI_SCL"
 					(effects
@@ -242,7 +242,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 1.27 0)
+				(at 0 -2.54 0)
 				(length 5.08)
 				(name "CC2"
 					(effects
@@ -260,7 +260,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 3.81 0)
+				(at 0 1.27 0)
 				(length 5.08)
 				(name "CC1"
 					(effects
@@ -278,7 +278,7 @@
 				)
 			)
 			(pin passive line
-				(at 71.12 -5.08 180)
+				(at 0 8.89 0)
 				(length 5.08)
 				(name "D-"
 					(effects
@@ -296,7 +296,7 @@
 				)
 			)
 			(pin passive line
-				(at 71.12 -2.54 180)
+				(at 0 6.35 0)
 				(length 5.08)
 				(name "D+"
 					(effects
@@ -314,7 +314,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 6.35 0)
+				(at 0 15.24 0)
 				(length 5.08)
 				(name "VBUS_IN"
 					(effects
@@ -332,7 +332,7 @@
 				)
 			)
 			(pin passive line
-				(at 36.83 30.48 270)
+				(at 31.75 -41.91 90)
 				(length 5.08)
 				(name "GND_1"
 					(effects
@@ -350,7 +350,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -6.35 0)
+				(at 0 -12.7 0)
 				(length 5.08)
 				(name "VBUS_MAX"
 					(effects
@@ -404,7 +404,7 @@
 				)
 			)
 			(pin passive line
-				(at 39.37 30.48 270)
+				(at 35.56 -41.91 90)
 				(length 5.08)
 				(name "GND_2"
 					(effects
@@ -458,7 +458,7 @@
 				)
 			)
 			(pin passive line
-				(at 41.91 30.48 270)
+				(at 39.37 -41.91 90)
 				(length 5.08)
 				(name "GND_3"
 					(effects
@@ -476,7 +476,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -8.89 0)
+				(at 40.64 30.48 270)
 				(length 5.08)
 				(name "VBUS_FET_EN"
 					(effects
@@ -494,7 +494,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -11.43 0)
+				(at 44.45 30.48 270)
 				(length 5.08)
 				(name "SAFE_PWR_EN"
 					(effects
@@ -512,7 +512,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -13.97 0)
+				(at 0 -24.13 0)
 				(length 5.08)
 				(name "ISNK_COARSE"
 					(effects
@@ -530,7 +530,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -16.51 0)
+				(at 0 -27.94 0)
 				(length 5.08)
 				(name "ISNK_FINE"
 					(effects
@@ -548,7 +548,7 @@
 				)
 			)
 			(pin passive line
-				(at 12.7 -33.02 90)
+				(at 71.12 11.43 180)
 				(length 5.08)
 				(name "HPI_INT"
 					(effects
@@ -566,7 +566,7 @@
 				)
 			)
 			(pin passive line
-				(at 15.24 -33.02 90)
+				(at 71.12 -6.35 180)
 				(length 5.08)
 				(name "GPIO_1"
 					(effects
@@ -584,7 +584,7 @@
 				)
 			)
 			(pin passive line
-				(at 17.78 -33.02 90)
+				(at 71.12 -11.43 180)
 				(length 5.08)
 				(name "FAULT"
 					(effects
