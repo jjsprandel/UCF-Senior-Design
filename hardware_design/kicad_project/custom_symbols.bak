@@ -6,8 +6,8 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(property "Reference" "IC"
-			(at 36.83 17.78 0)
+		(property "Reference" "U"
+			(at 67.056 19.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16,7 +16,7 @@
 			)
 		)
 		(property "Value" "CYPD3177-24LQXQ"
-			(at 36.83 15.24 0)
+			(at 67.056 16.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -105,8 +105,8 @@
 		)
 		(symbol "CYPD3177-24LQXQ_1_1"
 			(rectangle
-				(start 5.08 12.7)
-				(end 35.56 -27.94)
+				(start 5.08 25.4)
+				(end 66.04 -27.94)
 				(stroke
 					(width 0.254)
 					(type default)
@@ -115,8 +115,44 @@
 					(type background)
 				)
 			)
+			(text_box "Power Sink Controller"
+				(at 22.86 5.08 0)
+				(size 26.67 -10.16)
+				(stroke
+					(width -0.0001)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+				(effects
+					(font
+						(size 2.54 2.54)
+						(thickness 0.3175)
+						(color 0 7 255 1)
+					)
+				)
+			)
+			(text_box "USB PD"
+				(at 45.72 -19.05 0)
+				(size 19.05 -7.62)
+				(stroke
+					(width -0.0001)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+				(effects
+					(font
+						(size 2.54 2.54)
+						(thickness 0.3175)
+						(color 0 7 255 1)
+					)
+				)
+			)
 			(pin passive line
-				(at 0 0 0)
+				(at 0 -3.81 0)
 				(length 5.08)
 				(name "VBUS_MIN"
 					(effects
@@ -188,7 +224,7 @@
 				)
 			)
 			(pin passive line
-				(at 40.64 -12.7 180)
+				(at 71.12 -12.7 180)
 				(length 5.08)
 				(name "HPI_SCL"
 					(effects
@@ -206,7 +242,7 @@
 				)
 			)
 			(pin passive line
-				(at 40.64 -10.16 180)
+				(at 0 1.27 0)
 				(length 5.08)
 				(name "CC2"
 					(effects
@@ -224,7 +260,7 @@
 				)
 			)
 			(pin passive line
-				(at 40.64 -7.62 180)
+				(at 0 3.81 0)
 				(length 5.08)
 				(name "CC1"
 					(effects
@@ -242,7 +278,7 @@
 				)
 			)
 			(pin passive line
-				(at 40.64 -5.08 180)
+				(at 71.12 -5.08 180)
 				(length 5.08)
 				(name "D-"
 					(effects
@@ -260,7 +296,7 @@
 				)
 			)
 			(pin passive line
-				(at 40.64 -2.54 180)
+				(at 71.12 -2.54 180)
 				(length 5.08)
 				(name "D+"
 					(effects
@@ -278,7 +314,7 @@
 				)
 			)
 			(pin passive line
-				(at 40.64 0 180)
+				(at 0 6.35 0)
 				(length 5.08)
 				(name "VBUS_IN"
 					(effects
@@ -296,7 +332,7 @@
 				)
 			)
 			(pin passive line
-				(at 27.94 17.78 270)
+				(at 36.83 30.48 270)
 				(length 5.08)
 				(name "GND_1"
 					(effects
@@ -314,7 +350,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -2.54 0)
+				(at 0 -6.35 0)
 				(length 5.08)
 				(name "VBUS_MAX"
 					(effects
@@ -332,7 +368,7 @@
 				)
 			)
 			(pin passive line
-				(at 25.4 17.78 270)
+				(at 34.29 30.48 270)
 				(length 5.08)
 				(name "DNU1"
 					(effects
@@ -350,7 +386,7 @@
 				)
 			)
 			(pin passive line
-				(at 22.86 17.78 270)
+				(at 31.75 30.48 270)
 				(length 5.08)
 				(name "DNU2"
 					(effects
@@ -368,7 +404,7 @@
 				)
 			)
 			(pin passive line
-				(at 20.32 17.78 270)
+				(at 39.37 30.48 270)
 				(length 5.08)
 				(name "GND_2"
 					(effects
@@ -386,7 +422,7 @@
 				)
 			)
 			(pin passive line
-				(at 17.78 17.78 270)
+				(at 16.51 30.48 270)
 				(length 5.08)
 				(name "VDDD"
 					(effects
@@ -404,7 +440,7 @@
 				)
 			)
 			(pin passive line
-				(at 15.24 17.78 270)
+				(at 22.86 30.48 270)
 				(length 5.08)
 				(name "VCCD"
 					(effects
@@ -422,7 +458,7 @@
 				)
 			)
 			(pin passive line
-				(at 12.7 17.78 270)
+				(at 41.91 30.48 270)
 				(length 5.08)
 				(name "GND_3"
 					(effects
@@ -440,7 +476,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -5.08 0)
+				(at 0 -8.89 0)
 				(length 5.08)
 				(name "VBUS_FET_EN"
 					(effects
@@ -458,7 +494,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -7.62 0)
+				(at 0 -11.43 0)
 				(length 5.08)
 				(name "SAFE_PWR_EN"
 					(effects
@@ -476,7 +512,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -10.16 0)
+				(at 0 -13.97 0)
 				(length 5.08)
 				(name "ISNK_COARSE"
 					(effects
@@ -494,7 +530,7 @@
 				)
 			)
 			(pin passive line
-				(at 0 -12.7 0)
+				(at 0 -16.51 0)
 				(length 5.08)
 				(name "ISNK_FINE"
 					(effects
