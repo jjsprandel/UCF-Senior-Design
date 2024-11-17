@@ -62,6 +62,23 @@ void drawCheckInFailedScreen(Adafruit_GC9A01A tft) {
   // tft.drawLine(160, 160, 120, 200, GC9A01A_RED);
 }
 
+// Frame 3: Check-In Failed
+void drawUserNotFoundScreen(Adafruit_GC9A01A tft) {
+  tft.fillScreen(GC9A01A_BLACK);
+  drawCircularBorder(tft);
+
+  tft.setTextColor(GC9A01A_RED);
+  tft.setTextSize(3);
+  tft.setCursor(40, 90);
+  tft.println("ERROR! User");
+  tft.setCursor(40, 130);
+  tft.println("not found");
+
+  // Cross icon
+  // tft.drawLine(120, 160, 160, 200, GC9A01A_RED);
+  // tft.drawLine(160, 160, 120, 200, GC9A01A_RED);
+}
+
 // Frame 4: Check-Out Success
 void drawCheckOutSuccessScreen(Adafruit_GC9A01A tft) {
   tft.fillScreen(GC9A01A_BLACK);

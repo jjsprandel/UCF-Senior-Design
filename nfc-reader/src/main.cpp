@@ -27,17 +27,40 @@
 #include "Adafruit_GC9A01A.h"
 #include "Arduino.h"
 #include "tft_frames.h"
+#include "PIRSensor.h"
+#include "SCANDatabase.h"
 #include <map>
+
+// Network credentials
+#define WIFI_SSID "iPhone (43)"
+#define WIFI_PASSWORD "brynds8899"          // Password
+
+// API Key and RTDB URL
+#define API_KEY "AIzaSyBoHGBRg7e_thFtbURSlMAmlvfFNAQ8X1M"
+#define DATABASE_URL "https://scan-9ee0b-default-rtdb.firebaseio.com/"
 
 #define SPI_CLK 18
 #define SPI_MOSI 23
 #define SPI_MISO 19
 #define SPI_CS_NFC 5
 
+const int pirPin = 4;  // Use the GPIO pin where the AM312 OUT pin is connected
+const int ledPin = 2;   // Optional: Built-in LED pin on ESP32 to indicate motion
+
+// Define Firebase Data object
+FirebaseData fbdo;
+
+// SCAN database custom drivers
+SCANDatabase mySCANDatabase(fbdo, WIFI_SSID, WIFI_PASSWORD, API_KEY, DATABASE_URL);
+
 // Device Instantiations
 PN532_SPI pn532spi(SPI, SPI_CS_NFC);
 NfcAdapter nfc = NfcAdapter(pn532spi);
 Adafruit_GC9A01A tft(SPI_CS_TFT, DC_TFT);
+
+volatile int pirState = 0;
+
+void handleMotion();
 
 // Extract a message string from a text record
 String processRecord(NdefRecord record){
@@ -71,17 +94,20 @@ String processRecord(NdefRecord record){
 }
 
 // Read an NFC tag in NDEF format and return userID
-String readNDEF(){
+String readNDEF(bool verbose = 0){
   NfcTag tag = nfc.read();
+
+  if (verbose){
   Serial.println(tag.getTagType());
   Serial.print("UID: ");Serial.println(tag.getUidString());
-
+  }
+  
   if (tag.hasNdefMessage()) // every tag won't have a message
   {
     NdefMessage message = tag.getNdefMessage();
     int recordCount = message.getRecordCount();
     if (recordCount == 3){
-      Serial.println("Valid ID tag detected!");
+      if (verbose) Serial.println("Valid ID tag detected!");
 
       NdefRecord nameRecord = message[0];
       
@@ -89,14 +115,16 @@ String readNDEF(){
       String userID = processRecord(message[1]);
       String userPassword = processRecord(message[2]);
 
+      if (verbose){
       Serial.print("User's name: ");
       Serial.println(userName);
 
       Serial.print("User ID: ");
       Serial.println(userID);
 
-      Serial.print("User password: ");
-      Serial.println(userPassword);
+      // Serial.print("User password: ");
+      // Serial.println(userPassword);
+      }
 
       return userID;
     }
@@ -135,54 +163,83 @@ void writeNDEF(){
 }
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(112500);
   Serial.println("NFC Reader Application");
 
   pinMode(SPI_CS_TFT, OUTPUT);
   pinMode(SPI_CS_NFC, OUTPUT);
+  pinMode(pirPin, INPUT);    // Set PIR sensor pin as input
+  pinMode(ledPin, OUTPUT);    // Set LED pin as output
+
+  // Attach interrupt to the PIR pin, triggering on either edge
+  attachInterrupt(digitalPinToInterrupt(pirPin), handleMotion, CHANGE);
+
+  mySCANDatabase.begin();
 
   tft.begin();
 
-  delay(500);
+  // delay(500);
   nfc.begin();
-  delay(3000);
+  // delay(3000);
 }
 
-std::map<String, bool> userStatus;
+// std::map<String, bool> userStatus;
 
 void loop(void) {
-    bool nfcReaderActive = true;
+    digitalWrite(ledPin, pirState);
 
     // If proximity sensor has been triggered. Better method than polling?
-    while (nfcReaderActive) {
-        unsigned long currentTime = millis();
+    while (pirState) {
+        // unsigned long currentTime = millis();
 
-        bool authSuccess = false;
+        // bool authSuccess = false;
         if (nfc.tagPresent()) {
-            Serial.println("Inner loop reached");
             String userID = readNDEF();
 
             if (userID != "") {
                 // Check if the userID exists in the dictionary
-                if (userStatus.find(userID) != userStatus.end()) {
-                    userStatus[userID] = !userStatus[userID];
-                } else {
-                    userStatus[userID] = true;
-                }
+                // if (userStatus.find(userID) != userStatus.end()) {
+                //     userStatus[userID] = !userStatus[userID];
+                // } else {
+                //     userStatus[userID] = true;
+                // }
+                UserInfo userInfo = mySCANDatabase.getUserInfo(userID);
 
-                // Display the appropriate screen based on the check-in status
-                if (userStatus[userID]) {
-                    drawCheckInSuccessScreen(tft);
-                } else {
+                if (userInfo.validUserInfo){
+                  // Serial.println("Passkey: " + userInfo.passkey);
+
+                  if (userInfo.checkInStatus){
+                    mySCANDatabase.checkOut(userID);
+                    Serial.println("Checking user " + userID + " out");
                     drawCheckOutSuccessScreen(tft);
+                  }
+                  else{
+                    mySCANDatabase.checkIn(userID);
+                    Serial.println("Checking user " + userID + " in");
+                    drawCheckInSuccessScreen(tft);
+                  }
                 }
-            } else {
-                drawCheckInFailedScreen(tft);
-            }
+                else{
+                  drawUserNotFoundScreen(tft);
+                }
+                // // Display the appropriate screen based on the check-in status
+                // if (userStatus[userID]) {
+                //     drawCheckInSuccessScreen(tft);
+                // } else {
+                //     drawCheckOutSuccessScreen(tft);
+                // }
+            // } else {
+            //     drawCheckInFailedScreen(tft);
+            // }
 
             delay(2000);
             drawNFCWatingScreen(tft);
-            nfc.begin();  // Reinitialize the NFC reader
+            nfc.begin(0);  // Reinitialize the NFC reader
         }
     }
+}
+}
+
+void handleMotion() {
+  pirState = digitalRead(pirPin); // Read the state of the PIR sensor
 }
