@@ -2190,7 +2190,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "a73bfec0-45b3-47b0-9a7f-8c425a888e2a")
-		(property "Sheetname" "Extra (RENAME)"
+		(property "Sheetname" "Peripherals"
 			(at 34.29 18.3384 0)
 			(effects
 				(font

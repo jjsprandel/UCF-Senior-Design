@@ -4213,4 +4213,80 @@
 			)
 		)
 	)
+	(sheet
+		(at 81.28 206.375)
+		(size 17.78 6.985)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "9ce17f20-86e4-46b1-b2ef-4f96d96c7929")
+		(property "Sheetname" "NFC"
+			(at 81.28 205.6634 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "NFC.kicad_sch"
+			(at 81.28 213.9446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/a73bfec0-45b3-47b0-9a7f-8c425a888e2a"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 144.78 202.565)
+		(size 38.735 10.16)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "f4334491-02af-44dd-a4a7-8e874acfd09b")
+		(property "Sheetname" "PIR"
+			(at 144.78 201.8534 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "PIR.kicad_sch"
+			(at 144.78 213.3096 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/a73bfec0-45b3-47b0-9a7f-8c425a888e2a"
+					(page "7")
+				)
+			)
+		)
+	)
 )
