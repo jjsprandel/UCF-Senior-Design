@@ -194,7 +194,7 @@ void loop(void) {
 
         // bool authSuccess = false;
         if (nfc.tagPresent()) {
-            String userID = readNDEF();
+            String userID = readNDEF(1);
 
             if (userID != "") {
                 // Check if the userID exists in the dictionary
@@ -203,7 +203,7 @@ void loop(void) {
                 // } else {
                 //     userStatus[userID] = true;
                 // }
-                UserInfo userInfo = mySCANDatabase.getUserInfo(userID);
+                UserInfo userInfo = mySCANDatabase.getUserInfo(userID, 1);
 
                 if (userInfo.validUserInfo){
                   // Serial.println("Passkey: " + userInfo.passkey);

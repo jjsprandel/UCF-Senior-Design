@@ -69,7 +69,7 @@ void drawUserNotFoundScreen(Adafruit_GC9A01A tft) {
 
   tft.setTextColor(GC9A01A_RED);
   tft.setTextSize(3);
-  tft.setCursor(40, 90);
+  tft.setCursor(30, 90);
   tft.println("ERROR! User");
   tft.setCursor(40, 130);
   tft.println("not found");
