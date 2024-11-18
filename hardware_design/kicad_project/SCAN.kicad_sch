@@ -1356,6 +1356,16 @@
 	)
 	(wire
 		(pts
+			(xy 54.61 69.85) (xy 67.31 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a55fe8e9-c7a8-4465-be3f-374f3b4f6524")
+	)
+	(wire
+		(pts
 			(xy 30.48 173.99) (xy 31.75 173.99)
 		)
 		(stroke
@@ -1394,8 +1404,18 @@
 		)
 		(uuid "db320a8c-649e-44b4-822d-8d8b3b7cf062")
 	)
+	(wire
+		(pts
+			(xy 54.61 72.39) (xy 67.31 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3c8608c-42a7-4ec9-aaf2-e81fa9b8b2fe")
+	)
 	(label "LED_RED_DOUT"
-		(at 165.1 91.44 0)
+		(at 231.14 127 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1406,7 +1426,7 @@
 		(uuid "1e740e3a-a450-4794-a782-05b7addd4a3d")
 	)
 	(label "SPI_MISO"
-		(at 109.22 73.66 180)
+		(at 175.26 109.22 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1417,7 +1437,7 @@
 		(uuid "47bda76a-ca96-4192-a200-8a2ed36c4048")
 	)
 	(label "I2C_SCL"
-		(at 165.1 86.36 0)
+		(at 231.14 121.92 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1428,7 +1448,7 @@
 		(uuid "5dbc0227-abc3-497f-a925-35d7efc3c4ed")
 	)
 	(label "I2C_SDA"
-		(at 165.1 83.82 0)
+		(at 231.14 119.38 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1439,7 +1459,7 @@
 		(uuid "64ce14a7-2aa8-4e88-97e6-97ce32d90405")
 	)
 	(label "SPI_CLK"
-		(at 165.1 88.9 0)
+		(at 231.14 124.46 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1450,7 +1470,7 @@
 		(uuid "6cf71782-eed4-4544-9a35-8cee5d3b4764")
 	)
 	(label "LED_GREEN_DOUT"
-		(at 165.1 93.98 0)
+		(at 231.14 129.54 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1461,7 +1481,7 @@
 		(uuid "7066f840-df32-4985-9a16-f7947360cfab")
 	)
 	(label "RESET"
-		(at 165.1 106.68 0)
+		(at 231.14 142.24 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1472,7 +1492,7 @@
 		(uuid "83cfa968-f94f-4331-ab7e-400bc9b9488f")
 	)
 	(label "PIR_OUT"
-		(at 165.1 109.22 0)
+		(at 231.14 144.78 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1483,7 +1503,7 @@
 		(uuid "bfe22c5f-feb0-42e5-92fc-7e52c5c672cc")
 	)
 	(label "BUZZER_PWM_OUT"
-		(at 165.1 104.14 0)
+		(at 231.14 139.7 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1494,7 +1514,7 @@
 		(uuid "f649fc46-3121-4f94-b1aa-7009aa271001")
 	)
 	(label "SPI_MOSI"
-		(at 109.22 91.44 180)
+		(at 175.26 127 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1506,7 +1526,7 @@
 	)
 	(global_label "USB_D+"
 		(shape input)
-		(at 165.1 71.12 0)
+		(at 231.14 106.68 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1516,7 +1536,7 @@
 		)
 		(uuid "859c6e80-a5f0-427f-8739-769c4683917e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 175.7052 71.12 0)
+			(at 241.7452 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1528,7 +1548,7 @@
 	)
 	(global_label "USB_D-"
 		(shape input)
-		(at 165.1 73.66 0)
+		(at 231.14 109.22 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1538,7 +1558,7 @@
 		)
 		(uuid "b581d97f-447e-4e7e-9348-bfb504a16e26")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 175.7052 73.66 0)
+			(at 241.7452 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1550,7 +1570,7 @@
 	)
 	(symbol
 		(lib_id "PCM_Espressif:ESP32-C6-WROOM-1")
-		(at 137.16 91.44 0)
+		(at 203.2 127 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1559,7 +1579,7 @@
 		(fields_autoplaced yes)
 		(uuid "0aae77c8-76b2-44dd-81a3-2f7ba7c228ed")
 		(property "Reference" "U1"
-			(at 139.3541 55.88 0)
+			(at 205.3941 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1568,7 +1588,7 @@
 			)
 		)
 		(property "Value" "ESP32-C6-WROOM-1-N8"
-			(at 139.3541 58.42 0)
+			(at 205.3941 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1577,7 +1597,7 @@
 			)
 		)
 		(property "Footprint" "PCM_Espressif:ESP32-C6-WROOM-1"
-			(at 137.16 136.525 0)
+			(at 203.2 172.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1586,7 +1606,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.espressif.com/sites/default/files/documentation/esp32-c6-wroom-1_wroom-1u_datasheet_en.pdf"
-			(at 137.16 139.7 0)
+			(at 203.2 175.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1595,7 +1615,7 @@
 			)
 		)
 		(property "Description" "ESP32-C6-WROOM-1/U is a module that supports 2.4 GHz Wi-Fi 6 (802.11 ax), Bluetooth® 5 (LE), Zigbee and Thread (802.15.4)"
-			(at 137.16 91.44 0)
+			(at 203.2 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1701,7 +1721,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 137.16 58.42 0)
+		(at 203.2 93.98 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1710,7 +1730,7 @@
 		(fields_autoplaced yes)
 		(uuid "2232169c-9516-4456-a0da-793dea6988e3")
 		(property "Reference" "#PWR010"
-			(at 137.16 62.23 0)
+			(at 203.2 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1719,7 +1739,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 137.16 53.34 0)
+			(at 203.2 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1727,7 +1747,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 137.16 58.42 0)
+			(at 203.2 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1736,7 +1756,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 137.16 58.42 0)
+			(at 203.2 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1745,7 +1765,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 137.16 58.42 0)
+			(at 203.2 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1768,7 +1788,7 @@
 	(symbol
 		(lib_name "GND_1")
 		(lib_id "power:GND")
-		(at 137.16 124.46 0)
+		(at 203.2 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1777,7 +1797,7 @@
 		(fields_autoplaced yes)
 		(uuid "5d52d3cb-d570-42d3-9e0d-da567a483153")
 		(property "Reference" "#PWR012"
-			(at 137.16 130.81 0)
+			(at 203.2 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1786,7 +1806,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 137.16 129.54 0)
+			(at 203.2 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1794,7 +1814,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 137.16 124.46 0)
+			(at 203.2 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1803,7 +1823,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 137.16 124.46 0)
+			(at 203.2 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1812,7 +1832,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 137.16 124.46 0)
+			(at 203.2 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2103,8 +2123,8 @@
 		)
 	)
 	(sheet
-		(at 239.395 23.495)
-		(size 22.225 3.81)
+		(at 67.31 63.5)
+		(size 20.32 25.4)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2115,7 +2135,7 @@
 		)
 		(uuid "60c701f2-064e-421d-b8f6-7bdcf43c2f59")
 		(property "Sheetname" "Programming"
-			(at 239.395 22.7834 0)
+			(at 67.31 62.7884 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2124,13 +2144,33 @@
 			)
 		)
 		(property "Sheetfile" "programming.kicad_sch"
-			(at 239.395 27.8896 0)
+			(at 67.31 89.4846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left top)
 			)
+		)
+		(pin "USB_D+" input
+			(at 67.31 69.85 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "ad7c13a8-4147-45b2-8520-92e256005908")
+		)
+		(pin "USB_D-" input
+			(at 67.31 72.39 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "f7825656-20ad-466a-93a9-083b1da4c3a5")
 		)
 		(instances
 			(project "SCAN"
@@ -2217,8 +2257,8 @@
 		)
 	)
 	(sheet
-		(at 22.86 64.77)
-		(size 24.13 20.32)
+		(at 30.48 63.5)
+		(size 24.13 25.4)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2229,7 +2269,7 @@
 		)
 		(uuid "d5943cff-7c7a-4274-96ef-25e051371bc2")
 		(property "Sheetname" "USB Power Delivery"
-			(at 22.86 64.0584 0)
+			(at 30.48 62.7884 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2238,7 +2278,7 @@
 			)
 		)
 		(property "Sheetfile" "usb_power.kicad_sch"
-			(at 22.86 85.6746 0)
+			(at 30.48 89.4846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2247,7 +2287,7 @@
 			)
 		)
 		(pin "USB_D-" input
-			(at 46.99 73.66 0)
+			(at 54.61 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2257,7 +2297,7 @@
 			(uuid "3fbe9c9c-a3c6-46e6-85ec-4070796c4332")
 		)
 		(pin "USB_D+" input
-			(at 46.99 71.12 0)
+			(at 54.61 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
