@@ -2262,6 +2262,46 @@
 			)
 			(uuid "9ada5a0c-0239-4d1a-9eab-491c811bf352")
 		)
+		(pin "PD_INT" input
+			(at 59.69 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fe0e273d-8867-4b03-88c8-43f00312a3cf")
+		)
+		(pin "I2C_SCL_PD" input
+			(at 59.69 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "b09e0c2f-9c2e-4494-8bf9-5bba8da1b0a5")
+		)
+		(pin "I2C_SDA_PD" input
+			(at 59.69 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "031b0f89-8639-48c4-8d4d-3cedab3bf482")
+		)
+		(pin "PD_GPIO" input
+			(at 59.69 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "60396a97-a051-43b8-beaf-6417caaa2637")
+		)
 		(instances
 			(project "SCAN"
 				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
