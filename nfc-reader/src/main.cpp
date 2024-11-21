@@ -152,7 +152,7 @@ void formatNDEF(){
 void writeNDEF(){
   NdefMessage message = NdefMessage();
   message.addTextRecord("Cory Brynds");
-  message.addTextRecord("5387541");
+  message.addTextRecord("5387641");
   message.addTextRecord("C5Q2CK2d3C3xL3f)8x3)");
   
   bool success = nfc.write(message);
@@ -194,15 +194,10 @@ void loop(void) {
 
         // bool authSuccess = false;
         if (nfc.tagPresent()) {
+
             String userID = readNDEF(1);
 
             if (userID != "") {
-                // Check if the userID exists in the dictionary
-                // if (userStatus.find(userID) != userStatus.end()) {
-                //     userStatus[userID] = !userStatus[userID];
-                // } else {
-                //     userStatus[userID] = true;
-                // }
                 UserInfo userInfo = mySCANDatabase.getUserInfo(userID, 1);
 
                 if (userInfo.validUserInfo){
@@ -222,20 +217,13 @@ void loop(void) {
                 else{
                   drawUserNotFoundScreen(tft);
                 }
-                // // Display the appropriate screen based on the check-in status
-                // if (userStatus[userID]) {
-                //     drawCheckInSuccessScreen(tft);
-                // } else {
-                //     drawCheckOutSuccessScreen(tft);
-                // }
-            // } else {
-            //     drawCheckInFailedScreen(tft);
-            // }
-
+        }
+        else {
+          drawCheckInFailedScreen(tft);
+        }
             delay(2000);
             drawNFCWatingScreen(tft);
             nfc.begin(0);  // Reinitialize the NFC reader
-        }
     }
 }
 }
