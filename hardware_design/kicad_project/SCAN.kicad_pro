@@ -584,28 +584,36 @@
       "Root"
     ],
     [
-      "d5943cff-7c7a-4274-96ef-25e051371bc2",
-      "USB Power Delivery"
-    ],
-    [
-      "60c701f2-064e-421d-b8f6-7bdcf43c2f59",
-      "Programming"
-    ],
-    [
-      "a6a5a36d-30d2-4d1d-b22b-545ccb0d5e9c",
+      "f3fe1bdc-0005-4eb6-8f46-f0c489d18602",
       "Power Management"
+    ],
+    [
+      "06cd6600-0e10-4490-9a97-38ff4aa1bfbe",
+      "Auto Download"
+    ],
+    [
+      "3a101d3c-b253-47d5-9633-30f847e68e26",
+      "USB Power Delivery"
     ],
     [
       "a73bfec0-45b3-47b0-9a7f-8c425a888e2a",
       "Peripherals"
     ],
     [
-      "9ce17f20-86e4-46b1-b2ef-4f96d96c7929",
-      "NFC"
+      "ad072a51-512c-47cd-910f-58387f4085c3",
+      "USB-to-UART Bridge"
     ],
     [
-      "f4334491-02af-44dd-a4a7-8e874acfd09b",
-      "PIR"
+      "a61b5ae1-2f8a-4955-8eae-279d624407a5",
+      "TFT Display"
+    ],
+    [
+      "3f3a75e1-90ab-4f34-9369-5023171d1731",
+      "NFC Reader"
+    ],
+    [
+      "e17bbbf5-7036-48e1-827d-dd82052f2076",
+      "PIR Sensor"
     ]
   ],
   "text_variables": {}
