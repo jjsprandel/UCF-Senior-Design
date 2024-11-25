@@ -3641,7 +3641,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 0 0 0)
+			(at 0.254 19.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3649,7 +3649,7 @@
 			)
 		)
 		(property "Value" "TFT Display"
-			(at 0 6.35 0)
+			(at 0.254 23.114 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3686,7 +3686,31 @@
 		(symbol "TFT_Display_0_1"
 			(polyline
 				(pts
+					(xy -8.89 10.16) (xy -15.24 10.16)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
 					(xy -8.89 10.795) (xy -8.89 10.16)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 8.89 10.16) (xy 15.24 10.16)
 				)
 				(stroke
 					(width 0)
@@ -3712,7 +3736,7 @@
 		(symbol "TFT_Display_1_1"
 			(polyline
 				(pts
-					(xy 8.89 10.16) (xy 8.89 0) (xy -8.89 0) (xy -8.89 10.16)
+					(xy 15.24 10.16) (xy 15.24 0) (xy -15.24 0) (xy -15.24 10.16)
 				)
 				(stroke
 					(width 0)
@@ -3745,7 +3769,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -5.08 -2.54 90)
+				(at -3.81 -2.54 90)
 				(length 2.54)
 				(name "CS"
 					(effects
@@ -3763,7 +3787,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -2.54 -2.54 90)
+				(at -1.27 -2.54 90)
 				(length 2.54)
 				(name "DC"
 					(effects
@@ -3781,7 +3805,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 5.08 -2.54 90)
+				(at -13.97 -2.54 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -3799,7 +3823,97 @@
 				)
 			)
 			(pin bidirectional line
-				(at -7.62 -2.54 90)
+				(at 1.27 -2.54 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 3.81 -2.54 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 13.97 -2.54 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 8.89 -2.54 90)
+				(length 2.54)
+				(name "LEDA"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 11.43 -2.54 90)
+				(length 2.54)
+				(name "LEDK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -11.43 -2.54 90)
 				(length 2.54)
 				(name "RST"
 					(effects
@@ -3817,7 +3931,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 2.54 -2.54 90)
+				(at -6.35 -2.54 90)
 				(length 2.54)
 				(name "SCL"
 					(effects
@@ -3835,7 +3949,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -2.54 90)
+				(at -8.89 -2.54 90)
 				(length 2.54)
 				(name "SDA"
 					(effects
@@ -3853,7 +3967,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 7.62 -2.54 90)
+				(at 6.35 -2.54 90)
 				(length 2.54)
 				(name "VCC"
 					(effects

@@ -5,109 +5,6 @@
 	(uuid "093dd61c-5aef-489a-995c-1dbd2c7bac23")
 	(paper "B")
 	(lib_symbols
-		(symbol "Adafruit PN532_Breakout_v1.6-eagle-import:VDD"
-			(power)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" ""
-				(at -1.524 1.016 0)
-				(effects
-					(font
-						(size 1.27 1.0795)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "VDD Supply Symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_locked" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "VDD_1_0"
-				(polyline
-					(pts
-						(xy -1.27 -1.27) (xy 0 0)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin power_in line
-					(at 0 -2.54 90)
-					(length 2.54)
-					(name "VDD"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-				)
-			)
-		)
 		(symbol "Connector:TestPoint"
 			(pin_numbers hide)
 			(pin_names
@@ -2743,12 +2640,6 @@
 		(uuid "1d619aa1-27ba-4b6d-bd9c-4fe4ebf4c63a")
 	)
 	(junction
-		(at 358.14 139.7)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "285a1777-435a-4c7d-8c3a-c41c8939d052")
-	)
-	(junction
 		(at 121.92 168.91)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2813,6 +2704,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "92d04f9c-24ca-457d-9bc3-5529bef19562")
+	)
+	(junction
+		(at 365.76 139.7)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "955cf7b5-74cc-4b22-a9ad-c3b50286bfb3")
 	)
 	(junction
 		(at 212.09 163.83)
@@ -2976,7 +2873,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 129.54) (xy 358.14 130.81)
+			(xy 365.76 129.54) (xy 365.76 130.81)
 		)
 		(stroke
 			(width 0.1524)
@@ -2986,17 +2883,7 @@
 	)
 	(wire
 		(pts
-			(xy 38.1 139.7) (xy 38.1 137.16)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(uuid "0c0674fb-de99-464a-b571-889886240772")
-	)
-	(wire
-		(pts
-			(xy 351.79 139.7) (xy 358.14 139.7)
+			(xy 351.79 139.7) (xy 365.76 139.7)
 		)
 		(stroke
 			(width 0.1524)
@@ -3276,7 +3163,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 138.43) (xy 358.14 139.7)
+			(xy 365.76 138.43) (xy 365.76 139.7)
 		)
 		(stroke
 			(width 0.1524)
@@ -3346,7 +3233,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 148.59) (xy 358.14 149.86)
+			(xy 365.76 148.59) (xy 365.76 149.86)
 		)
 		(stroke
 			(width 0.1524)
@@ -3586,6 +3473,16 @@
 	)
 	(wire
 		(pts
+			(xy 365.76 139.7) (xy 358.14 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61b94bb7-e406-49a7-8181-4653b923f5e3")
+	)
+	(wire
+		(pts
 			(xy 185.42 111.76) (xy 185.42 114.3)
 		)
 		(stroke
@@ -3686,7 +3583,7 @@
 	)
 	(wire
 		(pts
-			(xy 351.79 129.54) (xy 358.14 129.54)
+			(xy 351.79 129.54) (xy 365.76 129.54)
 		)
 		(stroke
 			(width 0.1524)
@@ -4076,7 +3973,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 139.7) (xy 358.14 140.97)
+			(xy 365.76 139.7) (xy 365.76 140.97)
 		)
 		(stroke
 			(width 0)
@@ -4416,7 +4313,7 @@
 	)
 	(wire
 		(pts
-			(xy 351.79 149.86) (xy 358.14 149.86)
+			(xy 351.79 149.86) (xy 365.76 149.86)
 		)
 		(stroke
 			(width 0.1524)
@@ -4899,7 +4796,7 @@
 		)
 		(uuid "ae888d93-2b8f-469a-b07f-c0e7d31a2fd8")
 	)
-	(hierarchical_label "NSS"
+	(hierarchical_label "CS"
 		(shape input)
 		(at 138.43 148.59 180)
 		(fields_autoplaced yes)
@@ -4976,6 +4873,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP1")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5040,6 +4943,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "TP13")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -5142,6 +5051,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "JP1")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5212,6 +5127,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C50")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5278,6 +5199,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR047")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5341,6 +5268,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR048")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR036")
 					(unit 1)
 				)
 			)
@@ -5413,6 +5346,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C11")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5478,6 +5417,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "L5")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "L1")
 					(unit 1)
 				)
 			)
@@ -5548,6 +5493,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C18")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5611,6 +5562,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR043")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR045")
 					(unit 1)
 				)
 			)
@@ -5681,11 +5638,17 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP3")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 358.14 134.62 0)
+		(at 365.76 134.62 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5694,7 +5657,7 @@
 		(fields_autoplaced yes)
 		(uuid "290fd108-7d80-4f1e-b756-30ba3b9195ef")
 		(property "Reference" "R15"
-			(at 360.68 133.3499 0)
+			(at 368.3 133.3499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5703,7 +5666,7 @@
 			)
 		)
 		(property "Value" "NC"
-			(at 360.68 135.8899 0)
+			(at 368.3 135.8899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5712,7 +5675,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 356.362 134.62 90)
+			(at 363.982 134.62 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5721,7 +5684,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 358.14 134.62 0)
+			(at 365.76 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5730,7 +5693,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 358.14 134.62 0)
+			(at 365.76 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5748,6 +5711,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "R15")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -5817,6 +5786,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR038")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -5881,6 +5856,12 @@
 		(instances
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
+					(reference "FB2")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
 					(reference "FB2")
 					(unit 1)
 				)
@@ -5954,6 +5935,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C7")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6017,6 +6004,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR025")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -6085,6 +6078,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "L6")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "L2")
 					(unit 1)
 				)
 			)
@@ -6158,6 +6157,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C26")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6223,6 +6228,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "Y2")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "Y1")
 					(unit 1)
 				)
 			)
@@ -6293,6 +6304,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R14")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6359,6 +6376,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "C21")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C8")
 					(unit 1)
 				)
 			)
@@ -6432,6 +6455,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C49")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6501,6 +6530,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C9")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6567,6 +6602,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR040")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6630,6 +6671,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR038")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR042")
 					(unit 1)
 				)
 			)
@@ -6703,6 +6750,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C53")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6765,6 +6818,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR035")
 					(unit 1)
 				)
 			)
@@ -6833,11 +6892,17 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR04")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 358.14 144.78 0)
+		(at 365.76 144.78 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6846,7 +6911,7 @@
 		(fields_autoplaced yes)
 		(uuid "6b736f07-4a56-44cc-9030-4852686757f9")
 		(property "Reference" "R16"
-			(at 360.68 143.5099 0)
+			(at 368.3 143.5099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6855,7 +6920,7 @@
 			)
 		)
 		(property "Value" "NC"
-			(at 360.68 146.0499 0)
+			(at 368.3 146.0499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6864,7 +6929,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 356.362 144.78 90)
+			(at 363.982 144.78 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6873,7 +6938,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 358.14 144.78 0)
+			(at 365.76 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6882,7 +6947,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 358.14 144.78 0)
+			(at 365.76 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6900,6 +6965,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "R16")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -7037,6 +7108,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C12")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7107,6 +7184,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C20")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7170,6 +7253,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR039")
 					(unit 1)
 				)
 			)
@@ -7360,6 +7449,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "U2")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7424,6 +7519,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "R10")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -7494,6 +7595,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "C39")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C21")
 					(unit 1)
 				)
 			)
@@ -7630,6 +7737,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR044")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7697,6 +7810,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "C31")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C10")
 					(unit 1)
 				)
 			)
@@ -7832,6 +7951,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR043")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7901,6 +8026,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C19")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7964,6 +8095,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR037")
 					(unit 1)
 				)
 			)
@@ -8034,6 +8171,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C13")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8097,6 +8240,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR040")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR030")
 					(unit 1)
 				)
 			)
@@ -8170,6 +8319,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C15")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8236,6 +8391,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR031")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8256,7 +8417,7 @@
 				)
 			)
 		)
-		(property "Value" "LED"
+		(property "Value" "POWER_LED"
 			(at 174.3075 217.17 0)
 			(effects
 				(font
@@ -8300,6 +8461,12 @@
 		(instances
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
 					(reference "D1")
 					(unit 1)
 				)
@@ -8368,6 +8535,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "R12")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -8441,6 +8614,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C22")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8508,6 +8687,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "C37")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C23")
 					(unit 1)
 				)
 			)
@@ -8581,6 +8766,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R15")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8645,6 +8836,78 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "TP11")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 38.1 139.7 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cfe71f39-8516-4733-90bb-cc378916b7c2")
+		(property "Reference" "#PWR048"
+			(at 38.1 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "3.3V_SYS"
+			(at 32.258 135.636 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 38.1 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 38.1 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 38.1 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c65c32a4-e607-451c-b9ba-828dbd21beb6")
+		)
+		(instances
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR048")
 					(unit 1)
 				)
 			)
@@ -8716,6 +8979,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C16")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8780,6 +9049,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "TP12")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP7")
 					(unit 1)
 				)
 			)
@@ -8852,6 +9127,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C14")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8916,6 +9197,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "TP9")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -8986,6 +9273,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "TP5")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9049,6 +9342,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR042")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR041")
 					(unit 1)
 				)
 			)
@@ -9185,6 +9484,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R12")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9249,6 +9554,12 @@
 		(instances
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
+					(reference "FB1")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
 					(reference "FB1")
 					(unit 1)
 				)
@@ -9323,6 +9634,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C52")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9390,6 +9707,12 @@
 			(project "Adafruit PN532_Breakout_v1.6"
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "R14")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -9463,6 +9786,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C51")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9533,6 +9862,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "C17")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9597,6 +9932,12 @@
 			(project ""
 				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
 					(reference "#PWR047")
+					(unit 1)
+				)
+			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -9666,6 +10007,12 @@
 					(unit 1)
 				)
 			)
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR034")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9732,69 +10079,9 @@
 					(unit 1)
 				)
 			)
-		)
-	)
-	(symbol
-		(lib_id "Adafruit PN532_Breakout_v1.6-eagle-import:VDD")
-		(at 38.1 134.62 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "fc2e43f0-ac9f-49b1-82fb-9bcd01ec2042")
-		(property "Reference" "#U$01"
-			(at 38.1 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 36.576 133.604 0)
-			(effects
-				(font
-					(size 1.27 1.0795)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Footprint" ""
-			(at 38.1 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 38.1 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 38.1 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d0eb01a2-1466-486f-8713-9514f5b65377")
-		)
-		(instances
-			(project "Adafruit PN532_Breakout_v1.6"
-				(path "/5adb1974-184b-4dad-a6e6-c67cc664551d"
-					(reference "#U$01")
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3f3a75e1-90ab-4f34-9369-5023171d1731"
+					(reference "#PWR046")
 					(unit 1)
 				)
 			)

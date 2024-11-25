@@ -596,24 +596,12 @@
       "USB Power Delivery"
     ],
     [
-      "a73bfec0-45b3-47b0-9a7f-8c425a888e2a",
-      "Peripherals"
-    ],
-    [
       "ad072a51-512c-47cd-910f-58387f4085c3",
       "USB-to-UART Bridge"
     ],
     [
-      "a61b5ae1-2f8a-4955-8eae-279d624407a5",
-      "TFT Display"
-    ],
-    [
       "3f3a75e1-90ab-4f34-9369-5023171d1731",
-      "NFC Reader"
-    ],
-    [
-      "e17bbbf5-7036-48e1-827d-dd82052f2076",
-      "PIR Sensor"
+      "PN532"
     ]
   ],
   "text_variables": {}

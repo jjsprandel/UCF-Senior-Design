@@ -564,7 +564,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 50.8 -17.78 180)
+				(at 50.8 -30.48 180)
 				(length 5.08)
 				(name "BTST2"
 					(effects
@@ -690,7 +690,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 50.8 -33.02 180)
+				(at 0 -45.72 0)
 				(length 5.08)
 				(name "SYS"
 					(effects
@@ -708,7 +708,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 50.8 -25.4 180)
+				(at 50.8 -38.1 180)
 				(length 5.08)
 				(name "SW2"
 					(effects
@@ -744,7 +744,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 50.8 -10.16 180)
+				(at 50.8 -22.86 180)
 				(length 5.08)
 				(name "SW1"
 					(effects
@@ -762,7 +762,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 -30.48 0)
+				(at 50.8 -3.81 180)
 				(length 5.08)
 				(name "PMID"
 					(effects
@@ -798,7 +798,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 50.8 -2.54 180)
+				(at 50.8 -15.24 180)
 				(length 5.08)
 				(name "BTST1"
 					(effects
