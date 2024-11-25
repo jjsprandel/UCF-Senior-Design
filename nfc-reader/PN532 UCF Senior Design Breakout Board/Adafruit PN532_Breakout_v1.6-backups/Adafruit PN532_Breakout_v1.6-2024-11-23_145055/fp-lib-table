@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Adafruit PN532_Breakout_v1.6")(type "KiCad")(uri "$(KIPRJMOD)/Adafruit PN532_Breakout_v1.6.pretty")(options "")(descr ""))
+)
