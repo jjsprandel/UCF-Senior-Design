@@ -456,7 +456,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 -73.66 0)
+				(at 0 -83.82 0)
 				(length 5.08)
 				(name "CE_N"
 					(effects
@@ -600,7 +600,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 -83.82 0)
+				(at 0 -88.9 0)
 				(length 5.08)
 				(name "PROG"
 					(effects
@@ -618,7 +618,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 -86.36 0)
+				(at 0 -73.66 0)
 				(length 5.08)
 				(name "INT_N"
 					(effects
@@ -726,7 +726,7 @@
 				)
 			)
 			(pin power_in line
-				(at 21.59 -92.71 90)
+				(at 21.59 -97.79 90)
 				(length 5.08)
 				(name "GND"
 					(effects
@@ -909,13 +909,31 @@
 		(symbol "BQ25798RQMR_1_1"
 			(rectangle
 				(start 5.08 5.08)
-				(end 45.72 -87.63)
+				(end 45.72 -92.71)
 				(stroke
 					(width 0.254)
 					(type default)
 				)
 				(fill
 					(type background)
+				)
+			)
+			(text_box "Power Management\nController"
+				(at 11.43 -34.29 0)
+				(size 26.67 -15.24)
+				(stroke
+					(width -0.0001)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+				(effects
+					(font
+						(size 2.54 2.54)
+						(thickness 0.3175)
+						(color 0 7 255 1)
+					)
 				)
 			)
 		)
@@ -2967,6 +2985,427 @@
 			)
 		)
 	)
+	(symbol "LM62460Q3RPHRQ1"
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "U"
+			(at 6.096 22.606 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(property "Value" "LM62460Q3RPHRQ1"
+			(at 6.096 20.066 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(property "Footprint" "LM61495Q5RPHRQ1"
+			(at 36.83 -94.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 36.83 -194.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "Switching Voltage Regulators 6-A automotive buck converter optimized for power density and low EMI 16-VQFN-HR -40 to 150"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "1"
+			(at 36.83 -394.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "595-LM62460Q3RPHRQ1"
+			(at 36.83 -494.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/LM62460Q3RPHRQ1?qs=QNEnbhJQKvbYtVz0i%2FBRMQ%3D%3D"
+			(at 36.83 -594.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Texas Instruments"
+			(at 36.83 -694.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "LM62460Q3RPHRQ1"
+			(at 36.83 -794.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(symbol "LM62460Q3RPHRQ1_1_1"
+			(rectangle
+				(start -8.89 15.24)
+				(end 35.56 -39.37)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(text_box "Buck\nConverter"
+				(at 0 -6.35 0)
+				(size 26.67 -10.16)
+				(stroke
+					(width -0.0001)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+				(effects
+					(font
+						(size 2.54 2.54)
+						(thickness 0.3175)
+						(color 0 7 255 1)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 5.08 180)
+				(length 5.08)
+				(name "PGND2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 -35.56 180)
+				(length 5.08)
+				(name "~{RESET}"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "10"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 -22.86 0)
+				(length 5.08)
+				(name "SPSP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "11"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 -13.97 0)
+				(length 5.08)
+				(name "SYNC/MODE"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 -3.81 0)
+				(length 5.08)
+				(name "EN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 11.43 0)
+				(length 5.08)
+				(name "VIN1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 5.08 0)
+				(length 5.08)
+				(name "PGND1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "15"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 -10.16 180)
+				(length 5.08)
+				(name "SW"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "16"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 11.43 180)
+				(length 5.08)
+				(name "VIN2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 -21.59 180)
+				(length 5.08)
+				(name "RBOOT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 -17.78 180)
+				(length 5.08)
+				(name "CBOOT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 -31.75 180)
+				(length 5.08)
+				(name "BIAS"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 -35.56 0)
+				(length 5.08)
+				(name "VCC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 40.64 -27.94 180)
+				(length 5.08)
+				(name "FB"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 12.7 -44.45 90)
+				(length 5.08)
+				(name "AGND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -13.97 -29.21 0)
+				(length 5.08)
+				(name "RT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+	)
 	(symbol "NZH10C-115"
 		(pin_names hide)
 		(exclude_from_sim no)
@@ -3641,7 +4080,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 0 0 0)
+			(at 0.254 19.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3649,7 +4088,7 @@
 			)
 		)
 		(property "Value" "TFT Display"
-			(at 0 6.35 0)
+			(at 0.254 23.114 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3686,7 +4125,31 @@
 		(symbol "TFT_Display_0_1"
 			(polyline
 				(pts
+					(xy -8.89 10.16) (xy -15.24 10.16)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
 					(xy -8.89 10.795) (xy -8.89 10.16)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 8.89 10.16) (xy 15.24 10.16)
 				)
 				(stroke
 					(width 0)
@@ -3712,7 +4175,7 @@
 		(symbol "TFT_Display_1_1"
 			(polyline
 				(pts
-					(xy 8.89 10.16) (xy 8.89 0) (xy -8.89 0) (xy -8.89 10.16)
+					(xy 15.24 10.16) (xy 15.24 0) (xy -15.24 0) (xy -15.24 10.16)
 				)
 				(stroke
 					(width 0)
@@ -3745,7 +4208,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -5.08 -2.54 90)
+				(at -3.81 -2.54 90)
 				(length 2.54)
 				(name "CS"
 					(effects
@@ -3763,7 +4226,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -2.54 -2.54 90)
+				(at -1.27 -2.54 90)
 				(length 2.54)
 				(name "DC"
 					(effects
@@ -3781,7 +4244,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 5.08 -2.54 90)
+				(at -13.97 -2.54 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -3799,7 +4262,97 @@
 				)
 			)
 			(pin bidirectional line
-				(at -7.62 -2.54 90)
+				(at 1.27 -2.54 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 3.81 -2.54 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 13.97 -2.54 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 8.89 -2.54 90)
+				(length 2.54)
+				(name "LEDA"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 11.43 -2.54 90)
+				(length 2.54)
+				(name "LEDK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -11.43 -2.54 90)
 				(length 2.54)
 				(name "RST"
 					(effects
@@ -3817,7 +4370,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 2.54 -2.54 90)
+				(at -6.35 -2.54 90)
 				(length 2.54)
 				(name "SCL"
 					(effects
@@ -3835,7 +4388,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -2.54 90)
+				(at -8.89 -2.54 90)
 				(length 2.54)
 				(name "SDA"
 					(effects
@@ -3853,7 +4406,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 7.62 -2.54 90)
+				(at 6.35 -2.54 90)
 				(length 2.54)
 				(name "VCC"
 					(effects
