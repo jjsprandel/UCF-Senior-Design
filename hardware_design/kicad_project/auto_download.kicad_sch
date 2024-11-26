@@ -4,6 +4,12 @@
 	(generator_version "8.0")
 	(uuid "529aa108-a9d8-4d2c-a942-4f0bd6616fc9")
 	(paper "B")
+	(title_block
+		(title "SCAN")
+		(date "2024-11-25")
+		(rev "v1.0")
+		(company "Senior Design Group 35")
+	)
 	(lib_symbols
 		(symbol "Device:C_Small"
 			(pin_numbers hide)
