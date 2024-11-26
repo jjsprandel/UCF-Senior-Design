@@ -3222,6 +3222,139 @@
 				)
 			)
 		)
+		(symbol "Switch:SW_SPST"
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "SW"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SW_SPST"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Single Pole Single Throw (SPST) switch"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "switch lever"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SW_SPST_0_0"
+				(circle
+					(center -2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.524 0.254) (xy 1.524 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SW_SPST_1_1"
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "custom_symbols:TFT_Display"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -4939,16 +5072,6 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 29.21) (xy 137.16 36.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "689ea251-0b0f-44a2-b62f-fb630710f9d8")
-	)
-	(wire
-		(pts
 			(xy 275.59 88.9) (xy 292.1 88.9)
 		)
 		(stroke
@@ -5186,6 +5309,16 @@
 			(type default)
 		)
 		(uuid "8a565a0b-8136-4260-bd76-21ca7e462ee8")
+	)
+	(wire
+		(pts
+			(xy 148.59 36.83) (xy 153.67 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8bab4c23-8964-48a9-9a40-ccbce4ea61bb")
 	)
 	(wire
 		(pts
@@ -6089,6 +6222,16 @@
 	)
 	(wire
 		(pts
+			(xy 153.67 36.83) (xy 153.67 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e684cc0f-c79c-4b06-98cd-c9625062bdb4")
+	)
+	(wire
+		(pts
 			(xy 163.83 168.91) (xy 170.18 168.91)
 		)
 		(stroke
@@ -6199,7 +6342,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 36.83) (xy 137.16 36.83)
+			(xy 133.35 36.83) (xy 138.43 36.83)
 		)
 		(stroke
 			(width 0)
@@ -7938,6 +8081,74 @@
 		)
 	)
 	(symbol
+		(lib_id "Switch:SW_SPST")
+		(at 143.51 36.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "234a055b-aec4-432e-98ac-e610a218b606")
+		(property "Reference" "SW1"
+			(at 143.51 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_SPST"
+			(at 143.51 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 143.51 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single Pole Single Throw (SPST) switch"
+			(at 143.51 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "00f62000-6e07-4f48-9b2e-2a07c026bf74")
+		)
+		(pin "2"
+			(uuid "c7edeaef-ab90-4803-b5ed-850bcb569ac2")
+		)
+		(instances
+			(project ""
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 143.51 119.38 0)
 		(unit 1)
@@ -9145,72 +9356,6 @@
 			(project "SCAN"
 				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
 					(reference "R22")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 137.16 29.21 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "579dae81-9325-463c-9542-77f4e15ae879")
-		(property "Reference" "#PWR012"
-			(at 137.16 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "3.3V_SYS"
-			(at 131.318 25.146 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 137.16 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 137.16 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 137.16 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "54ae3539-b5ac-436c-b5f3-92a05be61ecf")
-		)
-		(instances
-			(project "SCAN"
-				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
-					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -12280,6 +12425,72 @@
 			(project "SCAN"
 				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
 					(reference "#PWR013")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 153.67 30.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f1df439a-3244-4f69-b6a3-150c2bb4d261")
+		(property "Reference" "#PWR012"
+			(at 153.67 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "3.3V_SYS"
+			(at 149.352 26.416 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 153.67 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 153.67 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 153.67 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "174b1a1d-a42b-4dfd-bb2e-a0738dbba78d")
+		)
+		(instances
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e"
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
