@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -39,27 +39,25 @@ RUN : \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
   && :
 
-# Expose a port for RFC2217 server communication
-EXPOSE 4000
-
 # To build the image for a branch or a tag of IDF, pass --build-arg IDF_CLONE_BRANCH_OR_TAG=name.
 # To build the image with a specific commit ID of IDF, pass --build-arg IDF_CHECKOUT_REF=commit-id.
-# It is possibe to combine both, e.g.:
+# It is possible to combine both, e.g.:
 #   IDF_CLONE_BRANCH_OR_TAG=release/vX.Y
 #   IDF_CHECKOUT_REF=<some commit on release/vX.Y branch>.
-# Use IDF_CLONE_SHALLOW=1 to peform shallow clone (i.e. --depth=1 --shallow-submodules)
+# Use IDF_CLONE_SHALLOW=1 to perform shallow clone (i.e. --depth=1 --shallow-submodules)
 # Use IDF_CLONE_SHALLOW_DEPTH=X to define the depth if IDF_CLONE_SHALLOW is used (i.e. --depth=X)
 # Use IDF_INSTALL_TARGETS to install tools only for selected chip targets (CSV)
 
 ARG IDF_CLONE_URL=https://github.com/espressif/esp-idf.git
 ARG IDF_CLONE_BRANCH_OR_TAG=master
 ARG IDF_CHECKOUT_REF=
-ARG IDF_CLONE_SHALLOW=1
+ARG IDF_CLONE_SHALLOW=
 ARG IDF_CLONE_SHALLOW_DEPTH=1
-ARG IDF_INSTALL_TARGETS=esp32c3
+ARG IDF_INSTALL_TARGETS=all
 
 ENV IDF_PATH=/opt/esp/idf
 ENV IDF_TOOLS_PATH=/opt/esp
+ENV PROJECT_DIR=/project
 
 # install build essential needed for linux target apps, which is a preview target so it is installed with "all" only
 RUN if [ "$IDF_INSTALL_TARGETS" = "all" ]; then \
@@ -104,10 +102,7 @@ ENV IDF_PYTHON_CHECK_CONSTRAINTS=no
 # Ccache is installed, enable it by default
 ENV IDF_CCACHE_ENABLE=1
 
-#COPY entrypoint.sh /opt/esp/entrypoint.sh
-#ENTRYPOINT [ "/opt/esp/entrypoint.sh" ]
-
-# Start the RFC2217 server in the background and keep the container running with bash
-ENTRYPOINT ["sh", "-c", "python3 /opt/esp/python_env/idf5.5_py3.12_env/bin/esp_rfc2217_server.py -v -p 4000 /dev/ttyUSB0 & exec /bin/bash"]
-
+COPY entrypoint.sh /opt/esp/entrypoint.sh
+RUN chmod +x /opt/esp/entrypoint.sh
+ENTRYPOINT [ "/opt/esp/entrypoint.sh" ]
 CMD [ "/bin/bash" ]

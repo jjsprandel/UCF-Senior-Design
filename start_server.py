@@ -15,9 +15,14 @@ def run_docker_command(is_flash=False):
     current_directory = get_current_directory()
 
     # Base Docker run command
+#    docker_command = [
+#        "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
+#        "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "espressif/idf"
+#    ]
+
     docker_command = [
-        "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
-        "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "espressif/idf"
+       "docker", "run", "--rm", "--build", "-v", f"{current_directory}:/project", "-w", "/project", 
+        "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "--file", "./Dockerfile", "espressif/idf"
     ]
     
     if is_flash:
@@ -104,7 +109,7 @@ def main():
                     # Run the command with `-it` flag for interactivity
                     current_directory = get_current_directory()
                     docker_command = [
-                        "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
+                        "docker", "build", "-t", "Senior-Design-Image", ".", "&&", "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
                         "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "espressif/idf"
                     ]
                     # Print the docker command that will be executed
