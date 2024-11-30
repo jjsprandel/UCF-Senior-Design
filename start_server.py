@@ -109,8 +109,8 @@ def main():
                     # Run the command with `-it` flag for interactivity
                     current_directory = get_current_directory()
                     docker_command = [
-                        "docker", "build", "-t", "Senior-Design-Image", ".", "&&", "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
-                        "-e", "HOME=/tmp", "-it", "--name", "UCF-Senior-Design", "espressif/idf"
+                        "docker", "run", "--rm", "-v", f"{current_directory}:/project", "-w", "/project", 
+                        "-e", "HOME=/tmp", "-it", "--name", "scan_container", "jjsprandel/scan:v1.0"
                     ]
                     # Print the docker command that will be executed
                     print(f"\nRunning Docker command:\n{' '.join(docker_command)}\n")
