@@ -4,11 +4,6 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
-message("IDF_PATH is $ENV{IDF_PATH}")
-message("PROJECT_DIR is $ENV{PROJECT_DIR}")
-message("EXTRA_COMPONENT_DIRS is $ENV{EXTRA_COMPONENT_DIRS}")
-message("IDF_TOOLS_PATH is $ENV{IDF_TOOLS_PATH}")
-
 set(EXTRA_COMPONENT_DIRS
     "$ENV{PROJECT_DIR}/src/app/main"
 )
@@ -20,4 +15,4 @@ set(COMPONENT_DIRS
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(UCF-Senior-Design)
+project(SCAN)
