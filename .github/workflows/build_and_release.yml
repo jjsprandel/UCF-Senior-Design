@@ -3,7 +3,14 @@ name: Auto Versioning, Build, and Release
 on:
   push:
     branches:
-      - framework
+      - main  # The workflow triggers on any push to `main`, or any other branch you configure
+
+env:
+  RELEASE: false
+  DEV_RELEASE: false
+  MAJOR: false
+  MINOR: false
+  PATCH: false
 
 jobs:
   version-release:
@@ -16,7 +23,6 @@ jobs:
 
       # Step 2: Check for special keywords in the commit message (e.g., "release", "dev-release", "major", "minor", "patch")
       - name: Check for release or dev-release in commit message
-        id: check_commit
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
@@ -25,18 +31,11 @@ jobs:
           if [[ "$COMMIT_MESSAGE" == *"release"* ]]; then
             echo "Release detected."
             echo "RELEASE=true" >> $GITHUB_ENV
-          else
-            echo "Not a release commit."
-            echo "RELEASE=false" >> $GITHUB_ENV
           fi
 
-          # Check if commit message contains "dev-release"
           if [[ "$COMMIT_MESSAGE" == *"dev-release"* ]]; then
             echo "Dev-release detected."
             echo "DEV_RELEASE=true" >> $GITHUB_ENV
-          else
-            echo "Not a dev-release commit."
-            echo "DEV_RELEASE=false" >> $GITHUB_ENV
           fi
 
           # Determine the version increment type (major, minor, patch)
@@ -61,9 +60,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Get current version (using npm or any other versioning system)
+      # Step 2: Get the current version (for simplicity, this example uses npm, but you can adjust it for your versioning)
       - name: Get current version
-        id: get_version
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "Current version is $VERSION"
@@ -72,11 +70,11 @@ jobs:
       # Step 3: Increment version based on commit message (major, minor, patch)
       - name: Increment version
         run: |
-          if [[ "$GITHUB_ENV" == *"MAJOR"* ]]; then
+          if [ "$MAJOR" == 'true' ]; then
             NEW_VERSION=$(npm version major --no-git-tag-version)
-          elif [[ "$GITHUB_ENV" == *"MINOR"* ]]; then
+          elif [ "$MINOR" == 'true' ]; then
             NEW_VERSION=$(npm version minor --no-git-tag-version)
-          elif [[ "$GITHUB_ENV" == *"PATCH"* ]]; then
+          elif [ "$PATCH" == 'true' ]; then
             NEW_VERSION=$(npm version patch --no-git-tag-version)
           fi
           echo "New version is $NEW_VERSION"
@@ -85,10 +83,10 @@ jobs:
       # Step 4: Handle tagging for dev-release or normal release
       - name: Create and push Git tag
         run: |
-          if [[ "$GITHUB_ENV" == *"DEV_RELEASE"* ]]; then
-            TAG="${{ env.NEW_VERSION }}-dev"
+          if [ "$DEV_RELEASE" == 'true' ]; then
+            TAG="$NEW_VERSION-dev"
           else
-            TAG="${{ env.NEW_VERSION }}"
+            TAG="$NEW_VERSION"
           fi
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -146,3 +144,4 @@ jobs:
             build/**/*.bin
             build/*.elf
             build/*.map
+
