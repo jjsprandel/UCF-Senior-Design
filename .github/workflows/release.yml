@@ -1,0 +1,49 @@
+name: ESP-IDF Build
+
+on:
+  push:
+    branches: [ "framework" ]
+  pull_request:
+    # branches: [ "main" ]  # Optional: Enable this if you want to trigger for pull requests
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Build the ESP-IDF project using Docker
+    - name: Build ESP-IDF Project
+      run: docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            -w /project \
+            -e HOME=/tmp \
+            jjsprandel/scan:v1.0 idf.py build
+
+    # Step 3: Create a directory for the build artifacts
+    - name: Create build artifacts directory
+      run: mkdir -p build_artifacts/dev
+
+    # Step 4: Copy the build artifacts to the build artifacts directory
+    - name: Copy build files to artifacts folder
+      run: |
+        cp build/**/*.bin build_artifacts/dev/
+        cp build/*.elf build_artifacts/dev/
+        cp build/*.map build_artifacts/dev/
+
+    # Step 5: Zip the build artifacts into a single file
+    - name: Zip build artifacts
+      run: |
+        cd build_artifacts && zip -r dev-build-artifacts.zip dev/
+
+    # Step 6: Create a new release (if none exists)
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build_artifacts/dev-build-artifacts.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
