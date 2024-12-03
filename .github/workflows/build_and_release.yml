@@ -1,0 +1,145 @@
+name: Auto Versioning, Build, and Release
+
+on:
+  push:
+    branches:
+      - framework
+
+jobs:
+  version-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Check for special keywords in the commit message (e.g., "release", "dev-release", "major", "minor", "patch")
+      - name: Check for release or dev-release in commit message
+        id: check_commit
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          echo "Commit message: $COMMIT_MESSAGE"
+
+          # Check if commit message contains "release" or "dev-release"
+          if [[ "$COMMIT_MESSAGE" == *"release"* ]]; then
+            echo "Release detected."
+            echo "true" >> $GITHUB_ENV
+          else
+            echo "Not a release commit."
+            echo "false" >> $GITHUB_ENV
+          fi
+
+          # Check if commit message contains "dev-release"
+          if [[ "$COMMIT_MESSAGE" == *"dev-release"* ]]; then
+            echo "Dev-release detected."
+            echo "true" >> $GITHUB_ENV
+          else
+            echo "Not a dev-release commit."
+            echo "false" >> $GITHUB_ENV
+          fi
+
+          # Determine the version increment type (major, minor, patch)
+          if [[ "$COMMIT_MESSAGE" == *"major"* ]]; then
+            echo "Incrementing major version."
+            echo "major" >> $GITHUB_ENV
+          elif [[ "$COMMIT_MESSAGE" == *"minor"* ]]; then
+            echo "Incrementing minor version."
+            echo "minor" >> $GITHUB_ENV
+          elif [[ "$COMMIT_MESSAGE" == *"patch"* ]]; then
+            echo "Incrementing patch version."
+            echo "patch" >> $GITHUB_ENV
+          fi
+
+  versioning:
+    needs: version-release
+    runs-on: ubuntu-latest
+    if: env.release == 'true' || env.dev_release == 'true'  # Only run if the commit is for a release or dev-release
+
+    steps:
+      # Step 1: Checkout the code again for this step
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Determine current version (for simplicity, this example uses npm, but you can use your own logic)
+      - name: Get current version
+        id: get_version
+        run: |
+          # Get the current version from package.json (you can adjust this to your specific versioning scheme)
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Current version is $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      # Step 3: Increment version based on commit message (major, minor, patch)
+      - name: Increment version
+        run: |
+          if [[ "$GITHUB_ENV" == *"major"* ]]; then
+            NEW_VERSION=$(npm version major --no-git-tag-version)
+          elif [[ "$GITHUB_ENV" == *"minor"* ]]; then
+            NEW_VERSION=$(npm version minor --no-git-tag-version)
+          else
+            NEW_VERSION=$(npm version patch --no-git-tag-version)
+          fi
+          echo "New version is $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      # Step 4: Handle tagging for dev-release or normal release
+      - name: Create and push Git tag
+        run: |
+          if [[ "$GITHUB_ENV" == *"dev-release"* ]]; then
+            TAG="${{ env.NEW_VERSION }}-dev"
+          else
+            TAG="${{ env.NEW_VERSION }}"
+          fi
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag $TAG
+          git push origin $TAG
+
+  build:
+    runs-on: ubuntu-latest
+    needs: versioning
+    if: env.release == 'true' || env.dev_release == 'true'  # Run if release or dev-release
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Build the ESP-IDF Project
+      - name: Build ESP-IDF Project
+        run: docker run --rm -v ${{ github.workspace }}:/project -w /project -e HOME=/tmp jjsprandel/scan:v1.0 idf.py build
+
+      # Step 3: Upload the release artifacts (either regular or dev-release)
+      - name: Upload Release Artifacts
+        if: env.release == 'true'  # Only for normal release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/**/*.bin
+            build/*.elf
+            build/*.map
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Dev Release Artifacts
+        if: env.dev_release == 'true'  # Only for dev-release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/**/*.bin
+            build/*.elf
+            build/*.map
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 4: Upload build artifacts for non-release pushes
+      - name: Upload Build Artifacts
+        if: env.release != 'true' && env.dev_release != 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            build/**/*.bin
+            build/*.elf
+            build/*.map
