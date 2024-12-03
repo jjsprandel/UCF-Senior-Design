@@ -3,7 +3,7 @@ name: Auto Versioning, Build, and Release
 on:
   push:
     branches:
-      - main  # The workflow triggers on any push to `main`, or any other branch you configure
+      - framework  # The workflow triggers on any push to `main`, or any other branch you configure
 
 env:
   RELEASE: false
