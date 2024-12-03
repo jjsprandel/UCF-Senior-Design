@@ -6,11 +6,11 @@ on:
       - framework  # The workflow triggers on any push to `main`, or any other branch you configure
 
 env:
-  RELEASE: false
-  DEV_RELEASE: false
-  MAJOR: false
-  MINOR: false
-  PATCH: false
+  RELEASE: 0
+  DEV_RELEASE: 0
+  MAJOR: 0
+  MINOR: 0
+  PATCH: 0
 
 jobs:
   version-release:
@@ -23,8 +23,10 @@ jobs:
 
       # Step 2: Check for special keywords in the commit message (e.g., "release", "dev-release", "major", "minor", "patch")
       - name: Check for release or dev-release in commit message
+        if: ${{ github.event.head_commit.message }} == *"release"*
         run: |
-          COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
+          $RELEASE: 1
+          run COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
           echo "Commit message: $COMMIT_MESSAGE"
 
           # Check if commit message contains "release" or "dev-release"
