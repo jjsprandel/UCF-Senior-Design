@@ -1,11 +1,10 @@
-name: ESP-IDF Build
+name: Release
 
 on:
   push:
     branches: [ "framework" ]
   pull_request:
-    # branches: [ "main" ]  # Optional: Enable this if you want to trigger for pull requests
-
+    # branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
