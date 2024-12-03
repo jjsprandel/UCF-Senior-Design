@@ -1,0 +1,34 @@
+name: ESP-IDF Build
+
+on:
+  push:
+    branches: [ "framework" ]
+  pull_request:
+    # branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Build the ESP-IDF project using Docker
+    - name: Build ESP-IDF Project
+      run: docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            -w /project \
+            -e HOME=/tmp \
+            jjsprandel/scan:v1.0 idf.py build
+
+    # Step 3: Upload key build artifacts
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: esp-idf-build
+        path: |
+          build/**/*.bin       # Application, bootloader, and partition-table binaries
+          build/*.elf       # Debugging file
+          build/*.map       # Memory map
