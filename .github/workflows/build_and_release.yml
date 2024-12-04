@@ -1,4 +1,4 @@
-name: Auto Versioning, Build, and Release
+name: Auto Versioning, Build, and Release Test
 
 on:
   push:
