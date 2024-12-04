@@ -161,6 +161,7 @@ jobs:
             build/**/*.bin
             build/*.elf
             build/*.map
+          tag_name: $NEW_VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
