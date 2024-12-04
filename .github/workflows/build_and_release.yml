@@ -14,12 +14,12 @@ jobs:
       MAJOR: ${{ steps.check_major.outputs.MAJOR }}
       MINOR: ${{ steps.check_minor.outputs.MINOR }}
       PATCH: ${{ steps.check_patch.outputs.PATCH }}
-
+  
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
-
+  
       # Step 2: Check if the commit message contains "release"
       - name: Check if the commit message contains "release"
         id: check_release
@@ -28,10 +28,12 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"release"* ]]; then
             echo "RELEASE=true" >> $GITHUB_ENV
+            echo "RELEASE=true" >> $GITHUB_OUTPUT
           else
             echo "RELEASE=false" >> $GITHUB_ENV
+            echo "RELEASE=false" >> $GITHUB_OUTPUT
           fi
-
+  
       # Step 3: Check if the commit message contains "dev-release"
       - name: Check if the commit message contains "dev-release"
         id: check_dev_release
@@ -40,11 +42,13 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"dev-release"* ]]; then
             echo "DEV_RELEASE=true" >> $GITHUB_ENV
+            echo "DEV_RELEASE=true" >> $GITHUB_OUTPUT
           else
             echo "DEV_RELEASE=false" >> $GITHUB_ENV
+            echo "DEV_RELEASE=false" >> $GITHUB_OUTPUT
           fi
-
-      # Step 4: Set the version increment based on commit message
+  
+      # Step 4: Check if the commit message contains "major"
       - name: Check if the commit message contains "major"
         id: check_major
         run: |
@@ -52,10 +56,13 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"major"* ]]; then
             echo "MAJOR=true" >> $GITHUB_ENV
+            echo "MAJOR=true" >> $GITHUB_OUTPUT
           else
             echo "MAJOR=false" >> $GITHUB_ENV
+            echo "MAJOR=false" >> $GITHUB_OUTPUT
           fi
-
+  
+      # Step 5: Check if the commit message contains "minor"
       - name: Check if the commit message contains "minor"
         id: check_minor
         run: |
@@ -63,10 +70,13 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"minor"* ]]; then
             echo "MINOR=true" >> $GITHUB_ENV
+            echo "MINOR=true" >> $GITHUB_OUTPUT
           else
             echo "MINOR=false" >> $GITHUB_ENV
+            echo "MINOR=false" >> $GITHUB_OUTPUT
           fi
-
+  
+      # Step 6: Check if the commit message contains "patch"
       - name: Check if the commit message contains "patch"
         id: check_patch
         run: |
@@ -74,8 +84,10 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"patch"* ]]; then
             echo "PATCH=true" >> $GITHUB_ENV
+            echo "PATCH=true" >> $GITHUB_OUTPUT
           else
             echo "PATCH=false" >> $GITHUB_ENV
+            echo "PATCH=false" >> $GITHUB_OUTPUT
           fi
 
   build:
