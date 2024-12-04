@@ -3,7 +3,7 @@ name: Auto Versioning, Build, and Release
 on:
   push:
     branches:
-      - main  # Trigger on push to `main` branch
+      - framework  # Trigger on push to `main` branch
 
 jobs:
   release-detection:
