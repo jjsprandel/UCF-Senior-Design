@@ -28,9 +28,8 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"release"* ]]; then
             echo "RELEASE=true" >> $GITHUB_ENV
-            echo "::set-output name=RELEASE::true"
           else
-            echo "::set-output name=RELEASE::false"
+            echo "RELEASE=false" >> $GITHUB_ENV
           fi
 
       # Step 3: Check if the commit message contains "dev-release"
@@ -41,9 +40,8 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"dev-release"* ]]; then
             echo "DEV_RELEASE=true" >> $GITHUB_ENV
-            echo "::set-output name=DEV_RELEASE::true"
           else
-            echo "::set-output name=DEV_RELEASE::false"
+            echo "DEV_RELEASE=false" >> $GITHUB_ENV
           fi
 
       # Step 4: Set the version increment based on commit message
@@ -53,9 +51,9 @@ jobs:
           COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"major"* ]]; then
-            echo "::set-output name=MAJOR::true"
+            echo "MAJOR=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=MAJOR::false"
+            echo "MAJOR=false" >> $GITHUB_ENV
           fi
 
       - name: Check if the commit message contains "minor"
@@ -64,9 +62,9 @@ jobs:
           COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"minor"* ]]; then
-            echo "::set-output name=MINOR::true"
+            echo "MINOR=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=MINOR::false"
+            echo "MINOR=false" >> $GITHUB_ENV
           fi
 
       - name: Check if the commit message contains "patch"
@@ -75,9 +73,9 @@ jobs:
           COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"patch"* ]]; then
-            echo "::set-output name=PATCH::true"
+            echo "PATCH=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=PATCH::false"
+            echo "PATCH=false" >> $GITHUB_ENV
           fi
 
   build:
@@ -132,4 +130,5 @@ jobs:
             build/**/*.bin
             build/*.elf
             build/*.map
+
 
