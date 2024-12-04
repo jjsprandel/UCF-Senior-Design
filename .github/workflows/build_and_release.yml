@@ -1,9 +1,9 @@
-name: Auto Versioning, Build, and Release Test
+name: Auto Versioning, Build, and Release
 
 on:
   push:
     branches:
-      - framework  # Trigger on push to `main` branch
+      - main  # Trigger on push to `main` branch
 
 jobs:
   release-detection:
@@ -24,7 +24,7 @@ jobs:
       - name: Check if the commit message contains "release"
         id: check_release
         run: |
-          COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"release"* ]]; then
             echo "RELEASE=true" >> $GITHUB_ENV
@@ -36,7 +36,7 @@ jobs:
       - name: Check if the commit message contains "dev-release"
         id: check_dev_release
         run: |
-          COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"dev-release"* ]]; then
             echo "DEV_RELEASE=true" >> $GITHUB_ENV
@@ -48,7 +48,7 @@ jobs:
       - name: Check if the commit message contains "major"
         id: check_major
         run: |
-          COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"major"* ]]; then
             echo "MAJOR=true" >> $GITHUB_ENV
@@ -59,7 +59,7 @@ jobs:
       - name: Check if the commit message contains "minor"
         id: check_minor
         run: |
-          COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"minor"* ]]; then
             echo "MINOR=true" >> $GITHUB_ENV
@@ -70,7 +70,7 @@ jobs:
       - name: Check if the commit message contains "patch"
         id: check_patch
         run: |
-          COMMIT_MESSAGE="${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"patch"* ]]; then
             echo "PATCH=true" >> $GITHUB_ENV
@@ -130,5 +130,3 @@ jobs:
             build/**/*.bin
             build/*.elf
             build/*.map
-
-
