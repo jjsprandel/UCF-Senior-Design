@@ -1,5 +1,8 @@
 name: Auto Versioning, Build, and Release
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -142,7 +145,8 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git tag $NEW_VERSION
-          git push origin $NEW_VERSION
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} $NEW_VERSION
+    
   
       # Step 4: Build the ESP-IDF Project
       - name: Build ESP-IDF Project
