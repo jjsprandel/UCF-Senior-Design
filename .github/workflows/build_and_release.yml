@@ -81,7 +81,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: release-detection
-  
+    if: ${{ needs.release-detection.outputs.RELEASE == true || needs.release-detection.outputs.DEV_RELEASE == true }}
 
     steps:
       # Step 1: Checkout the code
