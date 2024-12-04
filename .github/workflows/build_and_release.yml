@@ -90,11 +90,7 @@ jobs:
 
       # Step 2: Build the ESP-IDF Project
       - name: Build ESP-IDF Project
-        run: docker run --rm \
-              -v $GITHUB_WORKSPACE:/project \
-              -w /project \
-              -e HOME=/tmp \
-              jjsprandel/scan:v1.0 idf.py build
+        run: docker run --rm -v $GITHUB_WORKSPACE:/project -w /project -e HOME=/tmp jjsprandel/scan:v1.0 idf.py build
 
       # Step 3: Upload the release artifacts (for normal release)
       - name: Upload Release Artifacts
