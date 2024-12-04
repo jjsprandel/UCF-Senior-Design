@@ -158,10 +158,11 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/**/*.bin
-            build/*.elf
-            build/*.map
-          tag_name: $NEW_VERSION
+            build/SCAN.bin
+            build/bootloader/bootloader.bin
+            build/SCAN.elf
+            build/SCAN.map
+          tag_name: ${{ env.NEW_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
