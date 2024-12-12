@@ -1,6 +1,3 @@
 {
-    "files.associations": {
-        "gpio.h": "c"
-    },
     "idf.adapterTargetName": "esp32"
 }

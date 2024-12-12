@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+# set -e # commented out to stop bash terminal from automatically terminating upon errors
 
 # IDF_GIT_SAFE_DIR has the same format as system PATH environment variable.
 # All path specified in IDF_GIT_SAFE_DIR will be added to user's

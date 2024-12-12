@@ -1,29 +1,30 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.183.0/containers/ubuntu
 {
-    "name": "ESP32 Development",
-    "dockerFile": "Dockerfile",  // Assuming you're using a Dockerfile to build the container
-    "postCreateCommand": "source /opt/esp/esp/idf/export.sh",  // This sets up ESP-IDF tools
-    "runArgs": [
-        "--env", "IDF_PATH=/opt/esp/esp/idf"
-    ],
-    "mounts": [
-        "source=${localWorkspaceFolder},target=/project,type=bind"
-    ],
+	"name": "SCAN",
+    "image": "jjsprandel/scan:v1.0", 
+	// Add the IDs of extensions you want installed when the container is created
+    "workspaceMount": "source=${localWorkspaceFolder},target=/project,type=bind",
     "workspaceFolder": "/project",
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.shell.linux": "/bin/bash",  // Default shell
-                "python.pythonPath": "/usr/bin/python3",  // Optional: set python path if needed
-                "C_Cpp.intelliSenseEngine": "default"  // Removed problematic setting
-            },
-            "extensions": [
-                "espressif.esp-idf-extension",  // ESP-IDF extension for VS Code
-                "ms-vscode.cpptools",  // C++ extension for better IDE support
-                "ms-python.python",  // Python extension for Python support
-                "ms-python.vscode-pylance",  // Python language server for better performance
-                "ms-vscode.cpptools-extension-pack",  // C++ development pack
-                "ms-vscode.cpptools-themes"  // Optional C++ theme extensions
-            ]
-        }
-    }
+    "mounts": [
+        "source=extensionCache,target=/root/.vscode-server/extensions,type=volume"
+    ],
+	"postCreateCommand": "/bin/bash -c 'echo \"source /opt/esp/entrypoint.sh\" >> ~/.bashrc && source ~/.bashrc'",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"idf.espIdfPath": "/opt/esp/idf",
+				"idf.customExtraPaths": "",
+				"idf.pythonBinPath": "/opt/esp/python_env/idf5.5_py3.12_env/bin/python",
+				"idf.toolsPath": "/opt/esp",
+				"idf.gitPath": "/usr/bin/git"
+			},
+			"extensions": [
+				"ms-vscode.cpptools",
+				"espressif.esp-idf-extension"
+			]
+		}
+	},
+	"runArgs": ["--privileged"]
 }
