@@ -9,7 +9,7 @@
     "mounts": [
         "source=extensionCache,target=/root/.vscode-server/extensions,type=volume"
     ],
-	"postCreateCommand": "/bin/bash -c 'echo \"source /opt/esp/entrypoint.sh\" >> ~/.bashrc && source ~/.bashrc'",
+	"postCreateCommand": "/bin/bash -c 'echo \"source /opt/esp/entrypoint.sh\" >> ~/.bashrc && echo \"set +e\" >> ~/.bashrc && source ~/.bashrc'",
 	"customizations": {
 		"vscode": {
 			"settings": {
@@ -18,11 +18,18 @@
 				"idf.customExtraPaths": "",
 				"idf.pythonBinPath": "/opt/esp/python_env/idf5.5_py3.12_env/bin/python",
 				"idf.toolsPath": "/opt/esp",
-				"idf.gitPath": "/usr/bin/git"
+				"idf.gitPath": "/usr/bin/git",
+				"idf.port": "rfc2217://host.docker.internal:4000?ign_set_control",
+				"idf.flashType": "UART",
+				"idf.deleteComponentsOnFullClean": true,
+				"idf.enableCCache": true,
+				"idf.saveBeforeBuild": true
 			},
 			"extensions": [
 				"ms-vscode.cpptools",
-				"espressif.esp-idf-extension"
+				"espressif.esp-idf-extension",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cpptools-themes"
 			]
 		}
 	},
