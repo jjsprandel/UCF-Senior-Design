@@ -152,7 +152,7 @@ This project has the following dependencies that need to be installed:
   
 ### **Software Dependencies:**
 - **USB Drivers**: For proper communication with the hardware, ensure that the appropriate USB drivers are installed.
-  - For Windows, you can download and install the **[CP210x USB to UART Bridge VCP drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)**.
+  - For Windows, you can download and install the **[CP210x USB to UART Bridge VCP drivers](https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads)**.
   - For Linux, you should have the necessary drivers already built into the kernel, but check the [driver documentation](https://www.silabs.com/community/interface/usb-bridges) for troubleshooting.
 
 - **Docker Desktop**: Required to run the ESP-IDF containerized environment.
