@@ -10,7 +10,7 @@ Here are the current statuses of our GitHub workflows:
 
 | Workflow Name            | Status                                  |
 | ------------------------ | --------------------------------------- |
-| **CI - Build**            | ![Build Status](https://github.com/jjsprandel/UCF-Senior-Design/actions/workflows/build_and_release.yml/badge.svg) |
+| **CI - Build**            | ![Build Status](https://github.com/jjsprandel/SCAN/actions/workflows/build.yml/badge.svg?branch=main) |
 | **Docker - Test Build**   | ![Deployment Status](https://github.com/jjsprandel/UCF-Senior-Design/actions/workflows/docker-build.yml/badge.svg) |
 
 - **CI - Build**: Ensures the project builds successfully.
