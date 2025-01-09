@@ -100,7 +100,7 @@ jobs:
     needs: release-detection
     environment:
       name: production
-      url: https://github.com/${{ github.repository }}  # Optional, link to the repo or release page for context
+      url: https://github.com/${{ github.repository }}
     steps:
       - name: Await Approval
         run: echo "Waiting for approval to proceed with the build."
