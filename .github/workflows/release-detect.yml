@@ -146,15 +146,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-      
-      # Debug: List the contents of the build folder to verify the files
-      - name: List downloaded files
-        run: ls -R /home/runner/work/SCAN/SCAN
-
-      # Unzip the artifact (if it's a zip file)
-      - name: Unzip build artifacts
-        run: |
-          unzip /home/runner/work/SCAN/SCAN/build-artifacts.zip -d /home/runner/work/SCAN/SCAN/build
 
       # Step 2: Determine next version
       - name: Increment Version
@@ -207,10 +198,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            /home/runner/work/SCAN/SCAN/build/SCAN.bin
-            /home/runner/work/SCAN/SCAN/build/bootloader/bootloader.bin
-            /home/runner/work/SCAN/SCAN/build/SCAN.elf
-            /home/runner/work/SCAN/SCAN/build/SCAN.map
+            /home/runner/work/SCAN/SCAN/SCAN.bin
+            /home/runner/work/SCAN/SCAN/bootloader/bootloader.bin
+            /home/runner/work/SCAN/SCAN/SCAN.elf
+            /home/runner/work/SCAN/SCAN/SCAN.map
           tag_name: ${{ env.NEW_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
