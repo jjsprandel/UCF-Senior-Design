@@ -107,7 +107,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: approval
+    needs: release-detection
   
     steps:
       # Step 1: Checkout the code
