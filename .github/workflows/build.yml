@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  docker-build:
+    name: Build ESP32 Project with Docker
+    runs-on: ubuntu-latest  # This is just a placeholder; the container runs the job
+    container:
+      image: jjsprandel/scan:v1.0  # Reference your Docker image here
+
+    steps:
+    # Checkout the repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # Run the build command in Docker
+    - name: Build with Docker
+      run: idf.py build
+
+
