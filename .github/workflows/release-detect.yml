@@ -198,10 +198,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/SCAN.bin
-            build/bootloader/bootloader.bin
-            build/SCAN.elf
-            build/SCAN.map
+            /home/runner/work/SCAN/SCAN/build/SCAN.bin
+            /home/runner/work/SCAN/SCAN/build/bootloader/bootloader.bin
+            /home/runner/work/SCAN/SCAN/build/SCAN.elf
+            /home/runner/work/SCAN/SCAN/build/SCAN.map
           tag_name: ${{ env.NEW_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
