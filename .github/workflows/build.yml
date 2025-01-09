@@ -10,11 +10,9 @@ on:
       - main
 
 jobs:
-  docker-build:
-    name: Build ESP32 Project with Docker
-    runs-on: ubuntu-latest  # This is just a placeholder; the container runs the job
-    container:
-      image: jjsprandel/scan:v1.0  # Reference your Docker image here
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
 
     steps:
     # Checkout the repository
@@ -22,7 +20,5 @@ jobs:
       uses: actions/checkout@v4
 
     # Run the build command in Docker
-    - name: Build with Docker
-      run: idf.py build
-
-
+    - name: Docker run idf.py build
+      run: docker run --rm -v $GITHUB_WORKSPACE:/project -w /project -e HOME=/tmp jjsprandel/scan:v1.0 idf.py build
