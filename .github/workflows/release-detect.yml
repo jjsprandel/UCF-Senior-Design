@@ -94,28 +94,79 @@ jobs:
             echo "PATCH=false" >> $GITHUB_OUTPUT
           fi
 
-      # Step 7: Approval for release or dev-release
-      - name: Manual Approval (Release or Dev-Release)
+  approval:
+    name: Wait for Approval
+    runs-on: ubuntu-latest
+    needs: release-detection
+    environment:
+      name: production
+      url: https://github.com/${{ github.repository }}  # Optional, link to the repo or release page for context
+    steps:
+      - name: Await Approval
+        run: echo "Waiting for approval to proceed with the build."
+
+  build:
+    runs-on: ubuntu-latest
+    needs: approval
+  
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      # Step 2: Determine next version
+      - name: Increment Version
+        id: version
+        run: |
+          # Get the latest git tag (if none, set the base version)
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+  
+          # Extract major, minor, and patch numbers
+          VERSION=$(echo "$LATEST_TAG" | sed -e 's/^v//' -e 's/-.*//') # Remove prefix 'v' and dev suffix
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f2)
+          PATCH=$(echo "$VERSION" | cut -d. -f3)
+  
+          # Check for release type
+          if [[ "${{ needs.release-detection.outputs.MAJOR }}" == "true" ]]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [[ "${{ needs.release-detection.outputs.MINOR }}" == "true" ]]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          elif [[ "${{ needs.release-detection.outputs.PATCH }}" == "true" ]]; then
+            PATCH=$((PATCH + 1))
+          fi
+  
+          # Determine if dev-release
+          if [[ "${{ needs.release-detection.outputs.DEV_RELEASE }}" == "true" ]]; then
+            NEW_VERSION="v$MAJOR.$MINOR.$PATCH-dev"
+          else
+            NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+          fi
+  
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$NEW_VERSION" # Output for debugging
+  
+      # Step 3: Tag the repository with the new version
+      - name: Create and Push Tag
         if: ${{ needs.release-detection.outputs.RELEASE == 'true' || needs.release-detection.outputs.DEV_RELEASE == 'true' }}
         run: |
-          echo "Please approve the release before continuing."
-
-  trigger-build:
-    needs: release-detection
-    runs-on: ubuntu-latest
-    steps:
-      # Step 1: Trigger Build Workflow (conditional on release or non-release)
-      - name: Trigger Build Workflow
-        if: ${{ needs.release-detection.outputs.RELEASE == 'true' || needs.release-detection.outputs.DEV_RELEASE == 'true' || needs.release-detection.outputs.RELEASE == 'false' }}
-        uses: ./.github/workflows/build.yml # Trigger build.yml file for both release and non-release scenarios
-
-  release-artifacts:
-    needs: trigger-build
-    runs-on: ubuntu-latest
-    if: ${{ needs.release-detection.outputs.RELEASE == 'true' }}
-    steps:
-      # Step 1: Upload Release Artifacts (for normal release)
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag $NEW_VERSION
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} $NEW_VERSION
+    
+  
+      # Step 4: Build the ESP-IDF Project
+      - name: Build ESP-IDF Project
+        run: docker run --rm -v $GITHUB_WORKSPACE:/project -w /project -e HOME=/tmp jjsprandel/scan:v1.0 idf.py build
+  
+      # Step 5: Upload Release Artifacts (for normal release)
       - name: Upload Release Artifacts
+        if: ${{ needs.release-detection.outputs.RELEASE == 'true' }}
         uses: softprops/action-gh-release@v1
         with:
           files: |
@@ -127,7 +178,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
-      # Step 2: Upload Dev Release Artifacts (for dev-release)
+      # Step 6: Upload Dev Release Artifacts (for dev-release)
       - name: Upload Dev Release Artifacts
         if: ${{ needs.release-detection.outputs.DEV_RELEASE == 'true' }}
         uses: softprops/action-gh-release@v1
@@ -138,14 +189,10 @@ jobs:
             build/*.map
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-artifacts:
-    needs: trigger-build
-    runs-on: ubuntu-latest
-    if: ${{ needs.release-detection.outputs.RELEASE == 'false' && needs.release-detection.outputs.DEV_RELEASE == 'false' }}
-    steps:
-      # Step 1: Upload build artifacts for non-release pushes
+  
+      # Step 7: Upload build artifacts for non-release pushes
       - name: Upload Build Artifacts
+        if: ${{ needs.release-detection.outputs.RELEASE == 'false' && needs.release-detection.outputs.DEV_RELEASE == 'false' }}
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
@@ -153,5 +200,4 @@ jobs:
             build/**/*.bin
             build/*.elf
             build/*.map
-
   
