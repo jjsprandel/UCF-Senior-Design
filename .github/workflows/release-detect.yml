@@ -121,15 +121,15 @@ jobs:
         run: docker run --rm -v $GITHUB_WORKSPACE:/project -w /project -e HOME=/tmp jjsprandel/scan:v1.0 idf.py build
   
       # Step 7: Upload build artifacts for non-release pushes
-      - name: Upload Build Artifacts
-        if: ${{ needs.release-detection.outputs.RELEASE == 'false' && needs.release-detection.outputs.DEV_RELEASE == 'false' }}
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: |
-            build/**/*.bin
-            build/*.elf
-            build/*.map
+            build/SCAN.bin
+            build/bootloader/bootloader.bin
+            build/SCAN.elf
+            build/SCAN.map
   
   release:
     name: Create Release
@@ -141,7 +141,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-  
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
       # Step 2: Determine next version
       - name: Increment Version
         id: version
