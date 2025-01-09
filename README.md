@@ -10,7 +10,7 @@ Here are the current statuses of our GitHub workflows:
 
 | Workflow Name            | Status                                  |
 | ------------------------ | --------------------------------------- |
-| **CI - Build**            | ![Build Status](https://github.com/jjsprandel/UCF-Senior-Design/actions/workflows/build_and_release.yml/badge.svg) |
+| **CI - Build**            | ![Build Status](https://github.com/jjsprandel/SCAN/actions/workflows/build.yml/badge.svg?branch=main&event=pull_request) |
 | **Docker - Test Build**   | ![Deployment Status](https://github.com/jjsprandel/UCF-Senior-Design/actions/workflows/docker-build.yml/badge.svg) |
 
 - **CI - Build**: Ensures the project builds successfully.
@@ -47,7 +47,7 @@ Here are the current statuses of our GitHub workflows:
   - Feature 2
   - Feature 3
 
-  Additional hardware files can be found in the [hardware directory](path/to/hardware).
+  Additional hardware files can be found in the [hardware directory](hardware_design).
 
 </details>
 
@@ -104,15 +104,16 @@ Here are the current statuses of our GitHub workflows:
 
   1. Clone the repository:
      ```bash
-     git clone https://github.com/your-repo/project-name.git
+     git clone https://github.com/jjsprandel/SCAN.git
      ```
-  2. Set up dependencies:
-     ```bash
-     npm install
-     ```
+  2. Reopen Visual Studio Code in Container:
   3. Compile the firmware:
      ```bash
-     make
+     idf.py build
+     ```
+  4. Flash the firmware:
+     ```bash
+     idf.py --port 'rfc2217://host.docker.internal:4000?ign_set_control' flash
      ```
 
   **Tips**:
@@ -167,5 +168,5 @@ This project has the following dependencies that need to be installed:
 ---
 
 ## ⚙️ License
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+SCAN © 2025 is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-nd/4.0/ or see the [LICENSE](LICENSE) file.
 
