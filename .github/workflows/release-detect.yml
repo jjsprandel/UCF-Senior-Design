@@ -122,7 +122,7 @@ jobs:
   
       # Step 7: Upload build artifacts for non-release pushes
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
@@ -146,6 +146,15 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+      
+      # Debug: List the contents of the build folder to verify the files
+      - name: List downloaded files
+        run: ls -R /home/runner/work/SCAN/SCAN
+
+      # Unzip the artifact (if it's a zip file)
+      - name: Unzip build artifacts
+        run: |
+          unzip /home/runner/work/SCAN/SCAN/build-artifacts.zip -d /home/runner/work/SCAN/SCAN/build
 
       # Step 2: Determine next version
       - name: Increment Version
