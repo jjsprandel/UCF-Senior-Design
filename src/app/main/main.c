@@ -9,22 +9,17 @@
 #include "led_strip.h"
 #include "sdkconfig.h"
 #include "main.h"
-
-
+#include "driver/i2c.h"
 
 static const char *TAG = "example";
 
 /* Use project configuration menu (idf.py menuconfig) to choose the GPIO to blink,
    or you can edit the following line and set a number here.
 */
-//#define BLINK_GPIO CONFIG_BLINK_GPIO
+// #define BLINK_GPIO CONFIG_BLINK_GPIO
 #define BLINK_GPIO 2
 
 static uint8_t s_led_state = 0;
-
-
-
-
 
 static void blink_led(void)
 {
@@ -43,18 +38,20 @@ static void configure_led(void)
 void app_main(void)
 {
 
-    /* Configure the peripheral according to the LED type */
-    configure_led();
+    // /* Configure the peripheral according to the LED type */
+    // configure_led();
 
-    wifi_init();
+    // wifi_init();
 
-    while (1) {
-        ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
-        blink_led();
-        /* Toggle the LED state */
-        s_led_state = !s_led_state;
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
+    // while (1) {
+    //     ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
+    //     blink_led();
+    //     /* Toggle the LED state */
+    //     s_led_state = !s_led_state;
+    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
+    // }
+    ESP_ERROR_CHECK(i2c_master_init());
+    xTaskCreatePinnedToCore(keypad_handler, "keypad handler", 4098, NULL, 2, NULL, 0);
 }
 
 /*
