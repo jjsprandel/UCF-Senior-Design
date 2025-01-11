@@ -76,7 +76,6 @@ Here are the current statuses of our GitHub workflows:
   **Key Libraries Used**:
   - Library 1
   - Library 2
-  - Library 3
 
 </details>
 
