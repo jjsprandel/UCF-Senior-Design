@@ -3,4 +3,7 @@
     "idf.flashType": "UART",
     "idf.enableCCache": true,
     "idf.saveBeforeBuild": true,
+    "files.associations": {
+        "esp_efuse.h": "c"
+    },
 }

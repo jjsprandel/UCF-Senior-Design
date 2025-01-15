@@ -1,11 +1,3 @@
-/* Advanced HTTPS OTA example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
 #include <string.h>
 #include <inttypes.h>
 #include "freertos/FreeRTOS.h"
@@ -17,23 +9,10 @@
 #include "esp_ota_ops.h"
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
-#include "nvs.h"
-#include "nvs_flash.h"
-#include "protocol_examples_common.h"
-
-#if CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK
 #include "esp_efuse.h"
-#endif
 
-#if CONFIG_EXAMPLE_CONNECT_WIFI
-#include "esp_wifi.h"
-#endif
 
-#if CONFIG_BT_BLE_ENABLED || CONFIG_BT_NIMBLE_ENABLED
-#include "ble_api.h"
-#endif
-
-static const char *TAG = "advanced_https_ota_example";
+static const char *TAG = "OTA Update";
 extern const uint8_t server_cert_pem_start[] asm("_binary_ca_cert_pem_start");
 extern const uint8_t server_cert_pem_end[] asm("_binary_ca_cert_pem_end");
 
@@ -125,25 +104,11 @@ void advanced_ota_example_task(void *pvParameter)
 
     esp_err_t ota_finish_err = ESP_OK;
     esp_http_client_config_t config = {
-        .url = CONFIG_EXAMPLE_FIRMWARE_UPGRADE_URL,
+        .url = "https://api.github.com/repos/jjsprandel/SCAN/releases/assets/SCAN.bin",
         .cert_pem = (char *)server_cert_pem_start,
-        .timeout_ms = CONFIG_EXAMPLE_OTA_RECV_TIMEOUT,
+        .timeout_ms = 5000,
         .keep_alive_enable = true,
     };
-
-#ifdef CONFIG_EXAMPLE_FIRMWARE_UPGRADE_URL_FROM_STDIN
-    char url_buf[OTA_URL_SIZE];
-    if (strcmp(config.url, "FROM_STDIN") == 0) {
-        example_configure_stdin_stdout();
-        fgets(url_buf, OTA_URL_SIZE, stdin);
-        int len = strlen(url_buf);
-        url_buf[len - 1] = '\0';
-        config.url = url_buf;
-    } else {
-        ESP_LOGE(TAG, "Configuration mismatch: wrong firmware upgrade image url");
-        abort();
-    }
-#endif
 
 #ifdef CONFIG_EXAMPLE_SKIP_COMMON_NAME_CHECK
     config.skip_cert_common_name_check = true;
@@ -152,10 +117,8 @@ void advanced_ota_example_task(void *pvParameter)
     esp_https_ota_config_t ota_config = {
         .http_config = &config,
         .http_client_init_cb = _http_client_init_cb, // Register a callback to be invoked after esp_http_client is initialized
-#ifdef CONFIG_EXAMPLE_ENABLE_PARTIAL_HTTP_DOWNLOAD
         .partial_http_download = true,
-        .max_http_request_size = CONFIG_EXAMPLE_HTTP_REQUEST_SIZE,
-#endif
+        // .max_http_request_size = MBEDTLS_SSL_IN_CONTENT_LEN,
     };
 
     esp_https_ota_handle_t https_ota_handle = NULL;
@@ -210,71 +173,4 @@ ota_end:
     esp_https_ota_abort(https_ota_handle);
     ESP_LOGE(TAG, "ESP_HTTPS_OTA upgrade failed");
     vTaskDelete(NULL);
-}
-
-void app_main(void)
-{
-    ESP_LOGI(TAG, "OTA example app_main start");
-    // Initialize NVS.
-    esp_err_t err = nvs_flash_init();
-    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        // 1.OTA app partition table has a smaller NVS partition size than the non-OTA
-        // partition table. This size mismatch may cause NVS initialization to fail.
-        // 2.NVS partition contains data in new format and cannot be recognized by this version of code.
-        // If this happens, we erase NVS partition and initialize NVS again.
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        err = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK( err );
-
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-
-    ESP_ERROR_CHECK(esp_event_handler_register(ESP_HTTPS_OTA_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
-     * Read "Establishing Wi-Fi or Ethernet Connection" section in
-     * examples/protocols/README.md for more information about this function.
-    */
-    ESP_ERROR_CHECK(example_connect());
-
-#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE)
-    /**
-     * We are treating successful WiFi connection as a checkpoint to cancel rollback
-     * process and mark newly updated firmware image as active. For production cases,
-     * please tune the checkpoint behavior per end application requirement.
-     */
-    const esp_partition_t *running = esp_ota_get_running_partition();
-    esp_ota_img_states_t ota_state;
-    if (esp_ota_get_state_partition(running, &ota_state) == ESP_OK) {
-        if (ota_state == ESP_OTA_IMG_PENDING_VERIFY) {
-            if (esp_ota_mark_app_valid_cancel_rollback() == ESP_OK) {
-                ESP_LOGI(TAG, "App is valid, rollback cancelled successfully");
-            } else {
-                ESP_LOGE(TAG, "Failed to cancel rollback");
-            }
-        }
-    }
-#endif
-
-#if CONFIG_EXAMPLE_CONNECT_WIFI
-#if !CONFIG_BT_ENABLED
-    /* Ensure to disable any WiFi power save mode, this allows best throughput
-     * and hence timings for overall OTA operation.
-     */
-    esp_wifi_set_ps(WIFI_PS_NONE);
-#else
-    /* WIFI_PS_MIN_MODEM is the default mode for WiFi Power saving. When both
-     * WiFi and Bluetooth are running, WiFI modem has to go down, hence we
-     * need WIFI_PS_MIN_MODEM. And as WiFi modem goes down, OTA download time
-     * increases.
-     */
-    esp_wifi_set_ps(WIFI_PS_MIN_MODEM);
-#endif // CONFIG_BT_ENABLED
-#endif // CONFIG_EXAMPLE_CONNECT_WIFI
-
-#if CONFIG_BT_CONTROLLER_ENABLED && (CONFIG_BT_BLE_ENABLED || CONFIG_BT_NIMBLE_ENABLED)
-    ESP_ERROR_CHECK(esp_ble_helper_init());
-#endif
-
-    xTaskCreate(&advanced_ota_example_task, "advanced_ota_example_task", 1024 * 8, NULL, 5, NULL);
 }
