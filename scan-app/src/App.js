@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import CheckIns from "./components/CheckIns";
+import ActivityLog from "./pages/ActivityLog";
+import UserManagement from "./pages/UserManagement";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           {/* Define routes inside Layout */}
           <Route index element={<Dashboard />} />
           <Route path="checkins" element={<CheckIns />} />
+          <Route path="activity-log" element={<ActivityLog />} />
+          <Route path="user-management" element={<UserManagement />} />
         </Route>
       </Routes>
     </Router>

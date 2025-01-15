@@ -1,0 +1,6 @@
+{
+  "rules": {
+    ".read": "true",  // Anyone can read the database
+    ".write": "true"  // Anyone can write to the database
+  }
+}

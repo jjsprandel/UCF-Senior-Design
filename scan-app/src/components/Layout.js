@@ -10,7 +10,7 @@ function Layout() {
       <CustomNavbar />
 
       {/* Dynamic content based on the current route */}
-      <Container fluid className="flex-grow-1">
+      <Container fluid className="d-flex flex-column flex-grow-1 overflow-auto">
         <Outlet />
       </Container>
     </div>
