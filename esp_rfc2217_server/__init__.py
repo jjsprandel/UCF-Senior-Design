@@ -88,7 +88,7 @@ def main():
 
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    srv.bind(("", args.localport))
+    srv.bind(("127.0.0.1", args.localport))
     srv.listen(1)
     logging.info(" TCP/IP port: {}".format(args.localport))
     while True:
