@@ -10,6 +10,7 @@
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
 #include "esp_efuse.h"
+#include "mbedtls/esp_debug.h"
 
 
 static const char *TAG = "OTA Update";
@@ -100,11 +101,12 @@ static esp_err_t _http_client_init_cb(esp_http_client_handle_t http_client)
 
 void advanced_ota_example_task(void *pvParameter)
 {
+    // mbedtls_esp_enable_debug_log();
     ESP_LOGI(TAG, "Starting Advanced OTA example");
 
     esp_err_t ota_finish_err = ESP_OK;
     esp_http_client_config_t config = {
-        .url = "https://api.github.com/repos/jjsprandel/SCAN/releases/assets/SCAN.bin",
+        .url = "https://github.com",
         .cert_pem = (char *)server_cert_pem_start,
         .timeout_ms = 5000,
         .keep_alive_enable = true,
@@ -173,4 +175,37 @@ ota_end:
     esp_https_ota_abort(https_ota_handle);
     ESP_LOGE(TAG, "ESP_HTTPS_OTA upgrade failed");
     vTaskDelete(NULL);
+}
+
+
+void extra(void)
+{
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    ESP_ERROR_CHECK(esp_event_handler_register(ESP_HTTPS_OTA_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
+    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
+     * Read "Establishing Wi-Fi or Ethernet Connection" section in
+     * examples/protocols/README.md for more information about this function.
+    */
+
+#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE)
+    /**
+     * We are treating successful WiFi connection as a checkpoint to cancel rollback
+     * process and mark newly updated firmware image as active. For production cases,
+     * please tune the checkpoint behavior per end application requirement.
+     */
+    const esp_partition_t *running = esp_ota_get_running_partition();
+    esp_ota_img_states_t ota_state;
+    if (esp_ota_get_state_partition(running, &ota_state) == ESP_OK) {
+        if (ota_state == ESP_OTA_IMG_PENDING_VERIFY) {
+            if (esp_ota_mark_app_valid_cancel_rollback() == ESP_OK) {
+                ESP_LOGI(TAG, "App is valid, rollback cancelled successfully");
+            } else {
+                ESP_LOGE(TAG, "Failed to cancel rollback");
+            }
+        }
+    }
+#endif
+
+    xTaskCreate(&advanced_ota_example_task, "advanced_ota_example_task", 1024 * 8, NULL, 5, NULL);
 }

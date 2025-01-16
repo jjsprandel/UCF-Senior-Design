@@ -4,6 +4,10 @@
     "idf.enableCCache": true,
     "idf.saveBeforeBuild": true,
     "files.associations": {
-        "esp_efuse.h": "c"
+        "esp_efuse.h": "c",
+        "wifi_init.h": "c",
+        "event_groups.h": "c",
+        "string.h": "c",
+        "sdkconfig.h": "c"
     },
 }
