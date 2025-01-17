@@ -1,3 +1,0 @@
-dependencies:
-  pn532-esp-idf:
-    git: https://github.com/thanhbinh89/pn532-esp-idf.git
