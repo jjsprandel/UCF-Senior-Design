@@ -1,22 +1,20 @@
 {
     "configurations": [
-      {
-        "name": "ESP32",
-        "includePath": [
-          "${workspaceFolder}/**",
-          "/opt/esp/idf/components/**",
-          "/opt/esp/idf//tools/cmake/**",
-          "/opt/esp/idf"
-        ],
-        "defines": [
-
-        ],
-
-        "cStandard": "c99",
-        "cppStandard": "c++11",
-        "intelliSenseMode": "gcc-x64"
-      }
+        {
+            "name": "ESP32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/esp/idf/components/**",
+                "/opt/esp/idf//tools/cmake/**",
+                "/opt/esp/idf",
+                "${workspaceFolder}/src/app/main/include",
+                "${workspaceFolder}/src/app/firebase/include"
+            ],
+            "defines": [],
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "gcc-x64"
+        }
     ],
     "version": 4
-  }
-  
+}

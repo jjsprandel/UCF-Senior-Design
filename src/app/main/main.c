@@ -9,7 +9,7 @@
 #include "led_strip.h"
 #include "sdkconfig.h"
 #include "main.h"
-
+#include "firebase.h"
 
 
 static const char *TAG = "example";
@@ -47,6 +47,16 @@ void app_main(void)
     configure_led();
 
     wifi_init();
+
+    // Synchronize time
+    obtain_time();
+    ESP_LOGI(TAG, "System time synchronized successfully");
+
+    const char *path = "test";
+    const char *json_data = "{\"name\":\"John Doe\",\"age\":9876}";
+
+    write_to_firebase(path, json_data);
+    read_from_firebase(path);
 
     while (1) {
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");

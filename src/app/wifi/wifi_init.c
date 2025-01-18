@@ -24,8 +24,8 @@
    If you'd rather not, just change the below entries to strings with
    the config you want - ie #define EXAMPLE_WIFI_SSID "mywifissid"
 */
-#define EXAMPLE_ESP_WIFI_SSID      "Jonah Hotspot"
-#define EXAMPLE_ESP_WIFI_PASS      "12345678"
+#define EXAMPLE_ESP_WIFI_SSID      "Boardwalk_Free_WiFi"
+#define EXAMPLE_ESP_WIFI_PASS      "Pingas01"
 #define EXAMPLE_ESP_MAXIMUM_RETRY  10
 
 #define ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD WIFI_AUTH_WPA2_PSK

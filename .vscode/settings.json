@@ -3,4 +3,8 @@
     "idf.flashType": "UART",
     "idf.enableCCache": true,
     "idf.saveBeforeBuild": true,
+    "files.associations": {
+        "esp_http_client.h": "c",
+        "string.h": "c"
+    },
 }

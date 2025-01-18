@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.16)
 
 set(EXTRA_COMPONENT_DIRS
     "$ENV{PROJECT_DIR}/src/app/main"
+    "$ENV{PROJECT_DIR}/components"
 )
 
 set(COMPONENT_DIRS 
