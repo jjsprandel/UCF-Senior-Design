@@ -1,3 +1,7 @@
-idf_component_register(SRCS "main.c" "nfc_init.c"
-                    INCLUDE_DIRS "."
-                    REQUIRES "wifi" "pn532" "esp_driver_gpio")
+idf_component_register(SRCS "main.c"
+    INCLUDE_DIRS "." "./include"
+    REQUIRES "wifi" 
+    "pn532" 
+    "card_reader" 
+    "esp_driver_uart" 
+    "esp_driver_gpio")
