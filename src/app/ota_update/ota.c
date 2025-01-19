@@ -9,11 +9,18 @@
 #include "esp_ota_ops.h"
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
+
+#if CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK
 #include "esp_efuse.h"
-#include "mbedtls/esp_debug.h"
+#endif
 
+#if CONFIG_EXAMPLE_CONNECT_WIFI
+#include "esp_wifi.h"
+#endif
 
-static const char *TAG = "OTA Update";
+// #define CONFIG_EXAMPLE_SKIP_VERSION_CHECK
+
+static const char *TAG = "advanced_https_ota_example";
 extern const uint8_t server_cert_pem_start[] asm("_binary_ca_cert_pem_start");
 extern const uint8_t server_cert_pem_end[] asm("_binary_ca_cert_pem_end");
 
@@ -101,15 +108,16 @@ static esp_err_t _http_client_init_cb(esp_http_client_handle_t http_client)
 
 void advanced_ota_example_task(void *pvParameter)
 {
-    // mbedtls_esp_enable_debug_log();
     ESP_LOGI(TAG, "Starting Advanced OTA example");
 
     esp_err_t ota_finish_err = ESP_OK;
     esp_http_client_config_t config = {
-        .url = "https://github.com",
+        .url = "https://github.com/jjsprandel/SCAN/releases/download/v0.1.0/SCAN.bin",
         .cert_pem = (char *)server_cert_pem_start,
         .timeout_ms = 5000,
         .keep_alive_enable = true,
+        .buffer_size = 8 * 1024,
+        .buffer_size_tx = 4 * 1024,
     };
 
 #ifdef CONFIG_EXAMPLE_SKIP_COMMON_NAME_CHECK
@@ -120,7 +128,8 @@ void advanced_ota_example_task(void *pvParameter)
         .http_config = &config,
         .http_client_init_cb = _http_client_init_cb, // Register a callback to be invoked after esp_http_client is initialized
         .partial_http_download = true,
-        // .max_http_request_size = MBEDTLS_SSL_IN_CONTENT_LEN,
+        .max_http_request_size = 16 * 1024,
+        .bulk_flash_erase = true,
     };
 
     esp_https_ota_handle_t https_ota_handle = NULL;
@@ -143,6 +152,7 @@ void advanced_ota_example_task(void *pvParameter)
     }
 
     while (1) {
+        //ESP_LOGI("Memory", "Free heap size: %lu bytes", (unsigned long)esp_get_free_heap_size());
         err = esp_https_ota_perform(https_ota_handle);
         if (err != ESP_ERR_HTTPS_OTA_IN_PROGRESS) {
             break;
@@ -150,7 +160,7 @@ void advanced_ota_example_task(void *pvParameter)
         // esp_https_ota_perform returns after every read operation which gives user the ability to
         // monitor the status of OTA upgrade by calling esp_https_ota_get_image_len_read, which gives length of image
         // data read so far.
-        ESP_LOGD(TAG, "Image bytes read: %d", esp_https_ota_get_image_len_read(https_ota_handle));
+        ESP_LOGI(TAG, "Image bytes read: %d", esp_https_ota_get_image_len_read(https_ota_handle));
     }
 
     if (esp_https_ota_is_complete_data_received(https_ota_handle) != true) {
@@ -177,16 +187,12 @@ ota_end:
     vTaskDelete(NULL);
 }
 
-
-void extra(void)
+void ota_update_fw_task(void *pvParameter)
 {
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
+    // ESP_ERROR_CHECK(esp_netif_init());
+    // ESP_ERROR_CHECK(esp_event_loop_create_default());
 
     ESP_ERROR_CHECK(esp_event_handler_register(ESP_HTTPS_OTA_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
-     * Read "Establishing Wi-Fi or Ethernet Connection" section in
-     * examples/protocols/README.md for more information about this function.
-    */
 
 #if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE)
     /**
@@ -207,5 +213,13 @@ void extra(void)
     }
 #endif
 
-    xTaskCreate(&advanced_ota_example_task, "advanced_ota_example_task", 1024 * 8, NULL, 5, NULL);
+#if CONFIG_EXAMPLE_CONNECT_WIFI
+    /* Ensure to disable any WiFi power save mode, this allows best throughput
+     * and hence timings for overall OTA operation.
+     */
+    esp_wifi_set_ps(WIFI_PS_NONE);
+#endif // CONFIG_EXAMPLE_CONNECT_WIFI
+
+    xTaskCreate(&advanced_ota_example_task, "OTA TASK", 1024 * 12, NULL, 12, NULL);
+    vTaskDelete(NULL);
 }

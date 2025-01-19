@@ -13,6 +13,7 @@
 #include "wifi_init.h"
 #include "ota.h"
 #include "freertos/semphr.h"
+#include "esp_heap_task_info.h"
 
 #define BLINK_GPIO 8
 
@@ -33,11 +34,12 @@ static TaskHandle_t ota_update_task_handle = NULL;
 // not static because it is being used in wifi_init.c as extern variable
 SemaphoreHandle_t wifi_init_semaphore = NULL;  // Semaphore to signal Wi-Fi init completion
 
-static const char *TAG = "example";
+static const char *TAG = "MAIN";
 
 static uint8_t s_led_state = 0;
 
 static led_strip_handle_t led_strip;
+
 
 void blink_led_task(void *pvParameter)
 {
@@ -55,10 +57,10 @@ void blink_led_task(void *pvParameter)
         if (s_led_state) {
             /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
             if (current_state == STATE_WIFI_INIT) {
-                led_strip_set_pixel(led_strip, 0, 200, 0, 0);
+                led_strip_set_pixel(led_strip, 0, 100, 0, 0);
             }
             else {
-                led_strip_set_pixel(led_strip, 0, 0, 0, 100);
+                led_strip_set_pixel(led_strip, 0, 0, 0, 50);
             }
             /* Refresh the strip to send data */
             led_strip_refresh(led_strip);
@@ -71,7 +73,7 @@ void blink_led_task(void *pvParameter)
 
 static void configure_led(void)
 {
-    ESP_LOGI(TAG, "Example configured to blink addressable LED!");
+    ESP_LOGI(TAG, "Configured to blink addressable LED!");
     /* LED strip initialization with the GPIO and pixels number*/
     led_strip_config_t strip_config = {
         .strip_gpio_num = BLINK_GPIO,
@@ -91,19 +93,23 @@ static void configure_led(void)
 // Function to control state transitions and task management
 void state_control_task(void *pvParameter) {
     while(1) {
+        // ESP_LOGI("Memory", "Free heap size: %lu bytes", (unsigned long)esp_get_free_heap_size());
+
         switch (current_state) {
             case STATE_WIFI_INIT:
                 // Start Wi-Fi init task if not already started
                 if (wifi_init_task_handle == NULL) {
                     ESP_LOGI(TAG, "Starting Wi-Fi Init Task");
-                    xTaskCreate(wifi_init_task, "wifi_init_task", 4096, NULL, 11, &wifi_init_task_handle);
+                    xTaskCreate(wifi_init_task, "wifi_init_task", 4096, NULL, 4, &wifi_init_task_handle);
                 }
 
                 // Start LED blinking task if not already running
                 if (blink_led_task_handle == NULL) {
                     ESP_LOGI(TAG, "Starting Blink LED Task");
-                    xTaskCreate(blink_led_task, "blink_led_task", 2048, NULL, 5, &blink_led_task_handle);
+                    xTaskCreate(blink_led_task, "blink_led_task", 1024, NULL, 2, &blink_led_task_handle);
                 }
+
+
 
                 // Check if Wi-Fi init is completed (signaled by semaphore)
                 if (xSemaphoreTake(wifi_init_semaphore, portMAX_DELAY) == pdTRUE) {
@@ -127,7 +133,7 @@ void state_control_task(void *pvParameter) {
 
                 if (ota_update_task_handle == NULL) {
                     ESP_LOGI(TAG, "Creating OTA update task");
-                    xTaskCreate(advanced_ota_example_task, "advanced_ota_example_task", 1024 * 8, NULL, 5, &ota_update_task_handle);
+                    xTaskCreate(ota_update_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &ota_update_task_handle);
                 }
 
                 break;
@@ -149,8 +155,9 @@ void state_control_task(void *pvParameter) {
                 ESP_LOGW(TAG, "Unknown state encountered: %d", current_state);
                 break;
         }
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
     }
+    ESP_LOGI(TAG, "State control task finished");  // Should not reach here unless task is deleted
 }
 
 void app_main(void)
@@ -168,18 +175,19 @@ void app_main(void)
       ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-
+    // ESP_ERROR_CHECK( heap_trace_init_standalone( trace_record, NUM_RECORDS ) );
+    // ESP_LOGI("Memory", "STARTING FREE HEAP SIZE: %lu bytes", (long unsigned int)esp_get_free_heap_size());
     /* Configure the peripheral according to the LED type */
     configure_led();
 
     // Create semaphore for signaling Wi-Fi init completion
     wifi_init_semaphore = xSemaphoreCreateBinary();
 
-    while(1) {
-        xTaskCreate(state_control_task, "state_control_task", 4096, NULL, 10, NULL);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
+    xTaskCreate(state_control_task, "state_control_task", 4096 * 2, NULL, 3, NULL);
 
+    while(1){
+        vTaskDelay(4000 / portTICK_PERIOD_MS);
+    }
 }
 
 /*

@@ -1,1 +1,1 @@
-void advanced_ota_example_task(void *pvParameter);
+void ota_update_fw_task(void *pvParameter);

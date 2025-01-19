@@ -9,6 +9,7 @@
 #include "esp_log.h"
 #include "lwip/err.h"
 #include "lwip/sys.h"
+#include "wifi_init.h"
 
 extern SemaphoreHandle_t wifi_init_semaphore;
 
@@ -40,10 +41,12 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         if (s_retry_num < EXAMPLE_ESP_MAXIMUM_RETRY) {
+            
             // before rapid reconnecting, try waiting for AP to recognize ESP32 is disconnected after reset
             if (2 <= s_retry_num && s_retry_num <= 3) {
                 vTaskDelay(10000 / portTICK_PERIOD_MS);
             }
+
             esp_wifi_connect();
             s_retry_num++;
             ESP_LOGI(TAG, "retry to connect to the AP");
@@ -126,8 +129,9 @@ void wifi_init_sta(void)
 void wifi_init_task(void *pvParameter) {
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
     wifi_init_sta();
+    // esp_wifi_deinit();
     // esp_wifi_set_ps(WIFI_PS_NONE);
     xSemaphoreGive(wifi_init_semaphore);
-    vTaskDelay(30000 / portTICK_PERIOD_MS);
+    vTaskDelay(3000 / portTICK_PERIOD_MS);
     vTaskDelete(NULL);
 }
