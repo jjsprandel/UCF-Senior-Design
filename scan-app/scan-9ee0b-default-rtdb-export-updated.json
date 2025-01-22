@@ -1,0 +1,673 @@
+{
+  "activityLog": {
+    "20241103002857": {
+      "timestamp": "20241103_002857",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241103002902": {
+      "timestamp": "20241103_002902",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241103002907": {
+      "timestamp": "20241103_002907",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241103002917": {
+      "timestamp": "20241103_002917",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241103002918": {
+      "timestamp": "20241103_002918",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112121704": {
+      "timestamp": "20241112_121704",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241112121709": {
+      "timestamp": "20241112_121709",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241112121715": {
+      "timestamp": "20241112_121715",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112121725": {
+      "timestamp": "20241112_121725",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112121726": {
+      "timestamp": "20241112_121726",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112121736": {
+      "timestamp": "20241112_121736",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241112121740": {
+      "timestamp": "20241112_121740",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112121747": {
+      "timestamp": "20241112_121747",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241112121853": {
+      "timestamp": "20241112_121853",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112122834": {
+      "timestamp": "20241112_122834",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241112122845": {
+      "timestamp": "20241112_122845",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112122856": {
+      "timestamp": "20241112_122856",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241112122912": {
+      "timestamp": "20241112_122912",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112122917": {
+      "timestamp": "20241112_122917",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112122924": {
+      "timestamp": "20241112_122924",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112122926": {
+      "timestamp": "20241112_122926",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112124305": {
+      "timestamp": "20241112_124305",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112130729": {
+      "timestamp": "20241112_130729",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241112130732": {
+      "timestamp": "20241112_130732",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112130752": {
+      "timestamp": "20241112_130752",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112130910": {
+      "timestamp": "20241112_130910",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112130945": {
+      "timestamp": "20241112_130945",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112131214": {
+      "timestamp": "20241112_131214",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241112134015": {
+      "timestamp": "20241112_134015",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241112134022": {
+      "timestamp": "20241112_134022",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116192040": {
+      "timestamp": "20241116_192040",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116192052": {
+      "timestamp": "20241116_192052",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116192114": {
+      "timestamp": "20241116_192114",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116192336": {
+      "timestamp": "20241116_192336",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116192350": {
+      "timestamp": "20241116_192350",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116192501": {
+      "timestamp": "20241116_192501",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241116192940": {
+      "timestamp": "20241116_192940",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116192952": {
+      "timestamp": "20241116_192952",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241116194617": {
+      "timestamp": "20241116_194617",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116194624": {
+      "timestamp": "20241116_194624",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116194951": {
+      "timestamp": "20241116_194951",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116195244": {
+      "timestamp": "20241116_195244",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116195319": {
+      "timestamp": "20241116_195319",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241116195327": {
+      "timestamp": "20241116_195327",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116195339": {
+      "timestamp": "20241116_195339",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116195346": {
+      "timestamp": "20241116_195346",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116195403": {
+      "timestamp": "20241116_195403",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241116195630": {
+      "timestamp": "20241116_195630",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116195640": {
+      "timestamp": "20241116_195640",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116195649": {
+      "timestamp": "20241116_195649",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116195658": {
+      "timestamp": "20241116_195658",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116195708": {
+      "timestamp": "20241116_195708",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241116195727": {
+      "timestamp": "20241116_195727",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241116195735": {
+      "timestamp": "20241116_195735",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116195743": {
+      "timestamp": "20241116_195743",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116195751": {
+      "timestamp": "20241116_195751",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241116200652": {
+      "timestamp": "20241116_200652",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241116200702": {
+      "timestamp": "20241116_200702",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241117163428": {
+      "timestamp": "20241117_163428",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241117163444": {
+      "timestamp": "20241117_163444",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241117170631": {
+      "timestamp": "20241117_170631",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241117170638": {
+      "timestamp": "20241117_170638",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241117170856": {
+      "timestamp": "20241117_170856",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241117171720": {
+      "timestamp": "20241117_171720",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241117171742": {
+      "timestamp": "20241117_171742",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241117171750": {
+      "timestamp": "20241117_171750",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120021509": {
+      "timestamp": "20241120_021509",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120021531": {
+      "timestamp": "20241120_021531",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120022508": {
+      "timestamp": "20241120_022508",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120022530": {
+      "timestamp": "20241120_022530",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241120022540": {
+      "timestamp": "20241120_022540",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241120022547": {
+      "timestamp": "20241120_022547",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120022555": {
+      "timestamp": "20241120_022555",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120022840": {
+      "timestamp": "20241120_022840",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241120023144": {
+      "timestamp": "20241120_023144",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120025020": {
+      "timestamp": "20241120_025020",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120025027": {
+      "timestamp": "20241120_025027",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241120025036": {
+      "timestamp": "20241120_025036",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120030031": {
+      "timestamp": "20241120_030031",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120030410": {
+      "timestamp": "20241120_030410",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241120101548": {
+      "timestamp": "20241120_101548",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120101806": {
+      "timestamp": "20241120_101806",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120103403": {
+      "timestamp": "20241120_103403",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120103409": {
+      "timestamp": "20241120_103409",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120103728": {
+      "timestamp": "20241120_103728",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120103740": {
+      "timestamp": "20241120_103740",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120103810": {
+      "timestamp": "20241120_103810",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120103825": {
+      "timestamp": "20241120_103825",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241120103938": {
+      "timestamp": "20241120_103938",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241120103950": {
+      "timestamp": "20241120_103950",
+      "userId": "5387541",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241120104017": {
+      "timestamp": "20241120_104017",
+      "userId": "5387541",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120104031": {
+      "timestamp": "20241120_104031",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241120104943": {
+      "timestamp": "20241120_104943",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120104953": {
+      "timestamp": "20241120_104953",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241120105022": {
+      "timestamp": "20241120_105022",
+      "userId": "5937537",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241120105030": {
+      "timestamp": "20241120_105030",
+      "userId": "5937537",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120105113": {
+      "timestamp": "20241120_105113",
+      "userId": "4313454",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241120105129": {
+      "timestamp": "20241120_105129",
+      "userId": "4313454",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241123204646": {
+      "timestamp": "20241123_204646",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241123204654": {
+      "timestamp": "20241123_204654",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF Library"
+    },
+    "20241123205807": {
+      "timestamp": "20241123_205807",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241123205812": {
+      "timestamp": "20241123_205812",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241123210022": {
+      "timestamp": "20241123_210022",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF Library"
+    },
+    "20241123210026": {
+      "timestamp": "20241123_210026",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    },
+    "20241123210327": {
+      "timestamp": "20241123_210327",
+      "userId": "6942069420",
+      "action": "Check-In",
+      "location": "UCF RWC"
+    },
+    "20241123210330": {
+      "timestamp": "20241123_210330",
+      "userId": "6942069420",
+      "action": "Check-Out",
+      "location": "UCF RWC"
+    }
+  },
+  "average_stay": 0.69,
+  "occupancy": 42,
+  "test": {
+    "age": 1231234,
+    "name": "John Doe"
+  },
+  "users": {
+    "4313454": {
+      "activeStudent": true,
+      "checkInStatus": true,
+      "lastCheckInId": "checkIn_20241120_105129",
+      "lastCheckOutId": "checkOut_20241120_105113",
+      "passkey": "1234",
+      "role": "student"
+    },
+    "5387541": {
+      "checkInStatus": true,
+      "lastCheckInId": "checkIn_20241120_104017",
+      "lastCheckOutId": "checkOut_20241120_103950",
+      "passkey": "69420"
+    },
+    "5937537": {
+      "checkInStatus": false,
+      "lastCheckInId": "checkIn_20241120_105022",
+      "lastCheckOutId": "checkOut_20241120_105030",
+      "passkey": 5937537
+    },
+    "6942069420": {
+      "checkInStatus": false,
+      "lastCheckInId": "checkIn_20241123_210327",
+      "lastCheckOutId": "checkOut_20241123_210330"
+    }
+  }
+}

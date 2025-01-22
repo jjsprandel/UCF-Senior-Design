@@ -2,15 +2,76 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { ref, onValue } from "firebase/database";
 import { database } from "../services/Firebase";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+// Register the required components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
-  // Static data for now (no Firebase interaction)
   const [occupancy, setOccupancy] = useState(0);
   const [averageStay, setAverageStay] = useState("0 hours");
+  const [occupancyData, setOccupancyData] = useState([]);
 
   useEffect(() => {
+    const activityLogRef = ref(database, "activityLog");
     const occupancyRef = ref(database, "occupancy");
     const averageStayRef = ref(database, "average_stay");
+
+    const unsubscribeActivityLog = onValue(activityLogRef, (snapshot) => {
+      const activityLog = snapshot.val() || {};
+      const combinedData = Object.values(activityLog);
+
+      // Sort combined data by timestamp
+      combinedData.sort(
+        (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+      );
+
+      // Compute occupancy at each timestamp
+      let currentOccupancy = 0;
+      const occupancyTimeline = combinedData.map((entry) => {
+        if (entry.action === "Check-In") {
+          currentOccupancy += 1;
+        } else if (entry.action === "Check-Out") {
+          currentOccupancy -= 1;
+        }
+        return { time: entry.timestamp, count: currentOccupancy };
+      });
+
+      // Aggregate data into hourly intervals
+      const hourlyOccupancy = new Array(24).fill(0);
+      occupancyTimeline.forEach((entry) => {
+        const hour = parseInt(entry.time.substring(9, 11), 10); // Extract hour from timestamp
+        hourlyOccupancy[hour] += entry.count;
+      });
+
+      // Convert to array format for charting
+      const occupancyDataArray = hourlyOccupancy.map((count, hour) => {
+        const period = hour >= 12 ? "PM" : "AM";
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        return {
+          time: `${formattedHour} ${period}`,
+          count,
+        };
+      });
+
+      setOccupancyData(occupancyDataArray);
+    });
 
     const unsubscribeOccupancy = onValue(occupancyRef, (snapshot) => {
       const data = snapshot.val();
@@ -24,10 +85,42 @@ function Dashboard() {
 
     // Cleanup subscriptions on unmount
     return () => {
+      unsubscribeActivityLog();
       unsubscribeOccupancy();
       unsubscribeAverageStay();
     };
   }, []);
+
+  const chartData = {
+    labels: occupancyData.map((entry) => entry.time), // Assuming each entry has a 'time' field
+    datasets: [
+      {
+        label: "Occupancy",
+        data: occupancyData.map((entry) => entry.count), // Assuming each entry has a 'count' field
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Hour of the Day",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Occupancy",
+        },
+        beginAtZero: true,
+      },
+    },
+  };
 
   return (
     <Container fluid className="d-flex flex-column flex-grow-1 overflow-auto">
@@ -85,7 +178,7 @@ function Dashboard() {
           <Card className="mb-3 flex-grow-1">
             <Card.Header>Occupancy Histogram</Card.Header>
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-              <p>Stuff here</p>
+              <Bar data={chartData} options={chartOptions} />
             </Card.Body>
           </Card>
         </Col>

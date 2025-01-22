@@ -1,42 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Table, Card } from "react-bootstrap";
+import { ref, onValue } from "firebase/database";
+import { database } from "../services/Firebase"; // Adjust the import path as necessary
 
 function UserManagement() {
-  // Sample data for the table
-  const data = [
-    {
-      userId: "1",
-      firstName: "John",
-      lastName: "Doe",
-      checkinStatus: "Check-In",
-      location: "Entrance",
-      totalOccupancyTime: "2 hours",
-      averageStayDuration: "1.2 hours",
-    },
-    {
-      userId: "2",
-      firstName: "Jane",
-      lastName: "Smith",
-      checkinStatus: "Check-Out",
-      location: "Exit",
-      totalOccupancyTime: "3 hours",
-      averageStayDuration: "1.5 hours",
-    },
-    {
-      userId: "3",
-      firstName: "Mark",
-      lastName: "Lee",
-      checkinStatus: "Check-In",
-      location: "Entrance",
-      totalOccupancyTime: "1 hour",
-      averageStayDuration: "1 hour",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+  const [profileData, setProfileData] = useState(null);
 
-  // State to manage the selected user's profile data
-  const [profileData, setProfileData] = useState(data[0]);
+  useEffect(() => {
+    const usersRef = ref(database, "users");
 
-  // Function to handle row click
+    const unsubscribeUsers = onValue(usersRef, (snapshot) => {
+      const data = snapshot.val();
+      const usersArray = data
+        ? Object.keys(data).map((key) => ({
+            userId: key, // Ensure userId is set correctly
+            ...data[key],
+          }))
+        : [];
+      setUsers(usersArray);
+      if (usersArray.length > 0) {
+        setProfileData(usersArray[0]);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => {
+      unsubscribeUsers();
+    };
+  }, []);
+
   const handleRowClick = (user) => {
     setProfileData(user);
   };
@@ -68,16 +61,16 @@ function UserManagement() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {users.map((item, index) => (
                 <tr
                   key={index}
                   onClick={() => handleRowClick(item)}
                   style={{ cursor: "pointer" }}
                 >
                   <td>{item.userId}</td>
-                  <td>{item.firstName}</td>
-                  <td>{item.lastName}</td>
-                  <td>{item.checkinStatus}</td>
+                  <td>{item.firstName || "N/A"}</td>
+                  <td>{item.lastName || "N/A"}</td>
+                  <td>{item.checkInStatus ? "Checked In" : "Checked Out"}</td>
                 </tr>
               ))}
             </tbody>
@@ -88,88 +81,92 @@ function UserManagement() {
           <Card className="mb-3 flex-grow-1">
             <Card.Header>Profile</Card.Header>
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col
-                  md={2}
-                  className="d-flex justify-content-center align-items-center"
-                >
-                  <img
-                    src="/imgs/user.png"
-                    alt="Description"
-                    className="img-fluid"
-                  />
-                </Col>
-              </Row>
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>First Name:</p>
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>{profileData.firstName}</p>
-                </Col>
-              </Row>
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>Last Name:</p>
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>{profileData.lastName}</p>
-                </Col>
-              </Row>
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>Location:</p>
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>{profileData.location}</p>
-                </Col>
-              </Row>
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>Total Occupancy Time:</p>
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>{profileData.totalOccupancyTime}</p>
-                </Col>
-              </Row>
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>Average Stay Duration:</p>
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-left align-items-left"
-                >
-                  <p>{profileData.averageStayDuration}</p>
-                </Col>
-              </Row>
+              {profileData && (
+                <>
+                  <Row className="w-100 d-flex justify-content-center align-items-center">
+                    <Col
+                      md={2}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <img
+                        src="/imgs/user.png"
+                        alt="Description"
+                        className="img-fluid"
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="w-100 d-flex justify-content-center align-items-center">
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>First Name:</p>
+                    </Col>
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>{profileData.firstName || "N/A"}</p>
+                    </Col>
+                  </Row>
+                  <Row className="w-100 d-flex justify-content-center align-items-center">
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>Last Name:</p>
+                    </Col>
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>{profileData.lastName || "N/A"}</p>
+                    </Col>
+                  </Row>
+                  <Row className="w-100 d-flex justify-content-center align-items-center">
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>Location:</p>
+                    </Col>
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>{profileData.location || "N/A"}</p>
+                    </Col>
+                  </Row>
+                  <Row className="w-100 d-flex justify-content-center align-items-center">
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>Total Occupancy Time:</p>
+                    </Col>
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>{profileData.totalOccupancyTime || "N/A"}</p>
+                    </Col>
+                  </Row>
+                  <Row className="w-100 d-flex justify-content-center align-items-center">
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>Average Stay Duration:</p>
+                    </Col>
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-left align-items-left"
+                    >
+                      <p>{profileData.averageStayDuration || "N/A"}</p>
+                    </Col>
+                  </Row>
+                </>
+              )}
             </Card.Body>
           </Card>
         </Col>

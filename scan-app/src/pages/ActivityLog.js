@@ -1,34 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Table } from "react-bootstrap";
+import { ref, onValue } from "firebase/database";
+import { database } from "../services/Firebase"; // Adjust the import path as necessary
 
 function ActivityLog() {
-  // Sample data for the table
-  const data = [
-    {
-      userId: "1",
-      firstName: "John",
-      lastName: "Doe",
-      action: "Check-In",
-      time: "10:30 AM",
-      location: "Entrance",
-    },
-    {
-      userId: "2",
-      firstName: "Jane",
-      lastName: "Smith",
-      action: "Check-Out",
-      time: "11:00 AM",
-      location: "Exit",
-    },
-    {
-      userId: "3",
-      firstName: "Mark",
-      lastName: "Lee",
-      action: "Check-In",
-      time: "12:00 PM",
-      location: "Entrance",
-    },
-  ];
+  const [activityLog, setActivityLog] = useState([]);
+  const [users, setUsers] = useState({});
+
+  useEffect(() => {
+    const activityLogRef = ref(database, "activityLog");
+    const usersRef = ref(database, "users");
+
+    const unsubscribeActivityLog = onValue(activityLogRef, (snapshot) => {
+      const data = snapshot.val();
+      const activityLogArray = data
+        ? Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key],
+          }))
+        : [];
+      setActivityLog(activityLogArray);
+    });
+
+    const unsubscribeUsers = onValue(usersRef, (snapshot) => {
+      const data = snapshot.val();
+      setUsers(data || {});
+    });
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      unsubscribeActivityLog();
+      unsubscribeUsers();
+    };
+  }, []);
+
+  const formatTimestamp = (timestamp) => {
+    const year = timestamp.substring(0, 4);
+    const month = timestamp.substring(4, 6);
+    const day = timestamp.substring(6, 8);
+    const hour = timestamp.substring(9, 11);
+    const minute = timestamp.substring(11, 13);
+    const second = timestamp.substring(13, 15);
+
+    const date = new Date(
+      `${year}-${month}-${day}T${hour}:${minute}:${second}`
+    );
+    return date.toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    });
+  };
 
   return (
     <Container fluid className="d-flex flex-column flex-grow-1 overflow-auto">
@@ -58,16 +84,19 @@ function ActivityLog() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.userId}</td>
-                  <td>{item.firstName}</td>
-                  <td>{item.lastName}</td>
-                  <td>{item.action}</td>
-                  <td>{item.time}</td>
-                  <td>{item.location}</td>
-                </tr>
-              ))}
+              {activityLog.map((item, index) => {
+                const user = users[item.userId] || {};
+                return (
+                  <tr key={index}>
+                    <td>{item.userId}</td>
+                    <td>{user.firstName || "N/A"}</td>
+                    <td>{user.lastName || "N/A"}</td>
+                    <td>{item.action}</td>
+                    <td>{formatTimestamp(item.timestamp)}</td>
+                    <td>{item.location}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         </Col>
