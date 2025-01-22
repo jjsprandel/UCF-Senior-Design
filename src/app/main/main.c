@@ -54,8 +54,9 @@ void uart_init(void)
 
 void app_main(void)
 {
-    uart_init();
+    // uart_init();
     nfc_init(&nfc);
+    // nfc_read_task(&nfc);
     // /* Configure the peripheral according to the LED type */
     // configure_led();
 
@@ -69,7 +70,7 @@ void app_main(void)
     //     vTaskDelay(1000 / portTICK_PERIOD_MS);
     // }
     // xTaskCreate(&blink_task, "blink_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
-    xTaskCreate(&ndef_format_task, "ndef_format_task", 4096, &nfc, 4, NULL);
+    xTaskCreate(&nfc_write_task, "nfc_write_task", 4096, &nfc, 4, NULL);
 }
 
 /*

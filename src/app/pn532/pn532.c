@@ -16,7 +16,7 @@
 #include "pn532.h"
 
 // #define PN532_DEBUG_EN
-// #define MIFARE_DEBUG_EN
+#define MIFARE_DEBUG_EN
 
 #ifdef PN532_DEBUG_EN
 #define PN532_DEBUG(fmt, ...) printf(fmt, ##__VA_ARGS__)
@@ -256,6 +256,7 @@ uint8_t pn532_readGPIO(pn532_t *obj)
     b8              Interface Mode Pins (not used ... bus select pins)
     b9..10          checksum */
 
+    // NOTE: Changed from 6 to 7 to test if it works
     int p3offset = 6;
 
     PN532_DEBUG("Received:");
@@ -301,8 +302,10 @@ bool pn532_SAMConfig(pn532_t *obj)
         return false;
 
     // read data packet
+    // NOTE: Changed from 8 to 9 to test if it works
     pn532_readdata(obj, pn532_packetbuffer, 8);
 
+    // NOTE: Changed from 5 to 6 to test if it works
     int offset = 5;
     return (pn532_packetbuffer[offset] == 0x15);
 }
@@ -1314,7 +1317,8 @@ void pn532_readdata(pn532_t *obj, uint8_t *buff, uint8_t n)
     PN532_DEBUG("Reading:");
     for (uint8_t i = 0; i < n; i++)
     {
-        PN532_DELAY(10);
+        // NOTE: Changed PN532_DELAY from 10 to 5
+        PN532_DELAY(5);
         buff[i] = pn532_spi_read(obj);
     }
     for (int i = 0; i < n; i++)
