@@ -1,4 +1,4 @@
-24189316427165304
+24192791855521097
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -89886,6 +89886,20 @@ LM62460Q3RPHRQ1
 0
 16
 16
+SCAN_footprints
+29-VQFN-HR
+
+BQ25798RQMR 
+0
+29
+29
+SCAN_footprints
+SPM6530
+SPM6530
+Inductor (FeSi Core)
+0
+2
+2
 Sensor
 ASAIR_AM2302_P2.54mm_Lead2.75mm_TabDown
 Temperature and humidity module, http://akizukidenshi.com/download/ds/aosong/AM2302.pdf
