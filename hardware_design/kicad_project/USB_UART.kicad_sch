@@ -6,7 +6,7 @@
 	(paper "B")
 	(title_block
 		(title "SCAN")
-		(date "2024-11-25")
+		(date "2025-01-23")
 		(rev "v1.0")
 		(company "Senior Design Group 35")
 	)
@@ -2898,7 +2898,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "DMY0003A"
+		(property "Footprint" ""
 			(at 175.26 162.56 0)
 			(effects
 				(font

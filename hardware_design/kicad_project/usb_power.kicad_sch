@@ -6,7 +6,7 @@
 	(paper "B")
 	(title_block
 		(title "SCAN")
-		(date "2024-11-25")
+		(date "2025-01-23")
 		(rev "v1.0")
 		(company "Senior Design Group 35")
 	)
@@ -5249,6 +5249,19 @@
 		)
 		(uuid 11998492-3099-4441-b9b7-329e63f32297)
 	)
+	(text "ISNK_CRS = 3A"
+		(exclude_from_sim no)
+		(at 178.562 230.124 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(thickness 0.3556)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "1a25ae43-57ed-4076-9083-300aa5c03d7c")
+	)
 	(text "VGS 10V Clamp"
 		(exclude_from_sim no)
 		(at 100.33 26.67 0)
@@ -5287,6 +5300,32 @@
 		)
 		(uuid "5878275f-f13a-47c6-bdcf-64f3f791c19a")
 	)
+	(text "ISNK = ISNK_CRS + ISNK_FIN"
+		(exclude_from_sim no)
+		(at 178.562 224.79 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(thickness 0.3556)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "70e22e5c-a347-4c64-8f21-dd9a7b5e3b09")
+	)
+	(text "VBUS_MAX = 5V"
+		(exclude_from_sim no)
+		(at 112.268 208.28 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(thickness 0.3556)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "86721ee7-19e5-4c83-b733-22d079aa1ec6")
+	)
 	(text "Supply Decoupling Caps"
 		(exclude_from_sim no)
 		(at 30.226 24.13 0)
@@ -5299,6 +5338,32 @@
 			(justify left bottom)
 		)
 		(uuid "c3b8bfaf-da26-436e-b299-0e8301f5ccf0")
+	)
+	(text "VBUS_MIN = 5V"
+		(exclude_from_sim no)
+		(at 112.268 172.72 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(thickness 0.3556)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "d3200183-ee32-475a-9536-d8573216474d")
+	)
+	(text "ISNK_FIN = 0A"
+		(exclude_from_sim no)
+		(at 178.562 234.95 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(thickness 0.3556)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "dcf31189-afdc-4930-9ea8-ce40574826ef")
 	)
 	(label "FET_GATE"
 		(at 229.87 66.04 0)
@@ -5355,17 +5420,6 @@
 		)
 		(uuid "595efbc1-0ce4-4f60-bd8c-1ae27b540bd3")
 	)
-	(label "USB_CC2"
-		(at 137.16 142.24 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "5ba81152-5907-42f9-98d7-e21047f68451")
-	)
 	(label "PD_FAULT"
 		(at 328.93 173.99 180)
 		(fields_autoplaced yes)
@@ -5376,17 +5430,6 @@
 			(justify right bottom)
 		)
 		(uuid "7241522e-3283-49e5-8aac-3cf2030f7619")
-	)
-	(label "USB_CC1"
-		(at 137.16 138.43 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a58979b8-5939-4e32-a098-5c328529bd0d")
 	)
 	(label "VBUS_MAX"
 		(at 166.37 175.26 180)
@@ -5964,7 +6007,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "DPY(R-PX1SON-N2)"
+		(property "Footprint" ""
 			(at -21.26 161.29 0)
 			(effects
 				(font
@@ -6086,7 +6129,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "SODFL3516X120N"
+		(property "Footprint" ""
 			(at 27 43.18 0)
 			(effects
 				(font
@@ -6407,7 +6450,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "235236df-2633-4594-a00e-52c0ed7435e4")
 		(property "Reference" "R37"
@@ -6419,7 +6462,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "DNP"
+		(property "Value" "5.1k"
 			(at 162.56 201.9299 0)
 			(effects
 				(font
@@ -6633,7 +6676,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "TestPoint:TestPoint_Pad_2.0x2.0mm"
 			(at 210.82 130.81 0)
 			(effects
 				(font
@@ -7231,7 +7274,7 @@
 				)
 			)
 		)
-		(property "Footprint" "SOIC127P600X175-8N"
+		(property "Footprint" ""
 			(at 254 145.72 0)
 			(effects
 				(font
@@ -7505,7 +7548,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "TestPoint:TestPoint_Pad_2.0x2.0mm"
 			(at 330.2 50.8 0)
 			(effects
 				(font
@@ -7563,7 +7606,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2k"
+		(property "Value" "0Ω"
 			(at 162.56 236.2199 0)
 			(effects
 				(font
@@ -7968,7 +8011,7 @@
 				)
 			)
 		)
-		(property "Footprint" "QFN50P400X400X60-25N-D"
+		(property "Footprint" ""
 			(at 224.79 247.32 0)
 			(effects
 				(font
@@ -8159,7 +8202,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "TestPoint:TestPoint_Pad_2.0x2.0mm"
 			(at 330.2 101.6 0)
 			(effects
 				(font
@@ -8217,7 +8260,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2k"
+		(property "Value" "0Ω"
 			(at 143.51 177.7999 0)
 			(effects
 				(font
@@ -8296,7 +8339,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "SOT95P230X110-3N"
+		(property "Footprint" ""
 			(at 369.57 272.72 0)
 			(effects
 				(font
@@ -8693,7 +8736,7 @@
 				)
 			)
 		)
-		(property "Footprint" "SOIC127P600X175-8N"
+		(property "Footprint" ""
 			(at 288.29 196.52 0)
 			(effects
 				(font
@@ -9437,7 +9480,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2k"
+		(property "Value" "5.1k"
 			(at 162.56 191.7699 0)
 			(effects
 				(font
@@ -10190,7 +10233,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2k"
+		(property "Value" "0Ω"
 			(at 143.51 213.3599 0)
 			(effects
 				(font
@@ -10337,7 +10380,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "DPY(R-PX1SON-N2)"
+		(property "Footprint" ""
 			(at -27.61 171.45 0)
 			(effects
 				(font
