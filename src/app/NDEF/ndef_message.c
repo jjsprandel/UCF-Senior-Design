@@ -1,26 +1,28 @@
 #include "ndef.h"
 
-typdef struct
+int message_getEncodedSize(ndefMessage_t *message)
 {
-    uint8_t tnf;
-    uint8_t typeLength;
-    int payloadLength;
-    unsigned int idLength;
-    uint8_t *type;
-    uint8_t *payload;
-    uint8_t *id;
-} ndefRecord_t;
+    int size = 0;
+    for (int i = 0; i < message->recordCount; i++)
+    {
+        size += getEncodedSize(message->records[i]);
+    }
+    return size;
+}
 
-typedef struct
+void message_encode(ndefMessage_t *message, uint8_t *data)
 {
-    ndefRecord_t records[MAX_NDEF_RECORDS];
-    uint8_t recordCount;
-} ndefMessage_t;
+    uint8_t *data_ptr = &data[0];
 
-void create_ndef_message(const uint8_t data, const int numBytes)
+    for (int i = 0; i < message->recordCount; i++)
+    {
+        record_encode(message->records[i], data_ptr, i == 0, (i + 1) == message->recordCount);
+        data_ptr += record_getEncodedSize(message->records[i]);
+    }
+}
+void create_ndef_message(ndefMessage_t *message, const uint8_t data, const int numBytes)
 {
-    ndefMessage_t message;
-    message.recordCount = 0;
+    message->recordCount = 0;
 
     ndefRecord_t record;
     record.tnf = 0x01;
@@ -32,7 +34,7 @@ void create_ndef_message(const uint8_t data, const int numBytes)
     record.id = (uint8_t *)malloc(1);
     record.type[0] = 0x55;
     memcpy(record.payload, data, numBytes);
-    message.records[0] = record;
+    *message->record = record;
 }
 
 bool addRecord(ndefMessage_t *message, ndefRecord_t *record)

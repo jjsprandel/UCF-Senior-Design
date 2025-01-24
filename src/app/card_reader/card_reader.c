@@ -498,7 +498,7 @@ void nfc_read_task(void *pvParameters)
                             // Read successful
                             ESP_LOGI(READ_TAG, "Block %d", currentblock);
                             // Dump the raw data
-                            esp_log_buffer_hexdump_internal(READ_TAG, data, 16, ESP_LOG_INFO);
+                            esp_log_buffer_hexdump_internal
                         }
                         else
                         {
