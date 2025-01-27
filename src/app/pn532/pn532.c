@@ -1,18 +1,5 @@
 // NOTE: Add header giving credit to author
-#include <stdio.h>
-#include <stdint.h>
-#include <inttypes.h>
-#include <string.h>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "sdkconfig.h"
-
-#include <esp_log.h>
-#include <esp_log_internal.h>
-
-#include "driver/gpio.h"
 #include "pn532.h"
 
 // #define PN532_DEBUG_EN

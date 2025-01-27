@@ -12,6 +12,7 @@
 
 #define MIFARE_CLASSIC ("Mifare Classic")
 #define MIFARE_CLASSIC_TAG ("mifare_classic.c")
+#define NDEF_USE_SERIAL
 
 int getBufferSize(int messageLength)
 {
@@ -44,8 +45,7 @@ int getNdefStartIndex(uint8_t *data)
         else
         {
 #ifdef NDEF_USE_SERIAL
-            Serial.print("Unknown TLV ");
-            Serial.println(data[i], HEX);
+            ESP_LOGI(MIFARE_CLASSIC_TAG, "Unknown TLV 0x%x", data[i]);
 #endif
             return -2;
         }
@@ -62,7 +62,7 @@ int getNdefStartIndex(uint8_t *data)
 //
 // { 0x3, LENGTH }
 // { 0x3, 0xFF, LENGTH, LENGTH }
-bool decodeTlv(uint8_t *data, int &messageLength, int &messageStartIndex)
+bool decodeTlv(uint8_t *data, int *messageLength, int *messageStartIndex)
 {
     int i = getNdefStartIndex(data);
 
@@ -77,13 +77,13 @@ bool decodeTlv(uint8_t *data, int &messageLength, int &messageStartIndex)
     {
         if (data[i + 1] == 0xFF)
         {
-            messageLength = ((0xFF & data[i + 2]) << 8) | (0xFF & data[i + 3]);
-            messageStartIndex = i + LONG_TLV_SIZE;
+            *messageLength = ((0xFF & data[i + 2]) << 8) | (0xFF & data[i + 3]);
+            *messageStartIndex = i + LONG_TLV_SIZE;
         }
         else
         {
-            messageLength = data[i + 1];
-            messageStartIndex = i + SHORT_TLV_SIZE;
+            *messageLength = data[i + 1];
+            *messageStartIndex = i + SHORT_TLV_SIZE;
         }
     }
 
@@ -97,7 +97,6 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
     int messageStartIndex = 0;
     int messageLength = 0;
     uint8_t data[BLOCK_SIZE];
-    nfc_tag_t *tag;
 
     // read first block to get message length
     int success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, currentBlock, 0, key);
@@ -106,9 +105,9 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
         success = pn532_mifareclassic_ReadDataBlock(PN532, currentBlock, data);
         if (success)
         {
-            if (!decodeTlv(data, messageLength, messageStartIndex))
+            if (!decodeTlv(data, &messageLength, &messageStartIndex))
             {
-                createEmptyTag(&tag, uid, uidLength, "ERROR");
+                createEmptyTag(tag, uid, uidLength, "ERROR");
                 return;
                 // return NfcTag(uid, uidLength, "ERROR"); // TODO should the error message go in NfcTag?
             }
@@ -190,11 +189,11 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
             currentBlock++;
         }
     }
-    createTag(&tag, uid, uidLength, MIFARE_CLASSIC, &buffer[messageStartIndex], bufferSize);
+    createTag(tag, uid, uidLength, MIFARE_CLASSIC, &buffer[messageStartIndex], bufferSize);
     // return NfcTag(uid, uidLength, MIFARE_CLASSIC, &buffer[messageStartIndex], messageLength);
 }
 
-bool mifare_write(pn532_t *PN532, ndefMessage_t &message, uint8_t *uid, unsigned int uidLength)
+bool mifare_write(pn532_t *PN532, ndefMessage_t *message, uint8_t *uid, unsigned int uidLength)
 {
     uint8_t encoded[message_getEncodedSize(message)];
     message_encode(message, encoded);
@@ -350,7 +349,7 @@ bool mifare_formatNdef(pn532_t *PN532, uint8_t *uid, unsigned int uidLength)
 #ifdef NDEF_USE_SERIAL
                 ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to authenticate block %d", i);
 #endif
-                pn532_readPassiveTargetID(PN532, PN532_MIFARE_ISO14443A, uid, (uint8_t *)&iii);
+                pn532_readPassiveTargetID(PN532, PN532_MIFARE_ISO14443A, uid, (uint8_t *)&iii, 0);
             }
         }
     }
@@ -366,7 +365,7 @@ bool mifare_formatMifare(pn532_t *PN532, uint8_t *uid, unsigned int uidLength)
     uint8_t blankAccessBits[3] = {0xff, 0x07, 0x80};
     uint8_t idx = 0;
     uint8_t numOfSector = 16; // Assume Mifare Classic 1K for now (16 4-block sectors)
-    boolean success = false;
+    bool success = false;
 
     for (idx = 0; idx < numOfSector; idx++)
     {
