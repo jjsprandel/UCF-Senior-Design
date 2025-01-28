@@ -16,6 +16,7 @@ function Auth() {
     // Placeholder for authentication logic
     console.log(isSignUp ? "Sign Up" : "Login", email, password);
     login();
+    console.log("Auth: User logged in");
     navigate("/app");
   };
 

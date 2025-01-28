@@ -22,6 +22,8 @@ function App() {
         <Routes>
           {/* Define the auth route */}
           <Route path="/auth" element={<Auth />} />
+          {/* Redirect the root path to the auth page */}
+          <Route path="/" element={<Navigate to="/auth" />} />
           {/* Define the layout route */}
           <Route
             path="/app"
