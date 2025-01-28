@@ -6,14 +6,17 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "esp_log_buffer.h"
 #include "led_strip.h"
 #include "sdkconfig.h"
 #include "nvs_flash.h"
 #include "main.h"
 // #include "wifi_init.h"
 // #include "ota.h"
-#include "nfc_adapter.h"
-#include "ndef_message.h"
+// #include "nfc_adapter.h"
+// #include "ndef_message.h"
+#include "card_reader.h"
+#include "pn532.h"
 #include "freertos/semphr.h"
 #include "esp_heap_task_info.h"
 #include "keypad_driver.h"
@@ -39,7 +42,7 @@
 // not static because it is being used in wifi_init.c as extern variable
 SemaphoreHandle_t wifi_init_semaphore = NULL; // Semaphore to signal Wi-Fi init completion
 keypad_buffer_t keypad_buffer;                // Defined in keypad_driver.c
-nfc_adapter_t nfc;                            // Defined in nfc_adapter.c
+// nfc_adapter_t nfc;                            // Defined in nfc_adapter.c
 
 static const char *TAG = "MAIN";
 
@@ -290,6 +293,8 @@ void assertBytesEqual(const uint8_t *expected, const uint8_t *actual, size_t siz
         TEST_ASSERT_EQUAL_UINT8(expected[i], actual[i]);
     }
 }
+pn532_t nfc;
+TaskHandle_t nfc_write_task_handle = NULL, nfc_read_task_handle = NULL, nfc_format_task_handle = NULL, nfc_to_classic_task_handle = NULL;
 
 // Main State Machine
 void app_main(void)
@@ -300,13 +305,14 @@ void app_main(void)
 
     // Initialize hardware and network
     i2c_master_init();
-    nfc_adapter_begin(true);
+    nfc_init();
     // display_init();
     // wifi_init();
     // sensor_init();
     // Create tasks
     // xTaskCreate(proximity_task, "Proximity Task", 2048, NULL, 1, NULL);
     xTaskCreate(keypad_handler, "keypad_handler", 4096, NULL, 1, NULL);
+
     // xTaskCreate(validation_task, "Validation Task", 4096, NULL, 1, NULL);
     // xTaskCreate(display_task, "Display Task", 2048, NULL, 1, NULL);
 
@@ -317,32 +323,74 @@ void app_main(void)
             switch (keypad_buffer.elements[0])
             {
             case '0':
-                if (tagPresent(0))
-                {
-                    nfc_tag_t tag;
-                    nfc_adapter_read(&tag);
-                    print_tag(&tag);
-                }
+                if (nfc_read_task_handle == NULL)
+                    xTaskCreate(nfc_read_task, "nfc_read_task", 4096, NULL, 1, &nfc_read_task_handle);
+                if (nfc_write_task_handle != NULL)
+                    vTaskDelete(nfc_write_task_handle);
+                if (nfc_format_task_handle != NULL)
+                    vTaskDelete(nfc_format_task_handle);
+                if (nfc_to_classic_task_handle != NULL)
+                    vTaskDelete(nfc_to_classic_task_handle);
+                // if (tagPresent(0))
+                // {
+                //     nfc_tag_t tag;
+                //     nfc_adapter_read(&tag);
+                //     print_tag(&tag);
+                // }
                 break;
             case '1':
-                ndefMessage_t message;
-                create_ndef_message_empty(&message);
-                addTextRecord(&message, "5387541");
+                if (nfc_read_task_handle != NULL)
+                    vTaskDelete(nfc_read_task_handle);
+                if (nfc_write_task_handle == NULL)
+                    xTaskCreate(nfc_write_task, "nfc_write_task", 4096, NULL, 1, &nfc_write_task_handle);
+                if (nfc_format_task_handle != NULL)
+                    vTaskDelete(nfc_format_task_handle);
+                if (nfc_to_classic_task_handle != NULL)
+                    vTaskDelete(nfc_to_classic_task_handle);
+                // ndefMessage_t message;
+                // create_ndef_message_empty(&message);
+                // addTextRecord(&message, "5387541");
 
-                if (tagPresent(0))
-                    nfc_adapter_write(&message);
+                // if (tagPresent(0))
+                //     nfc_adapter_write(&message);
+
+                // delete_message(&message);
                 break;
             case '2':
-                if (tagPresent(0))
-                    nfc_adapter_format();
+                if (nfc_read_task_handle != NULL)
+                    vTaskDelete(nfc_read_task_handle);
+                if (nfc_write_task_handle != NULL)
+                    vTaskDelete(nfc_write_task_handle);
+                if (nfc_format_task_handle == NULL)
+                    xTaskCreate(ndef_format_task, "ndef_format_task", 4096, NULL, 1, &nfc_format_task_handle);
+                if (nfc_to_classic_task_handle != NULL)
+                    vTaskDelete(nfc_to_classic_task_handle);
+                // if (tagPresent(0))
+                //     nfc_adapter_format();
                 break;
             case '3':
-                if (tagPresent(0))
-                    nfc_adapter_clean();
+                if (nfc_read_task_handle != NULL)
+                    vTaskDelete(nfc_read_task_handle);
+                if (nfc_write_task_handle != NULL)
+                    vTaskDelete(nfc_write_task_handle);
+                if (nfc_format_task_handle != NULL)
+                    vTaskDelete(nfc_format_task_handle);
+                if (nfc_to_classic_task_handle == NULL)
+                    xTaskCreate(ndef_to_classic_task, "ndef_to_classic_task", 4096, NULL, 1, &nfc_to_classic_task_handle);
+                // if (tagPresent(0))
+                //     nfc_adapter_clean();
                 break;
             case '4':
-                if (tagPresent(0))
-                    nfc_adapter_erase();
+                if (nfc_read_task_handle != NULL)
+                    vTaskDelete(nfc_read_task_handle);
+                if (nfc_write_task_handle != NULL)
+                    vTaskDelete(nfc_write_task_handle);
+                if (nfc_format_task_handle != NULL)
+                    vTaskDelete(nfc_format_task_handle);
+                if (nfc_to_classic_task_handle != NULL)
+                    vTaskDelete(nfc_to_classic_task_handle);
+                // if (tagPresent(0))
+                //     nfc_adapter_erase();
                 break;
             }
         }
@@ -377,6 +425,6 @@ void app_main(void)
         //     break;
         // }
 
-        // vTaskDelay(pdMS_TO_TICKS(100)); // Small delay to prevent rapid state change
+        vTaskDelay(pdMS_TO_TICKS(100)); // Small delay to prevent rapid state change
     }
 }

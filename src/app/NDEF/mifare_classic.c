@@ -13,6 +13,7 @@
 #define MIFARE_CLASSIC ("Mifare Classic")
 #define MIFARE_CLASSIC_TAG ("mifare_classic.c")
 #define NDEF_USE_SERIAL
+#define MIFARE_CLASSIC_DEBUG
 
 int getBufferSize(int messageLength)
 {
@@ -90,7 +91,7 @@ bool decodeTlv(uint8_t *data, int *messageLength, int *messageStartIndex)
     return true;
 }
 
-void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag)
+void mifare_read(uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag)
 {
     uint8_t key[6] = {0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7};
     int currentBlock = 4;
@@ -107,7 +108,7 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
         {
             if (!decodeTlv(data, &messageLength, &messageStartIndex))
             {
-                createEmptyTag(tag, uid, uidLength, "ERROR");
+                // createEmptyTag(tag, uid, uidLength, "ERROR");
                 return;
                 // return NfcTag(uid, uidLength, "ERROR"); // TODO should the error message go in NfcTag?
             }
@@ -117,7 +118,7 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
 #ifdef NDEF_USE_SERIAL
             ESP_LOGI(MIFARE_CLASSIC_TAG, "Error. Failed to read block %d", currentBlock);
 #endif
-            createEmptyTag(tag, uid, uidLength, MIFARE_CLASSIC);
+            // createEmptyTag(tag, uid, uidLength, MIFARE_CLASSIC);
             return;
             // return NfcTag(uid, uidLength, MIFARE_CLASSIC);
         }
@@ -128,7 +129,7 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
         ESP_LOGI(MIFARE_CLASSIC_TAG, "Tag is not NDEF formatted.");
 #endif
         // TODO set tag.isFormatted = false
-        createEmptyTag(tag, uid, uidLength, MIFARE_CLASSIC);
+        // createEmptyTag(tag, uid, uidLength, MIFARE_CLASSIC);
         return;
         // return NfcTag(uid, uidLength, MIFARE_CLASSIC);
     }
@@ -190,10 +191,9 @@ void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t
         }
     }
     createTag(tag, uid, uidLength, MIFARE_CLASSIC, &buffer[messageStartIndex], bufferSize);
-    // return NfcTag(uid, uidLength, MIFARE_CLASSIC, &buffer[messageStartIndex], messageLength);
 }
 
-bool mifare_write(pn532_t *PN532, ndefMessage_t *message, uint8_t *uid, unsigned int uidLength)
+bool mifare_write(ndefMessage_t *message, uint8_t *uid, unsigned int uidLength)
 {
     uint8_t encoded[message_getEncodedSize(message)];
     message_encode(message, encoded);
@@ -275,7 +275,7 @@ bool mifare_write(pn532_t *PN532, ndefMessage_t *message, uint8_t *uid, unsigned
     return true;
 }
 
-bool mifare_formatNdef(pn532_t *PN532, uint8_t *uid, unsigned int uidLength)
+bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength)
 {
     uint8_t keya[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
     uint8_t emptyNdefMesg[16] = {0x03, 0x03, 0xD0, 0x00, 0x00, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -336,7 +336,7 @@ bool mifare_formatNdef(pn532_t *PN532, uint8_t *uid, unsigned int uidLength)
                     ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i + 2);
 #endif
                 }
-                if (!(pn532_mifareclassic_WriteDataBlock(PN532, i + 3, sectorbuffer0)))
+                if (!(pn532_mifareclassic_WriteDataBlock(PN532, i + 3, sectorbuffer4)))
                 {
 #ifdef NDEF_USE_SERIAL
                     ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i + 3);
@@ -356,7 +356,7 @@ bool mifare_formatNdef(pn532_t *PN532, uint8_t *uid, unsigned int uidLength)
     return success;
 }
 
-bool mifare_formatMifare(pn532_t *PN532, uint8_t *uid, unsigned int uidLength)
+bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength)
 {
     // The default Mifare Classic key
     uint8_t KEY_DEFAULT_KEYAB[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};

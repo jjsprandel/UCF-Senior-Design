@@ -22,7 +22,9 @@
 // #define PN532_SS (4)
 // #define PN532_MISO (5)
 
-#define NUM_AUTH_BLOCKS 4
+#define NUM_AUTH_BLOCKS 16
+#define NTAG_215_PAGE_STOP 20
+#define CARD_READER_TAG "card_reader"
 
 #define NR_SHORTSECTOR (32)         // Number of short sectors on Mifare 1K/4K
 #define NR_LONGSECTOR (8)           // Number of long sectors on Mifare 4K
@@ -43,6 +45,9 @@ static const char *READ_TAG = "PN532 Reading";
 static const char *WRITE_TAG = "PN532 Writing";
 static const char *FORMAT_TAG = "NDEF Formatting";
 static const char *REFORMAT_TAG = "NDEF to Classic Formatting";
+const char *url = "5387541";
+
+extern pn532_t nfc;
 
 void blink_task(void *pvParameters)
 {
@@ -57,13 +62,12 @@ void blink_task(void *pvParameters)
     }
 }
 
-void nfc_init(void *pvParameters)
+void nfc_init()
 {
-    pn532_t *nfc = (pn532_t *)pvParameters;
-    pn532_spi_init(nfc, PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
-    pn532_begin(nfc);
+    pn532_spi_init(&nfc, PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
+    pn532_begin(&nfc);
 
-    uint32_t versiondata = pn532_getFirmwareVersion(nfc);
+    uint32_t versiondata = pn532_getFirmwareVersion(&nfc);
     if (!versiondata)
     {
         ESP_LOGI(INIT_TAG, "Didn't find PN53x board");
@@ -77,13 +81,22 @@ void nfc_init(void *pvParameters)
     ESP_LOGI(INIT_TAG, "Firmware ver. %lu.%lu", (versiondata >> 16) & 0xFF, (versiondata >> 8) & 0xFF);
 
     // configure board to read RFID tags
-    pn532_SAMConfig(nfc);
+    bool success = pn532_SAMConfig(&nfc);
+
+    if (!success)
+    {
+        ESP_LOGI("INIT_TAG", "SAMConfig failed");
+        while (1)
+        {
+            vTaskDelay(1000 / portTICK_PERIOD_MS);
+        }
+    }
 
     ESP_LOGI(INIT_TAG, "Waiting for an ISO14443A Card ...");
 }
+
 void ndef_to_classic_task(void *pvParameters)
 {
-    pn532_t *nfc = (pn532_t *)pvParameters;
     uint8_t success;                       // Flag to check if there was an error with the PN532
     uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
     uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
@@ -107,7 +120,7 @@ void ndef_to_classic_task(void *pvParameters)
 
     while (1)
     {
-        success = pn532_readPassiveTargetID(nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
+        success = pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
 
         if (success)
         {
@@ -134,7 +147,7 @@ void ndef_to_classic_task(void *pvParameters)
                 for (idx = 0; idx < numOfSector; idx++)
                 {
                     // Step 1: Authenticate the current sector using key B 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF
-                    success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, BLOCK_NUMBER_OF_SECTOR_TRAILER(idx), 1, (uint8_t *)KEY_DEFAULT_KEYAB);
+                    success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, BLOCK_NUMBER_OF_SECTOR_TRAILER(idx), 1, (uint8_t *)KEY_DEFAULT_KEYAB);
                     if (!success)
                     {
                         ESP_LOGI(REFORMAT_TAG, "Authentication failed for sector %d", numOfSector);
@@ -145,7 +158,7 @@ void ndef_to_classic_task(void *pvParameters)
                         if (idx == 16)
                         {
                             memset(blockBuffer, 0, sizeof(blockBuffer));
-                            if (!(pn532_mifareclassic_WriteDataBlock(nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 3, blockBuffer)))
+                            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 3, blockBuffer)))
                             {
                                 ESP_LOGI(REFORMAT_TAG, "Unable to write to sector %d", numOfSector);
                                 // Removed return statement
@@ -154,7 +167,7 @@ void ndef_to_classic_task(void *pvParameters)
                         if ((idx == 0) || (idx == 16))
                         {
                             memset(blockBuffer, 0, sizeof(blockBuffer));
-                            if (!(pn532_mifareclassic_WriteDataBlock(nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
+                            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
                             {
                                 ESP_LOGI(REFORMAT_TAG, "Unable to write to sector %d", numOfSector);
                                 // Removed return statement
@@ -163,19 +176,19 @@ void ndef_to_classic_task(void *pvParameters)
                         else
                         {
                             memset(blockBuffer, 0, sizeof(blockBuffer));
-                            if (!(pn532_mifareclassic_WriteDataBlock(nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 3, blockBuffer)))
+                            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 3, blockBuffer)))
                             {
                                 ESP_LOGI(REFORMAT_TAG, "Unable to write to sector %d", numOfSector);
                                 // Removed return statement
                             }
-                            if (!(pn532_mifareclassic_WriteDataBlock(nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
+                            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
                             {
                                 ESP_LOGI(REFORMAT_TAG, "Unable to write to sector %d", numOfSector);
                                 // Removed return statement
                             }
                         }
                         memset(blockBuffer, 0, sizeof(blockBuffer));
-                        if (!(pn532_mifareclassic_WriteDataBlock(nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 1, blockBuffer)))
+                        if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 1, blockBuffer)))
                         {
                             ESP_LOGI(REFORMAT_TAG, "Unable to write to sector %d", numOfSector);
                             // Removed return statement
@@ -188,7 +201,7 @@ void ndef_to_classic_task(void *pvParameters)
                         memcpy(blockBuffer + 10, KEY_DEFAULT_KEYAB, sizeof(KEY_DEFAULT_KEYAB));
 
                         // Step 4: Write the trailer block
-                        if (!(pn532_mifareclassic_WriteDataBlock(nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)), blockBuffer)))
+                        if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)), blockBuffer)))
                         {
                             ESP_LOGI(REFORMAT_TAG, "Unable to write trailer block of sector %d", numOfSector);
                             // Removed return statement
@@ -209,7 +222,6 @@ void ndef_to_classic_task(void *pvParameters)
 
 void ndef_format_task(void *pvParameters)
 {
-    pn532_t *nfc = (pn532_t *)pvParameters;
     uint8_t success;                       // Flag to check if there was an error with the PN532
     uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
     uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
@@ -229,7 +241,7 @@ void ndef_format_task(void *pvParameters)
         // Wait for an ISO14443A type card (Mifare, etc.).  When one is found
         // 'uid' will be populated with the UID, and uidLength will indicate
         // if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
-        success = pn532_readPassiveTargetID(nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
+        success = pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
 
         if (success)
         {
@@ -248,12 +260,12 @@ void ndef_format_task(void *pvParameters)
                 ESP_LOGI(FORMAT_TAG, "Seems to be a Mifare Classic card (4 byte UID)");
 
                 // Try to format the card for NDEF data
-                success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, 0, 0, keya);
+                success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, 0, 0, keya);
                 if (!success)
                     ESP_LOGI(FORMAT_TAG, "Unable to authenticate block 0 to enable card formatting!");
                 else
                 {
-                    success = pn532_mifareclassic_FormatNDEF(nfc);
+                    success = pn532_mifareclassic_FormatNDEF(&nfc);
                     if (!success)
                         ESP_LOGI(FORMAT_TAG, "Unable to format the card for NDEF");
                     else
@@ -261,7 +273,7 @@ void ndef_format_task(void *pvParameters)
                         ESP_LOGI(FORMAT_TAG, "Card has been formatted for NDEF data using MAD1");
 
                         // Try to authenticate block 4 (first block of sector 1) using our key
-                        success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, 4, 0, keya);
+                        success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, 4, 0, keya);
 
                         // Make sure the authentification process didn't fail
                         if (!success)
@@ -278,11 +290,11 @@ void ndef_format_task(void *pvParameters)
 // Tag: 0x03    (NDEF Message)
 // Length: 0x08 (8 bytes)
 // Value: User ID (8 bytes)
-void write_user_id(pn532_t *nfc, char *userID)
+void pn532_write_user_id(char *userID)
 {
     uint8_t len = strlen(userID);
     uint8_t sectorNumber = 2;
-
+    uint8_t uriIdentifier = 0;
     // Make sure the URI payload is between 1 and 38 chars
     if ((len < 1) || (len > 38))
     {
@@ -332,7 +344,6 @@ void write_user_id(pn532_t *nfc, char *userID)
 }
 void nfc_write_task(void *pvParameters)
 {
-    pn532_t *nfc = (pn532_t *)pvParameters;
     uint8_t success;                       // Flag to check if there was an error with the PN532
     uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
     uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
@@ -350,7 +361,7 @@ void nfc_write_task(void *pvParameters)
     // if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
     while (1)
     {
-        success = pn532_readPassiveTargetID(nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
+        success = pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
 
         if (success)
         {
@@ -371,7 +382,7 @@ void nfc_write_task(void *pvParameters)
 
                 // Check if this is an NDEF card (using first block of sector 1 from mifareclassic_formatndef.pde)
                 // Must authenticate on the first key using 0xD3 0xF7 0xD3 0xF7 0xD3 0xF7
-                success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, 4, 0, keyb);
+                success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, 4, 0, keyb);
                 if (!success)
                     ESP_LOGI(WRITE_TAG, "Unable to authenticate block 4 ... is this card NDEF formatted?");
                 else
@@ -395,7 +406,7 @@ void nfc_write_task(void *pvParameters)
                         ESP_LOGI(WRITE_TAG, "Updating sector 1 with URI as NDEF Message");
 
                         // URI is within size limits ... write it to the card and report success/failure
-                        success = pn532_mifareclassic_WriteNDEFURI(nfc, 1, ndefprefix, url);
+                        success = pn532_mifareclassic_WriteNDEFURI(&nfc, 1, ndefprefix, url);
                         if (success)
                         {
                             ESP_LOGI(WRITE_TAG, "NDEF URI Record written to sector 1");
@@ -406,7 +417,6 @@ void nfc_write_task(void *pvParameters)
                     }
                 }
             }
-            ESP_LOGI(WRITE_TAG, "\n\nDone!");
         }
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
@@ -414,21 +424,20 @@ void nfc_write_task(void *pvParameters)
 
 void nfc_read_task(void *pvParameters)
 {
-    pn532_t *nfc = (pn532_t *)pvParameters;
     while (1)
     {
         uint8_t success;
         uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
         uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
-        // uint8_t keyuniversal[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-        uint8_t keyuniversal[6] = {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5};
+        uint8_t keyuniversal[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+        // uint8_t keyuniversal[6] = {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5};
         bool authenticated = false;
         uint8_t data[16];
 
         // Wait for an ISO14443A type cards (Mifare, etc.).  When one is found
         // 'uid' will be populated with the UID, and uidLength will indicate
         // if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
-        success = pn532_readPassiveTargetID(nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
+        success = pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
 
         if (success)
         {
@@ -446,10 +455,10 @@ void nfc_read_task(void *pvParameters)
 
                 // Now we try to go through all 16 sectors (each having 4 blocks)
                 // authenticating each sector, and then dumping the blocks
-                for (currentblock = 0; currentblock < NUM_AUTH_BLOCKS; currentblock++)
+                for (currentblock = 1; currentblock < 16; currentblock++)
                 {
                     // Check if this is a new block so that we can reauthenticate
-                    if (pn532_mifareclassic_IsFirstBlock(nfc, currentblock))
+                    if (pn532_mifareclassic_IsFirstBlock(&nfc, currentblock))
                         authenticated = false;
 
                     // If the sector hasn't been authenticated, do so first
@@ -458,21 +467,21 @@ void nfc_read_task(void *pvParameters)
                         // Starting of a new sector ... try to to authenticate
                         ESP_LOGI(READ_TAG, "------------------------Sector %d-------------------------", currentblock / 4);
 
-                        // if (currentblock == 0)
-                        // {
-                        //     // This will be 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF for Mifare Classic (non-NDEF!)
-                        //     // or 0xA0 0xA1 0xA2 0xA3 0xA4 0xA5 for NDEF formatted cards using key a,
-                        //     // but keyb should be the same for both (0xFF 0xFF 0xFF 0xFF 0xFF 0xFF)
-                        //     success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, currentblock, 1, keyuniversal);
-                        // }
-                        // else
-                        // {
-                        //     // This will be 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF for Mifare Classic (non-NDEF!)
-                        //     // or 0xD3 0xF7 0xD3 0xF7 0xD3 0xF7 for NDEF formatted cards using key a,
-                        //     // but keyb should be the same for both (0xFF 0xFF 0xFF 0xFF 0xFF 0xFF)
-                        //     success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, currentblock, 1, keyuniversal);
-                        // }
-                        success = pn532_mifareclassic_AuthenticateBlock(nfc, uid, uidLength, currentblock, 1, keyuniversal);
+                        if (currentblock == 0)
+                        {
+                            // This will be 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF for Mifare Classic (non-NDEF!)
+                            // or 0xA0 0xA1 0xA2 0xA3 0xA4 0xA5 for NDEF formatted cards using key a,
+                            // but keyb should be the same for both (0xFF 0xFF 0xFF 0xFF 0xFF 0xFF)
+                            success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, currentblock, 1, keyuniversal);
+                        }
+                        else
+                        {
+                            // This will be 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF for Mifare Classic (non-NDEF!)
+                            // or 0xD3 0xF7 0xD3 0xF7 0xD3 0xF7 for NDEF formatted cards using key a,
+                            // but keyb should be the same for both (0xFF 0xFF 0xFF 0xFF 0xFF 0xFF)
+                            success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, currentblock, 1, keyuniversal);
+                        }
+                        // success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, currentblock, 1, keyuniversal);
 
                         if (success)
                         {
@@ -480,6 +489,7 @@ void nfc_read_task(void *pvParameters)
                         }
                         else
                         {
+                            authenticated = false;
                             ESP_LOGI(READ_TAG, "Authentication error");
                         }
                     }
@@ -492,13 +502,13 @@ void nfc_read_task(void *pvParameters)
                     {
                         // Authenticated ... we should be able to read the block now
                         // Dump the data into the 'data' array
-                        success = pn532_mifareclassic_ReadDataBlock(nfc, currentblock, data);
+                        success = pn532_mifareclassic_ReadDataBlock(&nfc, currentblock, data);
                         if (success)
                         {
                             // Read successful
                             ESP_LOGI(READ_TAG, "Block %d", currentblock);
                             // Dump the raw data
-                            esp_log_buffer_hexdump_internal
+                            esp_log_buffer_hexdump_internal(READ_TAG, data, 16, ESP_LOG_INFO);
                         }
                         else
                         {
@@ -519,6 +529,73 @@ void nfc_read_task(void *pvParameters)
             // PN532 probably timed out waiting for a card
             ESP_LOGI(READ_TAG, "Timed out waiting for a card");
         }
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+    }
+}
+
+void ntag2xx_read_task(void *pvParameters)
+{
+    uint8_t success;
+    uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
+    uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
+
+    // Wait for an NTAG203 card.  When one is found 'uid' will be populated with
+    // the UID, and uidLength will indicate the size of the UUID (normally 7)
+    success = pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
+
+    if (success)
+    {
+        // Display some basic information about the card
+        ESP_LOGI(CARD_READER_TAG, "Found an ISO14443A card");
+        ESP_LOGI(CARD_READER_TAG, "  UID Length: %d bytes", uidLength);
+        ESP_LOGI(CARD_READER_TAG, "  UID Value:");
+        esp_log_buffer_hexdump_internal(CARD_READER_TAG, uid, uidLength, ESP_LOG_INFO);
+
+        if (uidLength == 7)
+        {
+            uint8_t data[32];
+
+            // We probably have an NTAG2xx card (though it could be Ultralight as well)
+            ESP_LOGI(CARD_READER_TAG, "Seems to be an NTAG2xx tag (7 byte UID)");
+
+            // NTAG2x3 cards have 39*4 bytes of user pages (156 user bytes),
+            // starting at page 4 ... larger cards just add pages to the end of
+            // this range:
+
+            // See: http://www.nxp.com/documents/short_data_sheet/NTAG203_SDS.pdf
+
+            // TAG Type       PAGES   USER START    USER STOP
+            // --------       -----   ----------    ---------
+            // NTAG 203       42      4             39
+            // NTAG 213       45      4             39
+            // NTAG 215       135     4             129
+            // NTAG 216       231     4             225
+
+            for (uint8_t i = 0; i < NTAG_215_PAGE_STOP; i++)
+            {
+                success = pn532_ntag2xx_ReadPage(&nfc, i, data);
+
+                // Display the current page number
+                ESP_LOGI(CARD_READER_TAG, "PAGE %c%d: ", (i < 10) ? '0' : ' ', i);
+
+                // Display the results, depending on 'success'
+                if (success)
+                {
+                    // Dump the page data
+                    esp_log_buffer_hex
+                        esp_log_buffer_char_internal(CARD_READER_TAG, data, 4, ESP_LOG_INFO);
+                }
+                else
+                {
+                    ESP_LOGI(CARD_READER_TAG, "Unable to read the requested page!");
+                }
+            }
+        }
+        else
+        {
+            ESP_LOGI(CARD_READER_TAG, "This doesn't seem to be an NTAG203 tag (UUID length != 7 bytes)!");
+        }
+
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 }

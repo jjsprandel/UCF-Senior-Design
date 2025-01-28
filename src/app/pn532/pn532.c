@@ -4,6 +4,7 @@
 
 // #define PN532_DEBUG_EN
 #define MIFARE_DEBUG_EN
+#define PN532_DEBUG_EN
 
 #ifdef PN532_DEBUG_EN
 #define PN532_DEBUG(fmt, ...) printf(fmt, ##__VA_ARGS__)
@@ -290,10 +291,10 @@ bool pn532_SAMConfig(pn532_t *obj)
 
     // read data packet
     // NOTE: Changed from 8 to 9 to test if it works
-    pn532_readdata(obj, pn532_packetbuffer, 8);
+    pn532_readdata(obj, pn532_packetbuffer, 9);
 
     // NOTE: Changed from 5 to 6 to test if it works
-    int offset = 5;
+    int offset = 6;
     return (pn532_packetbuffer[offset] == 0x15);
 }
 

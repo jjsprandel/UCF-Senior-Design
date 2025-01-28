@@ -12,12 +12,14 @@
 #include <esp_log.h>
 #include <esp_log_internal.h>
 
+extern pn532_t nfc;
+
 int getBufferSize(int messageLength);
 int getNdefStartIndex(uint8_t *data);
 bool decodeTlv(uint8_t *data, int *messageLength, int *messageStartIndex);
-void mifare_read(pn532_t *PN532, uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag);
-bool mifare_write(pn532_t *PN532, ndefMessage_t *message, uint8_t *uid, unsigned int uidLength);
-bool mifare_formatNdef(pn532_t *PN532, uint8_t *uid, unsigned int uidLength);
-bool mifare_formatMifare(pn532_t *PN532, uint8_t *uid, unsigned int uidLength);
+void mifare_read(uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag);
+bool mifare_write(ndefMessage_t *message, uint8_t *uid, unsigned int uidLength);
+bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength);
+bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength);
 
 #endif
