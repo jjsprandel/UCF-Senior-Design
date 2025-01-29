@@ -2,7 +2,7 @@
 #define mifare_classic_h
 
 #include "nfc_tag.h"
-#include "nfc_adapter.h"
+// #include "nfc_adapter.h"
 #include "ndef_message.h"
 #include "ndef_record.h"
 #include <stdlib.h>

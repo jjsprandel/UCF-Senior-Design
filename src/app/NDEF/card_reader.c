@@ -95,6 +95,13 @@ void nfc_init()
     ESP_LOGI(INIT_TAG, "Waiting for an ISO14443A Card ...");
 }
 
+void build_tlv(char *userID)
+{
+    uint8_t tlv_tag = 0x03;
+    uint8_t tlv_len = strlen(userID);
+    uint8_t tlv_value[tlv_len];
+}
+
 void ndef_to_classic_task(void *pvParameters)
 {
     uint8_t success;                       // Flag to check if there was an error with the PN532
@@ -582,8 +589,7 @@ void ntag2xx_read_task(void *pvParameters)
                 if (success)
                 {
                     // Dump the page data
-                    esp_log_buffer_hex
-                        esp_log_buffer_char_internal(CARD_READER_TAG, data, 4, ESP_LOG_INFO);
+                    esp_log_buffer_hexdump_internal(CARD_READER_TAG, data, 4, ESP_LOG_INFO);
                 }
                 else
                 {

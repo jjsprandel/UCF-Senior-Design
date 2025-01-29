@@ -16,7 +16,7 @@ typedef struct
 
 void createTag(nfc_tag_t *tag, uint8_t *uid, unsigned int uidLength, char *tagType, uint8_t *data, int messageLength);
 void createEmptyTag(nfc_tag_t *tag, uint8_t *uid, unsigned int uidLength, char *tagType);
-bool tagPresent(unsigned long timeout);
+bool tagPresent(pn532_t *nfc, uint8_t *uidLength, uint8_t uid[], unsigned long timeout);
 void print_tag(nfc_tag_t *tag);
 
 #endif

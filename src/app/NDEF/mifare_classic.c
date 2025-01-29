@@ -100,10 +100,10 @@ void mifare_read(uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag)
     uint8_t data[BLOCK_SIZE];
 
     // read first block to get message length
-    int success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, currentBlock, 0, key);
+    int success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, currentBlock, 0, key);
     if (success)
     {
-        success = pn532_mifareclassic_ReadDataBlock(PN532, currentBlock, data);
+        success = pn532_mifareclassic_ReadDataBlock(&nfc, currentBlock, data);
         if (success)
         {
             if (!decodeTlv(data, &messageLength, &messageStartIndex))
@@ -148,9 +148,9 @@ void mifare_read(uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag)
     {
 
         // authenticate on every sector
-        if (pn532_mifareclassic_IsFirstBlock(PN532, currentBlock))
+        if (pn532_mifareclassic_IsFirstBlock(&nfc, currentBlock))
         {
-            success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, currentBlock, 0, key);
+            success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, currentBlock, 0, key);
             if (!success)
             {
 #ifdef NDEF_USE_SERIAL
@@ -161,12 +161,12 @@ void mifare_read(uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag)
         }
 
         // read the data
-        success = pn532_mifareclassic_ReadDataBlock(PN532, currentBlock, &buffer[index]);
+        success = pn532_mifareclassic_ReadDataBlock(&nfc, currentBlock, &buffer[index]);
         if (success)
         {
 #ifdef MIFARE_CLASSIC_DEBUG
             ESP_LOGI(MIFARE_CLASSIC_TAG, "Block %d", currentBlock);
-            esp_log_buffer_hexdump_internal(MIFARE_CLASSIC_TAG, &buffer[index], BLOCK_SIZE, ESP_LOG_INFO);
+            ESP_LOG_BUFFER_HEX(MIFARE_CLASSIC_TAG, &buffer[index], BLOCK_SIZE);
             //_nfcShield->PrintHexChar(&buffer[index], BLOCK_SIZE);
 #endif
         }
@@ -182,7 +182,7 @@ void mifare_read(uint8_t *uid, unsigned int uidLength, nfc_tag_t *tag)
         currentBlock++;
 
         // skip the trailer block
-        if (pn532_mifareclassic_IsTrailerBlock(PN532, currentBlock))
+        if (pn532_mifareclassic_IsTrailerBlock(&nfc, currentBlock))
         {
 #ifdef MIFARE_CLASSIC_DEBUG
             ESP_LOGI(MIFARE_CLASSIC_TAG, "Skipping block %d", currentBlock);
@@ -231,9 +231,9 @@ bool mifare_write(ndefMessage_t *message, uint8_t *uid, unsigned int uidLength)
     while (index < sizeof(buffer))
     {
 
-        if (pn532_mifareclassic_IsFirstBlock(PN532, currentBlock))
+        if (pn532_mifareclassic_IsFirstBlock(&nfc, currentBlock))
         {
-            int success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, currentBlock, 0, key);
+            int success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, currentBlock, 0, key);
             if (!success)
             {
 #ifdef NDEF_USE_SERIAL
@@ -243,12 +243,12 @@ bool mifare_write(ndefMessage_t *message, uint8_t *uid, unsigned int uidLength)
             }
         }
 
-        int write_success = pn532_mifareclassic_WriteDataBlock(PN532, currentBlock, &buffer[index]);
+        int write_success = pn532_mifareclassic_WriteDataBlock(&nfc, currentBlock, &buffer[index]);
         if (write_success)
         {
 #ifdef MIFARE_CLASSIC_DEBUG
             ESP_LOGI(MIFARE_CLASSIC_TAG, "Wrote block %d - ", currentBlock);
-            esp_log_buffer_hexdump_internal(MIFARE_CLASSIC_TAG, &buffer[index], BLOCK_SIZE, ESP_LOG_INFO);
+            ESP_LOG_BUFFER_HEX(MIFARE_CLASSIC_TAG, &buffer[index], BLOCK_SIZE);
             // pn532_PrintHexChar(&buffer[index], BLOCK_SIZE); // Replace with ESP function
 #endif
         }
@@ -262,7 +262,7 @@ bool mifare_write(ndefMessage_t *message, uint8_t *uid, unsigned int uidLength)
         index += BLOCK_SIZE;
         currentBlock++;
 
-        if (pn532_mifareclassic_IsTrailerBlock(PN532, currentBlock))
+        if (pn532_mifareclassic_IsTrailerBlock(&nfc, currentBlock))
         {
 // can't write to trailer block
 #ifdef MIFARE_CLASSIC_DEBUG
@@ -282,7 +282,7 @@ bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength)
     uint8_t sectorbuffer0[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     uint8_t sectorbuffer4[16] = {0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7, 0x7F, 0x07, 0x88, 0x40, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
-    bool success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, 0, 0, keya);
+    bool success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, 0, 0, keya);
 
     if (!success)
     {
@@ -291,7 +291,7 @@ bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength)
 #endif
         return false;
     }
-    success = pn532_mifareclassic_FormatNDEF(PN532);
+    success = pn532_mifareclassic_FormatNDEF(&nfc);
     if (!success)
     {
 #ifdef NDEF_USE_SERIAL
@@ -302,13 +302,13 @@ bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength)
     {
         for (int i = 4; i < 64; i += 4)
         {
-            success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, i, 0, keya);
+            success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, i, 0, keya);
 
             if (success)
             {
                 if (i == 4) // special handling for block 4
                 {
-                    if (!(pn532_mifareclassic_WriteDataBlock(PN532, i, emptyNdefMesg)))
+                    if (!(pn532_mifareclassic_WriteDataBlock(&nfc, i, emptyNdefMesg)))
                     {
 #ifdef NDEF_USE_SERIAL
                         ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i);
@@ -317,26 +317,26 @@ bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength)
                 }
                 else
                 {
-                    if (!(pn532_mifareclassic_WriteDataBlock(PN532, i, sectorbuffer0)))
+                    if (!(pn532_mifareclassic_WriteDataBlock(&nfc, i, sectorbuffer0)))
                     {
 #ifdef NDEF_USE_SERIAL
                         ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i);
 #endif
                     }
                 }
-                if (!(pn532_mifareclassic_WriteDataBlock(PN532, i + 1, sectorbuffer0)))
+                if (!(pn532_mifareclassic_WriteDataBlock(&nfc, i + 1, sectorbuffer0)))
                 {
 #ifdef NDEF_USE_SERIAL
                     ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i + 1);
 #endif
                 }
-                if (!(pn532_mifareclassic_WriteDataBlock(PN532, i + 2, sectorbuffer0)))
+                if (!(pn532_mifareclassic_WriteDataBlock(&nfc, i + 2, sectorbuffer0)))
                 {
 #ifdef NDEF_USE_SERIAL
                     ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i + 2);
 #endif
                 }
-                if (!(pn532_mifareclassic_WriteDataBlock(PN532, i + 3, sectorbuffer4)))
+                if (!(pn532_mifareclassic_WriteDataBlock(&nfc, i + 3, sectorbuffer4)))
                 {
 #ifdef NDEF_USE_SERIAL
                     ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write block %d", i + 3);
@@ -349,7 +349,7 @@ bool mifare_formatNdef(uint8_t *uid, unsigned int uidLength)
 #ifdef NDEF_USE_SERIAL
                 ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to authenticate block %d", i);
 #endif
-                pn532_readPassiveTargetID(PN532, PN532_MIFARE_ISO14443A, uid, (uint8_t *)&iii, 0);
+                pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, (uint8_t *)&iii, 0);
             }
         }
     }
@@ -370,7 +370,7 @@ bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength)
     for (idx = 0; idx < numOfSector; idx++)
     {
         // Step 1: Authenticate the current sector using key B 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF
-        success = pn532_mifareclassic_AuthenticateBlock(PN532, uid, uidLength, BLOCK_NUMBER_OF_SECTOR_TRAILER(idx), 1, (uint8_t *)KEY_DEFAULT_KEYAB);
+        success = pn532_mifareclassic_AuthenticateBlock(&nfc, uid, uidLength, BLOCK_NUMBER_OF_SECTOR_TRAILER(idx), 1, (uint8_t *)KEY_DEFAULT_KEYAB);
         if (!success)
         {
 #ifdef NDEF_USE_SERIAL
@@ -384,7 +384,7 @@ bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength)
         if (idx == 0)
         {
             memset(blockBuffer, 0, sizeof(blockBuffer));
-            if (!(pn532_mifareclassic_WriteDataBlock(PN532, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
+            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
             {
 #ifdef NDEF_USE_SERIAL
                 ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write to sector &d", idx);
@@ -396,14 +396,14 @@ bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength)
         {
             memset(blockBuffer, 0, sizeof(blockBuffer));
             // this block has not to be overwritten for block 0. It contains Tag id and other unique data.
-            if (!(pn532_mifareclassic_WriteDataBlock(PN532, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 3, blockBuffer)))
+            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 3, blockBuffer)))
             {
 #ifdef NDEF_USE_SERIAL
                 ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write to sector &d", idx);
 
 #endif
             }
-            if (!(pn532_mifareclassic_WriteDataBlock(PN532, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
+            if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 2, blockBuffer)))
             {
 #ifdef NDEF_USE_SERIAL
                 ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write to sector &d", idx);
@@ -414,7 +414,7 @@ bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength)
 
         memset(blockBuffer, 0, sizeof(blockBuffer));
 
-        if (!(pn532_mifareclassic_WriteDataBlock(PN532, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 1, blockBuffer)))
+        if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)) - 1, blockBuffer)))
         {
 #ifdef NDEF_USE_SERIAL
             ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write to sector &d", idx);
@@ -429,7 +429,7 @@ bool mifare_formatMifare(uint8_t *uid, unsigned int uidLength)
         memcpy(blockBuffer + 10, KEY_DEFAULT_KEYAB, sizeof(KEY_DEFAULT_KEYAB));
 
         // Step 4: Write the trailer block
-        if (!(pn532_mifareclassic_WriteDataBlock(PN532, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)), blockBuffer)))
+        if (!(pn532_mifareclassic_WriteDataBlock(&nfc, (BLOCK_NUMBER_OF_SECTOR_TRAILER(idx)), blockBuffer)))
         {
 #ifdef NDEF_USE_SERIAL
             ESP_LOGI(MIFARE_CLASSIC_TAG, "Unable to write trailer block of sector &d", idx);
