@@ -1,0 +1,1 @@
+void process_firebase_response(const char *json_response);

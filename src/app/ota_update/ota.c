@@ -20,9 +20,9 @@
 
 // #define CONFIG_EXAMPLE_SKIP_VERSION_CHECK
 
-static const char *TAG = "advanced_https_ota_example";
-extern const uint8_t server_cert_pem_start[] asm("_binary_ca_cert_pem_start");
-extern const uint8_t server_cert_pem_end[] asm("_binary_ca_cert_pem_end");
+static const char *TAG = "advanced_https_ota";
+extern const uint8_t github_server_cert_pem_start[] asm("_binary_github_cert_pem_start");
+extern const uint8_t github_server_cert_pem_end[] asm("_binary_github_cert_pem_end");
 
 #define OTA_URL_SIZE 256
 
@@ -113,7 +113,7 @@ void advanced_ota_example_task(void *pvParameter)
     esp_err_t ota_finish_err = ESP_OK;
     esp_http_client_config_t config = {
         .url = "https://github.com/jjsprandel/SCAN/releases/download/v0.1.0/SCAN.bin",
-        .cert_pem = (char *)server_cert_pem_start,
+        .cert_pem = (char *)github_server_cert_pem_start,
         .timeout_ms = 5000,
         .keep_alive_enable = true,
         .buffer_size = 8 * 1024,

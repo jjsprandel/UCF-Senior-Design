@@ -9,9 +9,12 @@
 #include "led_strip.h"
 #include "sdkconfig.h"
 #include "nvs_flash.h"
+
 #include "main.h"
 #include "wifi_init.h"
 #include "ota.h"
+#include "firebase_http_client.h"
+
 #include "freertos/semphr.h"
 #include "esp_heap_task_info.h"
 
@@ -30,6 +33,7 @@ static kiosk_state_t current_state = STATE_WIFI_INIT;
 static TaskHandle_t blink_led_task_handle = NULL;
 static TaskHandle_t wifi_init_task_handle = NULL;
 static TaskHandle_t ota_update_task_handle = NULL;
+static TaskHandle_t database_task_handle = NULL;
 
 // not static because it is being used in wifi_init.c as extern variable
 SemaphoreHandle_t wifi_init_semaphore = NULL;  // Semaphore to signal Wi-Fi init completion
@@ -130,12 +134,18 @@ void state_control_task(void *pvParameter) {
                 //    vTaskDelete(blink_led_task_handle);
                 //    blink_led_task_handle = NULL;
                 //}
-
+                
                 if (ota_update_task_handle == NULL) {
                     ESP_LOGI(TAG, "Creating OTA update task");
                     xTaskCreate(ota_update_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &ota_update_task_handle);
                 }
-
+                
+/*
+                if (database_task_handle == NULL) {
+                    ESP_LOGI(TAG, "Creating database task");
+                    xTaskCreate(database_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &database_task_handle);
+                }
+*/
                 break;
 
             case STATE_ERROR:
