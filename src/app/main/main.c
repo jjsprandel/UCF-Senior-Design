@@ -15,7 +15,7 @@
 // #include "ota.h"
 // #include "nfc_adapter.h"
 // #include "ndef_message.h"
-#include "card_reader.h"
+#include "ntag_reader.h"
 #include "pn532.h"
 #include "freertos/semphr.h"
 #include "esp_heap_task_info.h"
@@ -41,8 +41,6 @@
 
 // not static because it is being used in wifi_init.c as extern variable
 SemaphoreHandle_t wifi_init_semaphore = NULL; // Semaphore to signal Wi-Fi init completion
-keypad_buffer_t keypad_buffer;                // Defined in keypad_driver.c
-// nfc_adapter_t nfc;                            // Defined in nfc_adapter.c
 
 static const char *TAG = "MAIN";
 
@@ -286,15 +284,77 @@ static const char *TAG = "MAIN";
 //         current_state = STATE_IDLE;
 //     }
 // }
-void assertBytesEqual(const uint8_t *expected, const uint8_t *actual, size_t size)
+
+pn532_t nfc;
+keypad_buffer_t keypad_buffer; // Defined in keypad_driver.c
+TaskHandle_t nfc_write_task_handle = NULL, nfc_read_task_handle = NULL, nfc_format_task_handle = NULL, nfc_to_classic_task_handle = NULL;
+TaskHandle_t nfc_erase_task_handle = NULL;
+
+void nfc_task_handler(char caseValue)
 {
-    for (size_t i = 0; i < size; i++)
+    switch (caseValue)
     {
-        TEST_ASSERT_EQUAL_UINT8(expected[i], actual[i]);
+    case '0':
+        if (nfc_read_task_handle == NULL)
+            xTaskCreate(ntag2xx_read_user_id_task, "ntag2xx_read_user_id_task", 4096, NULL, 1, &nfc_read_task_handle);
+        if (nfc_write_task_handle != NULL)
+        {
+            vTaskDelete(nfc_write_task_handle);
+            nfc_write_task_handle = NULL;
+        }
+        if (nfc_erase_task_handle != NULL)
+        {
+            vTaskDelete(nfc_erase_task_handle);
+            nfc_erase_task_handle = NULL;
+        }
+        break;
+    case '1':
+        if (nfc_read_task_handle != NULL)
+        {
+            vTaskDelete(nfc_read_task_handle);
+            nfc_read_task_handle = NULL;
+        }
+        if (nfc_write_task_handle == NULL)
+            xTaskCreate(ntag_write_text_task, "ntag_write_task", 4096, NULL, 1, &nfc_write_task_handle);
+        if (nfc_erase_task_handle != NULL)
+        {
+            vTaskDelete(nfc_erase_task_handle);
+            nfc_erase_task_handle = NULL;
+        }
+        break;
+    case '2':
+        if (nfc_read_task_handle != NULL)
+        {
+            vTaskDelete(nfc_read_task_handle);
+            nfc_read_task_handle = NULL;
+        }
+        if (nfc_write_task_handle != NULL)
+        {
+            vTaskDelete(nfc_write_task_handle);
+            nfc_write_task_handle = NULL;
+        }
+        if (nfc_erase_task_handle == NULL)
+            xTaskCreate(ntag_erase_task, "ntag_erase_task", 4096, NULL, 1, &nfc_erase_task_handle);
+        break;
+    default:
+        if (nfc_read_task_handle != NULL)
+        {
+            vTaskDelete(nfc_read_task_handle);
+            nfc_read_task_handle = NULL;
+        }
+        if (nfc_write_task_handle != NULL)
+        {
+            vTaskDelete(nfc_write_task_handle);
+            nfc_write_task_handle = NULL;
+        }
+        if (nfc_erase_task_handle != NULL)
+        {
+            vTaskDelete(nfc_erase_task_handle);
+            nfc_erase_task_handle = NULL;
+        }
+        break;
     }
 }
-pn532_t nfc;
-TaskHandle_t nfc_write_task_handle = NULL, nfc_read_task_handle = NULL, nfc_format_task_handle = NULL, nfc_to_classic_task_handle = NULL;
 
 // Main State Machine
 void app_main(void)
@@ -320,110 +380,40 @@ void app_main(void)
     {
         if (keypad_buffer.occupied > 0)
         {
-            switch (keypad_buffer.elements[0])
-            {
-            case '0':
-                if (nfc_read_task_handle == NULL)
-                    xTaskCreate(nfc_read_task, "nfc_read_task", 4096, NULL, 1, &nfc_read_task_handle);
-                if (nfc_write_task_handle != NULL)
-                    vTaskDelete(nfc_write_task_handle);
-                if (nfc_format_task_handle != NULL)
-                    vTaskDelete(nfc_format_task_handle);
-                if (nfc_to_classic_task_handle != NULL)
-                    vTaskDelete(nfc_to_classic_task_handle);
-                // if (tagPresent(0))
-                // {
-                //     nfc_tag_t tag;
-                //     nfc_adapter_read(&tag);
-                //     print_tag(&tag);
-                // }
-                break;
-            case '1':
-                if (nfc_read_task_handle != NULL)
-                    vTaskDelete(nfc_read_task_handle);
-                if (nfc_write_task_handle == NULL)
-                    xTaskCreate(nfc_write_task, "nfc_write_task", 4096, NULL, 1, &nfc_write_task_handle);
-                if (nfc_format_task_handle != NULL)
-                    vTaskDelete(nfc_format_task_handle);
-                if (nfc_to_classic_task_handle != NULL)
-                    vTaskDelete(nfc_to_classic_task_handle);
-                // ndefMessage_t message;
-                // create_ndef_message_empty(&message);
-                // addTextRecord(&message, "5387541");
-
-                // if (tagPresent(0))
-                //     nfc_adapter_write(&message);
-
-                // delete_message(&message);
-                break;
-            case '2':
-                if (nfc_read_task_handle != NULL)
-                    vTaskDelete(nfc_read_task_handle);
-                if (nfc_write_task_handle != NULL)
-                    vTaskDelete(nfc_write_task_handle);
-                if (nfc_format_task_handle == NULL)
-                    xTaskCreate(ndef_format_task, "ndef_format_task", 4096, NULL, 1, &nfc_format_task_handle);
-                if (nfc_to_classic_task_handle != NULL)
-                    vTaskDelete(nfc_to_classic_task_handle);
-                // if (tagPresent(0))
-                //     nfc_adapter_format();
-                break;
-            case '3':
-                if (nfc_read_task_handle != NULL)
-                    vTaskDelete(nfc_read_task_handle);
-                if (nfc_write_task_handle != NULL)
-                    vTaskDelete(nfc_write_task_handle);
-                if (nfc_format_task_handle != NULL)
-                    vTaskDelete(nfc_format_task_handle);
-                if (nfc_to_classic_task_handle == NULL)
-                    xTaskCreate(ndef_to_classic_task, "ndef_to_classic_task", 4096, NULL, 1, &nfc_to_classic_task_handle);
-                // if (tagPresent(0))
-                //     nfc_adapter_clean();
-                break;
-            case '4':
-                if (nfc_read_task_handle != NULL)
-                    vTaskDelete(nfc_read_task_handle);
-                if (nfc_write_task_handle != NULL)
-                    vTaskDelete(nfc_write_task_handle);
-                if (nfc_format_task_handle != NULL)
-                    vTaskDelete(nfc_format_task_handle);
-                if (nfc_to_classic_task_handle != NULL)
-                    vTaskDelete(nfc_to_classic_task_handle);
-                // if (tagPresent(0))
-                //     nfc_adapter_erase();
-                break;
-            }
+            char caseValue = keypad_buffer.elements[0];
+            nfc_task_handler(caseValue);
         }
-        // switch (current_state)
-        // {
-        // case STATE_IDLE:
-        //     // Wait until proximity is detected
-        //     xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
-        //     current_state = STATE_USER_DETECTED;
-        //     break;
+        /*
+        switch (current_state)
+        {
+        case STATE_IDLE:
+            // Wait until proximity is detected
+            xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
+            current_state = STATE_USER_DETECTED;
+            break;
 
-        // case STATE_USER_DETECTED:
-        //     // Wait until NFC data is read
-        //     xEventGroupWaitBits(event_group, NFC_READ_SUCCESS, pdTRUE, pdFALSE, portMAX_DELAY);
-        //     current_state = STATE_READING_NFC;
-        //     break;
+        case STATE_USER_DETECTED:
+            // Wait until NFC data is read
+            xEventGroupWaitBits(event_group, NFC_READ_SUCCESS, pdTRUE, pdFALSE, portMAX_DELAY);
+            current_state = STATE_READING_NFC;
+            break;
 
-        // case STATE_READING_NFC:
-        //     // Move to validation state after NFC read
-        //     current_state = STATE_VALIDATING;
-        //     break;
+        case STATE_READING_NFC:
+            // Move to validation state after NFC read
+            current_state = STATE_VALIDATING;
+            break;
 
-        // case STATE_VALIDATING:
-        //     // Wait until NFC validation completes
-        //     xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
-        //     current_state = STATE_DISPLAY_RESULT;
-        //     break;
+        case STATE_VALIDATING:
+            // Wait until NFC validation completes
+            xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
+            current_state = STATE_DISPLAY_RESULT;
+            break;
 
-        // case STATE_DISPLAY_RESULT:
-        //     // Result is displayed; transition back to idle state after showing result
-        //     current_state = STATE_IDLE;
-        //     break;
-        // }
+        case STATE_DISPLAY_RESULT:
+            // Result is displayed; transition back to idle state after showing result
+            current_state = STATE_IDLE;
+            break;
+        }*/
 
         vTaskDelay(pdMS_TO_TICKS(100)); // Small delay to prevent rapid state change
     }

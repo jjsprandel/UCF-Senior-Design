@@ -62,38 +62,38 @@ void blink_task(void *pvParameters)
     }
 }
 
-void nfc_init()
-{
-    pn532_spi_init(&nfc, PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
-    pn532_begin(&nfc);
+// void nfc_init()
+// {
+//     pn532_spi_init(&nfc, PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
+//     pn532_begin(&nfc);
 
-    uint32_t versiondata = pn532_getFirmwareVersion(&nfc);
-    if (!versiondata)
-    {
-        ESP_LOGI(INIT_TAG, "Didn't find PN53x board");
-        while (1)
-        {
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-    }
-    // Got ok data, print it out!
-    ESP_LOGI(INIT_TAG, "Found chip PN5 %lu", (versiondata >> 24) & 0xFF);
-    ESP_LOGI(INIT_TAG, "Firmware ver. %lu.%lu", (versiondata >> 16) & 0xFF, (versiondata >> 8) & 0xFF);
+//     uint32_t versiondata = pn532_getFirmwareVersion(&nfc);
+//     if (!versiondata)
+//     {
+//         ESP_LOGI(INIT_TAG, "Didn't find PN53x board");
+//         while (1)
+//         {
+//             vTaskDelay(1000 / portTICK_PERIOD_MS);
+//         }
+//     }
+//     // Got ok data, print it out!
+//     ESP_LOGI(INIT_TAG, "Found chip PN5 %lu", (versiondata >> 24) & 0xFF);
+//     ESP_LOGI(INIT_TAG, "Firmware ver. %lu.%lu", (versiondata >> 16) & 0xFF, (versiondata >> 8) & 0xFF);
 
-    // configure board to read RFID tags
-    bool success = pn532_SAMConfig(&nfc);
+//     // configure board to read RFID tags
+//     bool success = pn532_SAMConfig(&nfc);
 
-    if (!success)
-    {
-        ESP_LOGI("INIT_TAG", "SAMConfig failed");
-        while (1)
-        {
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-    }
+//     if (!success)
+//     {
+//         ESP_LOGI("INIT_TAG", "SAMConfig failed");
+//         while (1)
+//         {
+//             vTaskDelay(1000 / portTICK_PERIOD_MS);
+//         }
+//     }
 
-    ESP_LOGI(INIT_TAG, "Waiting for an ISO14443A Card ...");
-}
+//     ESP_LOGI(INIT_TAG, "Waiting for an ISO14443A Card ...");
+// }
 
 void build_tlv(char *userID)
 {
@@ -536,72 +536,6 @@ void nfc_read_task(void *pvParameters)
             // PN532 probably timed out waiting for a card
             ESP_LOGI(READ_TAG, "Timed out waiting for a card");
         }
-        vTaskDelay(5000 / portTICK_PERIOD_MS);
-    }
-}
-
-void ntag2xx_read_task(void *pvParameters)
-{
-    uint8_t success;
-    uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
-    uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
-
-    // Wait for an NTAG203 card.  When one is found 'uid' will be populated with
-    // the UID, and uidLength will indicate the size of the UUID (normally 7)
-    success = pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0);
-
-    if (success)
-    {
-        // Display some basic information about the card
-        ESP_LOGI(CARD_READER_TAG, "Found an ISO14443A card");
-        ESP_LOGI(CARD_READER_TAG, "  UID Length: %d bytes", uidLength);
-        ESP_LOGI(CARD_READER_TAG, "  UID Value:");
-        esp_log_buffer_hexdump_internal(CARD_READER_TAG, uid, uidLength, ESP_LOG_INFO);
-
-        if (uidLength == 7)
-        {
-            uint8_t data[32];
-
-            // We probably have an NTAG2xx card (though it could be Ultralight as well)
-            ESP_LOGI(CARD_READER_TAG, "Seems to be an NTAG2xx tag (7 byte UID)");
-
-            // NTAG2x3 cards have 39*4 bytes of user pages (156 user bytes),
-            // starting at page 4 ... larger cards just add pages to the end of
-            // this range:
-
-            // See: http://www.nxp.com/documents/short_data_sheet/NTAG203_SDS.pdf
-
-            // TAG Type       PAGES   USER START    USER STOP
-            // --------       -----   ----------    ---------
-            // NTAG 203       42      4             39
-            // NTAG 213       45      4             39
-            // NTAG 215       135     4             129
-            // NTAG 216       231     4             225
-
-            for (uint8_t i = 0; i < NTAG_215_PAGE_STOP; i++)
-            {
-                success = pn532_ntag2xx_ReadPage(&nfc, i, data);
-
-                // Display the current page number
-                ESP_LOGI(CARD_READER_TAG, "PAGE %c%d: ", (i < 10) ? '0' : ' ', i);
-
-                // Display the results, depending on 'success'
-                if (success)
-                {
-                    // Dump the page data
-                    esp_log_buffer_hexdump_internal(CARD_READER_TAG, data, 4, ESP_LOG_INFO);
-                }
-                else
-                {
-                    ESP_LOGI(CARD_READER_TAG, "Unable to read the requested page!");
-                }
-            }
-        }
-        else
-        {
-            ESP_LOGI(CARD_READER_TAG, "This doesn't seem to be an NTAG203 tag (UUID length != 7 bytes)!");
-        }
-
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 }
