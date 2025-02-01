@@ -30,8 +30,8 @@ function Dashboard() {
 
   useEffect(() => {
     const activityLogRef = ref(database, "activityLog");
-    const occupancyRef = ref(database, "occupancy");
-    const averageStayRef = ref(database, "average_stay");
+    const occupancyRef = ref(database, "stats/occupancy");
+    const averageStayRef = ref(database, "stats/average_stay");
 
     const unsubscribeActivityLog = onValue(activityLogRef, (snapshot) => {
       const activityLog = snapshot.val() || {};
