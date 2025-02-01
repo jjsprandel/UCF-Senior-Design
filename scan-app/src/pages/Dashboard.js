@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import { ref, onValue } from "firebase/database";
 import { database } from "../services/Firebase";
 import { Bar } from "react-chartjs-2";
@@ -27,11 +27,15 @@ function Dashboard() {
   const [occupancy, setOccupancy] = useState(0);
   const [averageStay, setAverageStay] = useState("0 hours");
   const [occupancyData, setOccupancyData] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState("UCF RWC");
 
   useEffect(() => {
     const activityLogRef = ref(database, "activityLog");
-    const occupancyRef = ref(database, "stats/occupancy");
-    const averageStayRef = ref(database, "stats/average_stay");
+    const occupancyRef = ref(database, `stats/occupancy/${selectedLocation}`);
+    const averageStayRef = ref(
+      database,
+      `stats/average_stay/${selectedLocation}`
+    );
 
     const unsubscribeActivityLog = onValue(activityLogRef, (snapshot) => {
       const activityLog = snapshot.val() || {};
@@ -80,7 +84,12 @@ function Dashboard() {
 
     const unsubscribeAverageStay = onValue(averageStayRef, (snapshot) => {
       const data = snapshot.val();
-      setAverageStay(data);
+      if (data && data.num_visits > 0) {
+        const averageStayTime = data.total_time / data.num_visits;
+        setAverageStay(averageStayTime.toFixed(2)); // Convert seconds to hours and format to 2 decimal places
+      } else {
+        setAverageStay("0");
+      }
     });
 
     // Cleanup subscriptions on unmount
@@ -89,7 +98,7 @@ function Dashboard() {
       unsubscribeOccupancy();
       unsubscribeAverageStay();
     };
-  }, []);
+  }, [selectedLocation]);
 
   const chartData = {
     labels: occupancyData.map((entry) => entry.time), // Assuming each entry has a 'time' field
@@ -135,15 +144,21 @@ function Dashboard() {
                   md={6}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <img
-                    src="/imgs/speed.png"
-                    alt="Description"
-                    className="img-fluid"
-                  />
+                  <Form.Control
+                    as="select"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                  >
+                    <option value="UCF RWC">UCF RWC</option>
+                    <option value="UCF Library">UCF Library</option>
+                    <option value="UCF Arena">UCF Arena</option>
+                    {/* Add more locations as needed */}
+                  </Form.Control>
                 </Col>
-              </Row>
-              <Row className="w-100 d-flex justify-content-center align-items-center">
-                <Col className="d-flex justify-content-center align-items-center">
+                <Col
+                  md={6}
+                  className="d-flex justify-content-center align-items-center"
+                >
                   <p>{occupancy}</p>
                 </Col>
               </Row>
