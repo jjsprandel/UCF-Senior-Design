@@ -19,6 +19,10 @@ function ActivityLog() {
             ...data[key],
           }))
         : [];
+
+      // Reverse the activity log array to display newer events at the top
+      activityLogArray.reverse();
+
       setActivityLog(activityLogArray);
     });
 
