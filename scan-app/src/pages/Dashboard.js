@@ -36,6 +36,7 @@ function Dashboard() {
       database,
       `stats/average_stay/${selectedLocation}`
     );
+    const histogramRef = ref(database, `stats/histogram/monday`);
 
     const unsubscribeActivityLog = onValue(activityLogRef, (snapshot) => {
       const activityLog = snapshot.val() || {};
@@ -92,11 +93,31 @@ function Dashboard() {
       }
     });
 
+    const unsubscribeHistogram = onValue(histogramRef, (snapshot) => {
+      const data = snapshot.val() || {};
+      const histogramDataArray = new Array(24)
+        .fill(0)
+        .map((_, hour) => data[hour] || 0);
+
+      // Convert to array format for charting
+      const formattedHistogramData = histogramDataArray.map((count, hour) => {
+        const period = hour >= 12 ? "PM" : "AM";
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        return {
+          time: `${formattedHour} ${period}`,
+          count,
+        };
+      });
+
+      setOccupancyData(formattedHistogramData);
+    });
+
     // Cleanup subscriptions on unmount
     return () => {
       unsubscribeActivityLog();
       unsubscribeOccupancy();
       unsubscribeAverageStay();
+      unsubscribeHistogram();
     };
   }, [selectedLocation]);
 
@@ -139,6 +160,18 @@ function Dashboard() {
           <Card className="mb-3 flex-grow-1">
             <Card.Header>Occupancy</Card.Header>
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+              <Row className="w-100 d-flex justify-content-center align-items-center">
+                <Col
+                  md={6}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <img
+                    src="/imgs/speed.png"
+                    alt="Description"
+                    className="img-fluid"
+                  />
+                </Col>
+              </Row>
               <Row className="w-100 d-flex justify-content-center align-items-center">
                 <Col
                   md={6}
