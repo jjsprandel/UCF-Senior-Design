@@ -214,7 +214,7 @@ function Dashboard() {
               </Row>
               <Row className="w-100 d-flex justify-content-center align-items-center">
                 <Col className="d-flex justify-content-center align-items-center">
-                  <p>{averageStay} hours</p>
+                  <p>{averageStay} minutes</p>
                 </Col>
               </Row>
             </Card.Body>
