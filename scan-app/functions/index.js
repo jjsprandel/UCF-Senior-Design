@@ -11,6 +11,7 @@
 // const logger = require("firebase-functions/logger");
 
 const { onValueWritten } = require("firebase-functions/v2/database");
+const { onSchedule } = require("firebase-functions/v2/scheduler");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
@@ -161,10 +162,28 @@ exports.updateOccupancy = onValueWritten(
   }
 );
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+exports.updateHourlyHistogram = onSchedule("every hour", async (event) => {
+  const db = admin.database();
+  const occupancyRef = db.ref("/stats/occupancy/UCF RWC"); // Change to your location key
+  const histogramRef = db.ref("/stats/histogram");
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+  try {
+    // Get the current occupancy
+    const occupancySnapshot = await occupancyRef.once("value");
+    const currentOccupancy = occupancySnapshot.val() || 0;
+    console.log("Current Occupancy:", currentOccupancy);
+
+    // Get the current time
+    const now = new Date();
+    const dayOfWeek = now.toLocaleString("en-US", { weekday: "long" }); // e.g., "Monday"
+    const hour = now.getHours(); // 0-23
+
+    // Update the histogram with occupancy for the current hour
+    await histogramRef.child(`${dayOfWeek}/${hour}`).set(currentOccupancy);
+    console.log(
+      `Updated histogram for ${dayOfWeek}, Hour ${hour}: ${currentOccupancy}`
+    );
+  } catch (error) {
+    console.error("Error updating hourly histogram:", error);
+  }
+});

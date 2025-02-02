@@ -1,0 +1,257 @@
+{
+  "activityLog": {
+    "20241103002907": {
+      "action": "Check-In",
+      "location": "UCF Library",
+      "timestamp": "20241103_002907",
+      "userId": "6942069420"
+    },
+    "20250201140315": {
+      "action": "Check-In",
+      "location": "UCF RWC",
+      "timestamp": "20250201_140315",
+      "userId": "6942069420"
+    },
+    "20250201181815": {
+      "action": "Check-In",
+      "location": "UCF RWC",
+      "timestamp": "20250201_181815",
+      "userId": "6942069420"
+    },
+    "20250201182715": {
+      "action": "Check-Out",
+      "location": "UCF RWC",
+      "timestamp": "20250201_182715",
+      "userId": "6942069420"
+    },
+    "20250201182815": {
+      "action": "Check-In",
+      "location": "UCF RWC",
+      "timestamp": "20250201_182815",
+      "userId": "6942069420"
+    },
+    "20250201203315": {
+      "action": "Check-Out",
+      "location": "UCF RWC",
+      "timestamp": "20250201_203315",
+      "userId": "6942069420"
+    },
+    "20250201204515": {
+      "action": "Check-In",
+      "location": "UCF RWC",
+      "timestamp": "20250201_204515",
+      "userId": "6942069420"
+    },
+    "20250201204615": {
+      "action": "Check-Out",
+      "location": "UCF RWC",
+      "timestamp": "20250201_204615",
+      "userId": "6942069420"
+    },
+    "20250201210000": {
+      "action": "Check-In",
+      "location": "UCF RWC",
+      "timestamp": "20250201_210000",
+      "userId": "6942069420"
+    },
+    "20250201223200": {
+      "action": "Check-Out",
+      "location": "UCF RWC",
+      "timestamp": "20250201_223200",
+      "userId": "6942069420"
+    }
+  },
+  "stats": {
+    "average_stay": {
+      "UCF Arena": {
+        "num_visits": 2,
+        "total_time": 6
+      },
+      "UCF Library": {
+        "num_visits": 2,
+        "total_time": 8
+      },
+      "UCF RWC": {
+        "num_visits": 3,
+        "total_time": 104
+      }
+    },
+    "histogram": {
+      "UCF Arena": {
+        "Friday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Monday": [
+          0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Saturday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Sunday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Thursday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Tuesday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Wednesday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      },
+      "UCF Library": {
+        "Friday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Monday": [
+          0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0,
+          0
+        ],
+        "Saturday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Sunday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Thursday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Tuesday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Wednesday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      },
+      "UCF RWC": {
+        "Friday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Monday": [
+          0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Saturday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Sunday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Thursday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Tuesday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "Wednesday": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    "occupancy": {
+      "UCF Arena": 486,
+      "UCF Library": 10,
+      "UCF RWC": 19
+    }
+  },
+  "users": {
+    "8552": {
+      "averageStayDuration": "",
+      "firstName": "deebo",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "9633": {
+      "averageStayDuration": "",
+      "firstName": "testy1",
+      "lastName": "tesy1",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "9663": {
+      "averageStayDuration": "",
+      "firstName": "newer",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "12334": {
+      "averageStayDuration": "",
+      "firstName": "",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "5387541": {
+      "activeStudent": true,
+      "checkInStatus": true,
+      "lastCheckInId": "checkIn_20241120_105129",
+      "lastCheckOutId": "checkOut_20241120_105113",
+      "passkey": "1234",
+      "role": "student"
+    },
+    "55443322": {
+      "averageStayDuration": "",
+      "firstName": "hi hi",
+      "lastName": "byebye",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHu-00pMxrfBQ_uwAOM": {
+      "averageStayDuration": "",
+      "firstName": "dre",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHu0Ii84L_m3i_oHPl5": {
+      "averageStayDuration": "",
+      "firstName": "bruh",
+      "lastName": "mcbruh",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHu0clKAP4tVgcdUkYe": {
+      "averageStayDuration": "",
+      "firstName": "Dre's Dad",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHu196azFrTY-Z0FUFE": {
+      "averageStayDuration": "",
+      "firstName": "teehee",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHu1S3YLKv4SaPqdgK7": {
+      "averageStayDuration": "",
+      "firstName": "dre",
+      "lastName": "hendy",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHu33Jof9UFRpDHTO2j": {
+      "averageStayDuration": "",
+      "firstName": "not dre",
+      "lastName": "",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "-OHxPBLF-ZKX2-5w962q": {
+      "averageStayDuration": "",
+      "firstName": "mr",
+      "lastName": "hendy",
+      "location": "",
+      "totalOccupancyTime": ""
+    },
+    "6942069420": {
+      "CheckInStatus": false,
+      "checkInStatus": false,
+      "lastCheckIn": "20250201_210000",
+      "lastCheckOut": "20250201_223200"
+    }
+  }
+}

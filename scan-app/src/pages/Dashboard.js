@@ -28,6 +28,7 @@ function Dashboard() {
   const [averageStay, setAverageStay] = useState("0 hours");
   const [occupancyData, setOccupancyData] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("UCF RWC");
+  const [selectedDay, setSelectedDay] = useState("Monday");
 
   useEffect(() => {
     const activityLogRef = ref(database, "activityLog");
@@ -36,7 +37,10 @@ function Dashboard() {
       database,
       `stats/average_stay/${selectedLocation}`
     );
-    const histogramRef = ref(database, `stats/histogram/monday`);
+    const histogramRef = ref(
+      database,
+      `stats/histogram/${selectedLocation}/${selectedDay}`
+    );
 
     const unsubscribeActivityLog = onValue(activityLogRef, (snapshot) => {
       const activityLog = snapshot.val() || {};
@@ -119,7 +123,7 @@ function Dashboard() {
       unsubscribeAverageStay();
       unsubscribeHistogram();
     };
-  }, [selectedLocation]);
+  }, [selectedLocation, selectedDay]);
 
   const chartData = {
     labels: occupancyData.map((entry) => entry.time), // Assuming each entry has a 'time' field
@@ -226,6 +230,26 @@ function Dashboard() {
           <Card className="mb-3 flex-grow-1">
             <Card.Header>Occupancy Histogram</Card.Header>
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+              <Row className="w-100 d-flex justify-content-center align-items-center">
+                <Col
+                  md={6}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <Form.Control
+                    as="select"
+                    value={selectedDay}
+                    onChange={(e) => setSelectedDay(e.target.value)}
+                  >
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </Form.Control>
+                </Col>
+              </Row>
               <Bar data={chartData} options={chartOptions} />
             </Card.Body>
           </Card>
