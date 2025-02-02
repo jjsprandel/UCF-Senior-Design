@@ -28,7 +28,21 @@ function Dashboard() {
   const [averageStay, setAverageStay] = useState("0 hours");
   const [occupancyData, setOccupancyData] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("UCF RWC");
-  const [selectedDay, setSelectedDay] = useState("Monday");
+
+  // Get the current day of the week
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const currentDay = daysOfWeek[new Date().getDay()];
+  const [selectedDay, setSelectedDay] = useState(currentDay);
+
+  // const [selectedDay, setSelectedDay] = useState("Monday");
 
   useEffect(() => {
     const activityLogRef = ref(database, "activityLog");
@@ -181,21 +195,6 @@ function Dashboard() {
                   md={6}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <Form.Control
-                    as="select"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                  >
-                    <option value="UCF RWC">UCF RWC</option>
-                    <option value="UCF Library">UCF Library</option>
-                    <option value="UCF Arena">UCF Arena</option>
-                    {/* Add more locations as needed */}
-                  </Form.Control>
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-center align-items-center"
-                >
                   <p>{occupancy}</p>
                 </Col>
               </Row>
@@ -232,7 +231,34 @@ function Dashboard() {
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
               <Row className="w-100 d-flex justify-content-center align-items-center">
                 <Col
-                  md={6}
+                  md={2}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <Form.Label>Location:</Form.Label>
+                </Col>
+                <Col
+                  md={3}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <Form.Control
+                    as="select"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                  >
+                    <option value="UCF RWC">UCF RWC</option>
+                    <option value="UCF Library">UCF Library</option>
+                    <option value="UCF Arena">UCF Arena</option>
+                    {/* Add more locations as needed */}
+                  </Form.Control>
+                </Col>
+                <Col
+                  md={2}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <Form.Label>Week Day:</Form.Label>
+                </Col>
+                <Col
+                  md={3}
                   className="d-flex justify-content-center align-items-center"
                 >
                   <Form.Control
@@ -249,6 +275,7 @@ function Dashboard() {
                     <option value="Sunday">Sunday</option>
                   </Form.Control>
                 </Col>
+                <Col md={2}></Col>
               </Row>
               <Bar data={chartData} options={chartOptions} />
             </Card.Body>
