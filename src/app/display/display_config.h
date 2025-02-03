@@ -14,7 +14,6 @@
 #define EXAMPLE_LCD_BK_LIGHT_OFF_LEVEL !EXAMPLE_LCD_BK_LIGHT_ON_LEVEL
 #define EXAMPLE_PIN_NUM_SCLK 10
 #define EXAMPLE_PIN_NUM_MOSI 7
-#define EXAMPLE_PIN_NUM_MISO 2
 #define EXAMPLE_PIN_NUM_LCD_DC 18
 #define EXAMPLE_PIN_NUM_LCD_RST 11 // Will need to change this to a different pin
 #define EXAMPLE_PIN_NUM_LCD_CS 15
@@ -36,6 +35,7 @@
 #define EXAMPLE_LVGL_TASK_PRIORITY 2
 
 #define CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01 1
+// #define DISPLAY_CONFIG_DEBUG
 
 /*
 // 'SCAN logo', 128x128px
@@ -174,7 +174,7 @@ void example_lvgl_port_update_callback(lv_display_t *disp);
 void example_lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map);
 void example_increase_lvgl_tick(void *arg);
 void example_lvgl_port_task(void *arg);
-lv_display_t *gc9a01_init();
+void gc9a01_init();
 void display_test(void *pvParameters);
 void display_test_1(void *pvParameters);
 

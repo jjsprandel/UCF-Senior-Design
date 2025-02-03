@@ -19,6 +19,7 @@
 #define TIMER_DEVIDER 16
 
 #define KEYPAD_ADDRESS 0x20
+#define KEYPAD_TAG "keypad_driver"
 
 typedef struct
 {

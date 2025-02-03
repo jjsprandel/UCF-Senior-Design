@@ -8,6 +8,10 @@
 */
 #include "keypad_driver.h"
 
+#define KEYPAD_DEBUG
+
+extern bool keypadEnteredFlag;
+
 char keypad_array[4][4] = {
     "123A",
     "456B",
@@ -125,12 +129,18 @@ void keypad_handler(void *params)
         case '*':
             keypad_buffer.occupied -= 1;
             (keypad_buffer.elements)[keypad_buffer.occupied] = '\0';
-            printf("Buffer Cleared\n");
+
+#ifdef KEYPAD_DEBUG
+            ESP_LOGI(KEYPAD_TAG, "Buffer Cleared");
+#endif
             prev_time = curr_time;
             break;
         case '#':
-            printf("[Buffer]> %s \n", keypad_buffer.elements);
-            // clear_buffer();
+            keypadEnteredFlag = true;
+#ifdef KEYPAD_DEBUG
+            ESP_LOGI(KEYPAD_TAG, "[Buffer]> %s", keypad_buffer.elements);
+            ESP_LOGI(KEYPAD_TAG, "Setting keypadEnteredFlag to %d", keypadEnteredFlag);
+#endif
             prev_time = curr_time;
             break;
         case '\0':

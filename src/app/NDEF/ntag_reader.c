@@ -1,5 +1,6 @@
 #include "ntag_reader.h"
 
+#define NTAG_DEBUG_EN
 void nfc_init()
 {
     pn532_spi_init(&nfc, PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
@@ -165,6 +166,149 @@ void ntag2xx_memory_dump_task(void *pvParameters)
         }
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
+}
+
+bool read_user_id(char *outText)
+{
+    uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
+    uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
+    uint8_t dataLength;
+    uint8_t pageBuffer[4];
+    uint8_t pageHeader[12];
+
+    // int messageLength, ndefStartIndex, bufferSize;
+    // Wait for an NTAG203 card.  When one is found 'uid' will be populated with
+    // the UID, and uidLength will indicate the size of the UUID (normally 7)
+
+    if (pn532_readPassiveTargetID(&nfc, PN532_MIFARE_ISO14443A, uid, &uidLength, 0))
+    {
+#ifdef DISPLAY_TARGET_ID_EN
+        // Display some basic information about the card
+        ESP_LOGI(CARD_READER_TAG, "Found an ISO14443A card");
+        ESP_LOGI(CARD_READER_TAG, "  UID Length: %d bytes, UID Value:", uidLength);
+        esp_log_buffer_hexdump_internal(CARD_READER_TAG, uid, uidLength, ESP_LOG_INFO);
+#endif
+
+        if (uidLength == 7)
+        {
+            uint8_t data[32];
+#ifdef NTAG_DEBUG_EN
+            ESP_LOGI(CARD_READER_TAG, "Seems to be an NTAG2xx tag (7 byte UID)");
+#endif
+            // 3.) Check if the NDEF Capability Container (CC) bits are already set
+            // in OTP memory (page 3)
+
+            memset(data, 0, 4);
+            memset(pageBuffer, 0, 4);
+            memset(pageHeader, 0, 12);
+
+            if (!pn532_ntag2xx_ReadPage(&nfc, 3, data))
+            {
+#ifdef NTAG_DEBUG_EN
+                ESP_LOGI(CARD_READER_TAG, "Unable to read the Capability Container (page 3)");
+#endif
+                vTaskDelete(NULL);
+            }
+            else
+            {
+                // If the tag has already been formatted as NDEF, byte 0 should be:
+                // Byte 0 = Magic Number (0xE1)
+                // Byte 1 = NDEF Version (Should be 0x10)
+                // Byte 2 = Data Area Size (value * 8 bytes)
+                // Byte 3 = Read/Write Access (0x00 for full read and write)
+                if (!((data[0] == 0xE1) && (data[1] == 0x10)))
+                {
+#ifdef NTAG_DEBUG_EN
+                    ESP_LOGI(CARD_READER_TAG, "This doesn't seem to be an NDEF formatted tag.");
+                    ESP_LOGI(CARD_READER_TAG, "Page 3 should start with 0xE1 0x10.");
+#endif
+                }
+                else
+                {
+                    // 4.) Determine and display the data area size
+                    dataLength = data[2] * 8;
+#ifdef NTAG_DEBUG_EN
+                    ESP_LOGI(CARD_READER_TAG, "Tag is NDEF formatted. Data area size = %d bytes", dataLength);
+#endif
+                }
+            } // End of CC check
+
+            for (uint8_t i = 0; i < 3; i++)
+            {
+                if (!pn532_ntag2xx_ReadPage(&nfc, i + 4, pageBuffer))
+                {
+#ifdef NTAG_DEBUG_EN
+                    ESP_LOGI(CARD_READER_TAG, "Unable to read page %d", i);
+#endif
+                }
+                memcpy(pageHeader + (i * 4), pageBuffer, 4);
+            }
+
+            if (pageHeader[5] != 0x03)
+            {
+#ifdef NTAG_DEBUG_EN
+                ESP_LOGI(CARD_READER_TAG, "This doesn't seem to be a valid NDEF Message. Tag field is %x, should be 0x03", pageHeader[5]);
+#endif
+            }
+
+            uint8_t payloadLength = pageHeader[6] - 5;
+
+            if (pageHeader[8] != 0x01 || pageHeader[10] != NDEF_TEXT_RECORD_TYPE)
+            {
+#ifdef NTAG_DEBUG_EN
+                ESP_LOGI(CARD_READER_TAG, "This doesn't seem to be a valid TEXT record");
+                ESP_LOGI(CARD_READER_TAG, "Record Length: %x, Record Type: %x", pageHeader[8], pageHeader[10]);
+#endif
+            }
+
+            uint8_t langCodeLen = pageHeader[11];                // 0x02 for language encoding
+            uint8_t textLen = payloadLength - (1 + langCodeLen); // Subtract encoding info byte
+            if (textLen >= MAX_ID_LEN)
+            {
+                textLen = MAX_ID_LEN - 1; // Prevent buffer overflow
+            }
+
+            uint8_t currentPage = 7;
+            uint8_t bytesRead = 0;
+            uint8_t textPayload[MAX_ID_LEN];
+            memset(textPayload, 0, MAX_ID_LEN);
+
+            while (bytesRead < textLen + langCodeLen + 1)
+            {
+                if (!pn532_ntag2xx_ReadPage(&nfc, currentPage, pageBuffer))
+                {
+#ifdef NTAG_DEBUG_EN
+                    ESP_LOGI(CARD_READER_TAG, "Unable to read page %d", currentPage);
+#endif
+                }
+                uint8_t bytesToCopy = ((textLen + langCodeLen + 1) - bytesRead < 4) ? ((textLen + langCodeLen + 1) - bytesRead) : 4;
+                memcpy(&textPayload[bytesRead], pageBuffer, bytesToCopy);
+
+                bytesRead += bytesToCopy;
+                currentPage++;
+            }
+
+            // Copy only the text portion (skip the lang code)
+            // char outText[textLen];
+            memcpy(outText, textPayload + langCodeLen, textLen);
+            outText[textLen] = '\0'; // Null-terminate the string
+                                     // #ifdef NTAG_DEBUG_EN
+            ESP_LOGI(CARD_READER_TAG, "Received NDEF Message %s and transmitting", outText);
+            esp_log_buffer_hexdump_internal(CARD_READER_TAG, outText, textLen, ESP_LOG_INFO);
+            return true;
+            // #endif
+            // xTaskNotify(id_receiver_task_handle, outText, eSetValueWithOverwrite); // Transmit ID to receiver task
+            // vTaskDelete(NULL);
+        }
+        else
+        {
+
+#ifdef NTAG_DEBUG_EN
+            ESP_LOGI(CARD_READER_TAG, "This doesn't seem to be an NTAG203 tag (UUID length != 7 bytes)!");
+#endif
+        }
+    }
+    return false;
 }
 
 void ntag2xx_read_user_id_task(void *pvParameters)

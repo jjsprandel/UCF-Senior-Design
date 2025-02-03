@@ -23,6 +23,7 @@ static const char *DISPLAY_TAG = "example";
 
 // // LVGL library is not thread-safe, this example will call LVGL APIs from different tasks, so use a mutex to protect it
 extern _lock_t lvgl_api_lock;
+extern lv_display_t *display;
 
 bool example_notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io_event_data_t *edata, void *user_ctx)
 {
@@ -84,7 +85,9 @@ void example_increase_lvgl_tick(void *arg)
 
 void example_lvgl_port_task(void *arg)
 {
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Starting LVGL task");
+#endif
     uint32_t time_till_next_ms = 0;
     uint32_t time_threshold_ms = 1000 / CONFIG_FREERTOS_HZ;
     while (1)
@@ -98,15 +101,16 @@ void example_lvgl_port_task(void *arg)
     }
 }
 
-lv_display_t *gc9a01_init()
+void gc9a01_init()
 {
     // ESP_LOGI(DISPLAY_TAG, "Turn off LCD backlight");
     // gpio_config_t bk_gpio_config = {
     //     .mode = GPIO_MODE_OUTPUT,
     //     .pin_bit_mask = 1ULL << EXAMPLE_PIN_NUM_BK_LIGHT};
     // ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));
-
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Initialize SPI bus");
+#endif
     spi_bus_config_t buscfg = {
         .sclk_io_num = EXAMPLE_PIN_NUM_SCLK,
         .mosi_io_num = EXAMPLE_PIN_NUM_MOSI,
@@ -116,8 +120,9 @@ lv_display_t *gc9a01_init()
         .max_transfer_sz = EXAMPLE_LCD_H_RES * 80 * sizeof(uint16_t),
     };
     ESP_ERROR_CHECK(spi_bus_initialize(EXAMPLE_LCD_HOST, &buscfg, SPI_DMA_CH_AUTO));
-
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Install panel IO");
+#endif
     esp_lcd_panel_io_handle_t io_handle = NULL;
     esp_lcd_panel_io_spi_config_t io_config = {
         .dc_gpio_num = EXAMPLE_PIN_NUM_LCD_DC,
@@ -141,7 +146,9 @@ lv_display_t *gc9a01_init()
     ESP_LOGI(DISPLAY_TAG, "Install ILI9341 panel driver");
     ESP_ERROR_CHECK(esp_lcd_new_panel_ili9341(io_handle, &panel_config, &panel_handle));
 #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Install GC9A01 panel driver");
+#endif
     ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &panel_config, &panel_handle));
 #endif
 
@@ -157,12 +164,13 @@ lv_display_t *gc9a01_init()
 
     // ESP_LOGI(DISPLAY_TAG, "Turn on LCD backlight");
     // gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL);
-
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Initialize LVGL library");
+#endif
     lv_init();
 
     // create a lvgl display
-    lv_display_t *display = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
+    display = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
 
     // alloc draw buffers used by LVGL
     // it's recommended to choose the size of the draw buffer(s) to be at least 1/10 screen sized
@@ -180,8 +188,9 @@ lv_display_t *gc9a01_init()
     lv_display_set_color_format(display, LV_COLOR_FORMAT_RGB565);
     // set the callback which can copy the rendered image to an area of the display
     lv_display_set_flush_cb(display, example_lvgl_flush_cb);
-
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Install LVGL tick timer");
+#endif
     // Tick interface for LVGL (using esp_timer to generate 2ms periodic event)
     const esp_timer_create_args_t lvgl_tick_timer_args = {
         .callback = &example_increase_lvgl_tick,
@@ -189,8 +198,9 @@ lv_display_t *gc9a01_init()
     esp_timer_handle_t lvgl_tick_timer = NULL;
     ESP_ERROR_CHECK(esp_timer_create(&lvgl_tick_timer_args, &lvgl_tick_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, EXAMPLE_LVGL_TICK_PERIOD_MS * 1000));
-
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Register io panel event callback for LVGL flush ready notification");
+#endif
     const esp_lcd_panel_io_callbacks_t cbs = {
         .on_color_trans_done = example_notify_lvgl_flush_ready,
     };
@@ -228,18 +238,18 @@ lv_display_t *gc9a01_init()
     lv_indev_set_user_data(indev, tp);
     lv_indev_set_read_cb(indev, example_lvgl_touch_cb);
 #endif
-    return display;
 }
 
 void display_test(void *pvParameters)
 {
-    lv_display_t *display = gc9a01_init();
-
+    gc9a01_init();
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Create LVGL task");
+#endif
     xTaskCreate(example_lvgl_port_task, "LVGL", EXAMPLE_LVGL_TASK_STACK_SIZE, NULL, EXAMPLE_LVGL_TASK_PRIORITY, NULL);
-
+#ifdef DISPLAY_CONFIG_DEBUG
     ESP_LOGI(DISPLAY_TAG, "Display LVGL Meter Widget");
-
+#endif
     // Lock the mutex due to the LVGL APIs are not thread-safe
     _lock_acquire(&lvgl_api_lock);
     example_lvgl_demo_ui(display);

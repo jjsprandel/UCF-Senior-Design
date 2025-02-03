@@ -10,8 +10,8 @@
 #define INIT_TAG "PN532 Initialization"
 
 // SPI Pin Configuration
-#define PN532_SCK 10
-#define PN532_MOSI 7
+#define PN532_SCK 21  // 10
+#define PN532_MOSI 22 // 7
 #define PN532_SS 20
 #define PN532_MISO 2
 
@@ -35,6 +35,7 @@ void kill_all_nfc_tasks();
 bool kill_task(TaskHandle_t *task_handle);
 void nfc_task_handler(char caseValue);
 void ntag_write_text_task(void *pvParameters);
+bool read_user_id(char *outText);
 void ntag2xx_read_user_id_task(void *pvParameters);
 void ntag2xx_memory_dump_task(void *pvParameters);
 void ntag_erase_task(void *pvParameters);
