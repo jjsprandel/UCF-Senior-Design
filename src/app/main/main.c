@@ -20,6 +20,7 @@
 // #include "display.h"
 // #include "gc9a01.h"
 // #include "lvgl_demo_ui.h"
+#include "display_config.h"
 #include "display_frames.h"
 #include "main.h"
 
@@ -46,6 +47,7 @@ SemaphoreHandle_t wifi_init_semaphore = NULL; // Semaphore to signal Wi-Fi init 
 static uint8_t s_led_state = 0;
 
 static led_strip_handle_t led_strip;
+_lock_t lvgl_api_lock;
 
 // pn532_t nfc;                   // Defined in ntag_reader.c
 // keypad_buffer_t keypad_buffer; // Defined in keypad_driver.c
@@ -185,10 +187,46 @@ static void configure_led(void)
 //     ESP_LOGI(TAG, "State control task finished"); // Should not reach here unless task is deleted
 // }
 
+TaskHandle_t lvgl_port_task_handle = NULL;
+
 void app_main(void)
 {
     ESP_LOGI(TAG, "App Main Start");
-    xTaskCreate(display_test, "display_test", 4096, NULL, 1, NULL);
+
+    lv_display_t *display = gc9a01_init();
+
+    ESP_LOGI(TAG, "Create LVGL task");
+    xTaskCreate(example_lvgl_port_task, "LVGL", EXAMPLE_LVGL_TASK_STACK_SIZE, NULL, EXAMPLE_LVGL_TASK_PRIORITY, &lvgl_port_task_handle);
+
+    ESP_LOGI(TAG, "Display LVGL Meter Widget");
+    lv_obj_t *disp_obj;
+
+    _lock_acquire(&lvgl_api_lock);
+    disp_obj = display_idle(display);
+    _lock_release(&lvgl_api_lock);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    lv_obj_delete(disp_obj);
+
+    _lock_acquire(&lvgl_api_lock);
+    disp_obj = display_check_in_failed(display);
+    _lock_release(&lvgl_api_lock);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    lv_obj_delete(disp_obj);
+
+    _lock_acquire(&lvgl_api_lock);
+    disp_obj = display_check_in_success(display);
+    _lock_release(&lvgl_api_lock);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    lv_obj_delete(disp_obj);
+
+    _lock_acquire(&lvgl_api_lock);
+    disp_obj = display_transmitting(display);
+    _lock_release(&lvgl_api_lock);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+
+    vTaskDelete(lvgl_port_task_handle);
+    lvgl_port_task_handle = NULL;
+
     ESP_LOGI(TAG, "App Main End");
 
     // // Initialize NVS
@@ -237,30 +275,30 @@ typedef enum
 // static state_t current_state = STATE_IDLE;
 
 // // Task to handle proximity sensor
-// void proximity_task(void *param)
-// {
-//     while (1)
-//     {
-//         if (proximity_sensor_detected())
-//         {
-//             xEventGroupSetBits(event_group, PROXIMITY_DETECTED);
-//         }
-//         vTaskDelay(pdMS_TO_TICKS(500)); // Check every 500 ms
-//     }
-// }
+void proximity_task(void *param)
+{
+    while (1)
+    {
+        if (proximity_sensor_detected())
+        {
+            xEventGroupSetBits(event_group, PROXIMITY_DETECTED);
+        }
+        vTaskDelay(pdMS_TO_TICKS(500)); // Check every 500 ms
+    }
+}
 
 // // Task to handle NFC reading
-// void nfc_task(void *param)
-// {
-//     while (1)
-//     {
-//         xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
-//         if (nfc_read_data())
-//         {
-//             xEventGroupSetBits(event_group, NFC_READ_SUCCESS);
-//         }
-//     }
-// }
+void nfc_task(void *param)
+{
+    while (1)
+    {
+        xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
+        if (nfc_read_data())
+        {
+            xEventGroupSetBits(event_group, NFC_READ_SUCCESS);
+        }
+    }
+}
 
 // // Task to validate NFC data online
 // void validation_task(void *param)
@@ -285,77 +323,71 @@ typedef enum
 //     vTaskDelete(NULL);
 // }
 
-// // Task to update the display based on validation result
-// void display_task(void *param)
-// {
-//     while (1)
-//     {
-//         xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
-//         display_show_result(true);       // Show success
-//         vTaskDelay(pdMS_TO_TICKS(5000)); // Display result for 5 seconds
-//         current_state = STATE_IDLE;
-//     }
-// }
+// Task to update the display based on validation result
+void display_task(void *param)
+{
+    while (1)
+    {
+        xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
+        display_show_result(true);       // Show success
+        vTaskDelay(pdMS_TO_TICKS(5000)); // Display result for 5 seconds
+        current_state = STATE_IDLE;
+    }
+}
 
 // Main State Machine
-// void app_main(void)
-// {
+void app_main(void)
+{
 
-//     // Initialize event group
-//     // event_group = xEventGroupCreate();
+    // Initialize event group
+    event_group = xEventGroupCreate();
 
-//     // Initialize hardware and network
-//     i2c_master_init();
-//     nfc_init();
-//     // display_init();
-//     // wifi_init();
-//     // sensor_init();
-//     // Create tasks
-//     // xTaskCreate(proximity_task, "Proximity Task", 2048, NULL, 1, NULL);
-//     xTaskCreate(keypad_handler, "keypad_handler", 4096, NULL, 1, NULL);
+    // Initialize hardware and network
+    i2c_master_init();
+    nfc_init();
+    display_init();
+    wifi_init();
+    sensor_init();
 
-//     // xTaskCreate(validation_task, "Validation Task", 4096, NULL, 1, NULL);
-//     // xTaskCreate(display_task, "Display Task", 2048, NULL, 1, NULL);
+    // Create tasks
+    xTaskCreate(proximity_task, "Proximity Task", 2048, NULL, 1, NULL);
+    xTaskCreate(keypad_handler, "keypad_handler", 4096, NULL, 1, NULL);
+    // xTaskCreate(validation_task, "Validation Task", 4096, NULL, 1, NULL);
+    xTaskCreate(display_task, "Display Task", 2048, NULL, 1, NULL);
 
-//     while (1)
-//     {
-//         if (keypad_buffer.occupied > 0)
-//         {
-//             char caseValue = keypad_buffer.elements[0];
-//             nfc_task_handler(caseValue);
-//         }
-//         /*
-//         switch (current_state)
-//         {
-//         case STATE_IDLE:
-//             // Wait until proximity is detected
-//             xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
-//             current_state = STATE_USER_DETECTED;
-//             break;
+    while (1)
+    {
+        switch (current_state)
+        {
+        case STATE_IDLE:
+            // Wait until proximity is detected
+            xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
+            current_state = STATE_USER_DETECTED;
+            break;
 
-//         case STATE_USER_DETECTED:
-//             // Wait until NFC data is read
-//             xEventGroupWaitBits(event_group, NFC_READ_SUCCESS, pdTRUE, pdFALSE, portMAX_DELAY);
-//             current_state = STATE_READING_NFC;
-//             break;
+        case STATE_USER_DETECTED:
+            // Wait until NFC data is read
+            xEventGroupWaitBits(event_group, NFC_READ_SUCCESS, pdTRUE, pdFALSE, portMAX_DELAY);
+            current_state = STATE_READING_NFC;
+            break;
 
-//         case STATE_READING_NFC:
-//             // Move to validation state after NFC read
-//             current_state = STATE_VALIDATING;
-//             break;
+        case STATE_READING_NFC:
+            // Move to validation state after NFC read
+            current_state = STATE_VALIDATING;
+            break;
 
-//         case STATE_VALIDATING:
-//             // Wait until NFC validation completes
-//             xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
-//             current_state = STATE_DISPLAY_RESULT;
-//             break;
+        case STATE_VALIDATING:
+            // Wait until NFC validation completes
+            xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
+            current_state = STATE_DISPLAY_RESULT;
+            break;
 
-//         case STATE_DISPLAY_RESULT:
-//             // Result is displayed; transition back to idle state after showing result
-//             current_state = STATE_IDLE;
-//             break;
-//         }*/
+        case STATE_DISPLAY_RESULT:
+            // Result is displayed; transition back to idle state after showing result
+            current_state = STATE_IDLE;
+            break;
+        }
 
-//         vTaskDelay(pdMS_TO_TICKS(100)); // Small delay to prevent rapid state change
-//     }
-// }
+        vTaskDelay(pdMS_TO_TICKS(100)); // Small delay to prevent rapid state change
+    }
+}

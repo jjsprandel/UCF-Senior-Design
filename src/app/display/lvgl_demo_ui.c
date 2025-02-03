@@ -6,7 +6,7 @@
 
 // This demo UI is adapted from LVGL official example: https://docs.lvgl.io/master/examples.html#loader-with-arc
 
-#include "lvgl.h"
+#include "lvgl_demo_ui.h"
 
 static lv_obj_t *btn;
 static lv_display_rotation_t rotation = LV_DISP_ROTATION_0;
