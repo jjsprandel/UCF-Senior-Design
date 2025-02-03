@@ -11,17 +11,23 @@
 #include "led_strip.h"
 #include "sdkconfig.h"
 #include "nvs_flash.h"
-#include "ntag_reader.h"
-#include "pn532.h"
+// #include "ntag_reader.h"
+// #include "pn532.h"
 #include "esp_heap_task_info.h"
-#include "keypad_driver.h"
+// #include "keypad_driver.h"
 // #include "wifi_init.h"
 // #include "ota.h"
+// #include "display.h"
+// #include "gc9a01.h"
+// #include "lvgl_demo_ui.h"
+#include "display_frames.h"
 #include "main.h"
 
 static const char *TAG = "MAIN";
 
-Define states typedef enum {
+// Define states
+typedef enum
+{
     STATE_WIFI_INIT,
     STATE_WIFI_READY,
     STATE_ERROR,
@@ -41,8 +47,8 @@ static uint8_t s_led_state = 0;
 
 static led_strip_handle_t led_strip;
 
-pn532_t nfc;                   // Defined in ntag_reader.c
-keypad_buffer_t keypad_buffer; // Defined in keypad_driver.c
+// pn532_t nfc;                   // Defined in ntag_reader.c
+// keypad_buffer_t keypad_buffer; // Defined in keypad_driver.c
 
 void blink_led_task(void *pvParameter)
 {
@@ -101,114 +107,116 @@ static void configure_led(void)
     led_strip_clear(led_strip);
 }
 
-// Function to control state transitions and task management
-void state_control_task(void *pvParameter)
-{
-    while (1)
-    {
-        // ESP_LOGI("Memory", "Free heap size: %lu bytes", (unsigned long)esp_get_free_heap_size());
+// // Function to control state transitions and task management
+// void state_control_task(void *pvParameter)
+// {
+//     while (1)
+//     {
+//         // ESP_LOGI("Memory", "Free heap size: %lu bytes", (unsigned long)esp_get_free_heap_size());
 
-        switch (current_state)
-        {
-        case STATE_WIFI_INIT:
-            // Start Wi-Fi init task if not already started
-            if (wifi_init_task_handle == NULL)
-            {
-                ESP_LOGI(TAG, "Starting Wi-Fi Init Task");
-                xTaskCreate(wifi_init_task, "wifi_init_task", 4096, NULL, 4, &wifi_init_task_handle);
-            }
+//         switch (current_state)
+//         {
+//         case STATE_WIFI_INIT:
+//             // Start Wi-Fi init task if not already started
+//             if (wifi_init_task_handle == NULL)
+//             {
+//                 ESP_LOGI(TAG, "Starting Wi-Fi Init Task");
+//                 xTaskCreate(wifi_init_task, "wifi_init_task", 4096, NULL, 4, &wifi_init_task_handle);
+//             }
 
-            // Start LED blinking task if not already running
-            if (blink_led_task_handle == NULL)
-            {
-                ESP_LOGI(TAG, "Starting Blink LED Task");
-                xTaskCreate(blink_led_task, "blink_led_task", 1024, NULL, 2, &blink_led_task_handle);
-            }
+//             // Start LED blinking task if not already running
+//             if (blink_led_task_handle == NULL)
+//             {
+//                 ESP_LOGI(TAG, "Starting Blink LED Task");
+//                 xTaskCreate(blink_led_task, "blink_led_task", 1024, NULL, 2, &blink_led_task_handle);
+//             }
 
-            // Check if Wi-Fi init is completed (signaled by semaphore)
-            if (xSemaphoreTake(wifi_init_semaphore, portMAX_DELAY) == pdTRUE)
-            {
-                current_state = STATE_WIFI_READY; // Transition state outside of the task
-            }
+//             // Check if Wi-Fi init is completed (signaled by semaphore)
+//             if (xSemaphoreTake(wifi_init_semaphore, portMAX_DELAY) == pdTRUE)
+//             {
+//                 current_state = STATE_WIFI_READY; // Transition state outside of the task
+//             }
 
-            break;
+//             break;
 
-        case STATE_WIFI_READY:
-            // Stop Wi-Fi task when ready
-            if (wifi_init_task_handle != NULL)
-            {
-                vTaskDelete(wifi_init_task_handle);
-                wifi_init_task_handle = NULL;
-            }
-            // ESP_LOGI(TAG, "Wi-Fi Initialized. Ready!");
+//         case STATE_WIFI_READY:
+//             // Stop Wi-Fi task when ready
+//             if (wifi_init_task_handle != NULL)
+//             {
+//                 vTaskDelete(wifi_init_task_handle);
+//                 wifi_init_task_handle = NULL;
+//             }
+//             // ESP_LOGI(TAG, "Wi-Fi Initialized. Ready!");
 
-            // if (blink_led_task_handle != NULL) {
-            //     vTaskDelete(blink_led_task_handle);
-            //     blink_led_task_handle = NULL;
-            // }
+//             // if (blink_led_task_handle != NULL) {
+//             //     vTaskDelete(blink_led_task_handle);
+//             //     blink_led_task_handle = NULL;
+//             // }
 
-            if (ota_update_task_handle == NULL)
-            {
-                ESP_LOGI(TAG, "Creating OTA update task");
-                xTaskCreate(ota_update_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &ota_update_task_handle);
-            }
+//             if (ota_update_task_handle == NULL)
+//             {
+//                 ESP_LOGI(TAG, "Creating OTA update task");
+//                 xTaskCreate(ota_update_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &ota_update_task_handle);
+//             }
 
-            break;
+//             break;
 
-        case STATE_ERROR:
-            // Handle error state - for now just stopping all tasks
-            if (wifi_init_task_handle != NULL)
-            {
-                vTaskDelete(wifi_init_task_handle);
-                wifi_init_task_handle = NULL;
-            }
-            if (blink_led_task_handle != NULL)
-            {
-                vTaskDelete(blink_led_task_handle);
-                blink_led_task_handle = NULL;
-            }
-            ESP_LOGE(TAG, "Error state reached!");
-            break;
+//         case STATE_ERROR:
+//             // Handle error state - for now just stopping all tasks
+//             if (wifi_init_task_handle != NULL)
+//             {
+//                 vTaskDelete(wifi_init_task_handle);
+//                 wifi_init_task_handle = NULL;
+//             }
+//             if (blink_led_task_handle != NULL)
+//             {
+//                 vTaskDelete(blink_led_task_handle);
+//                 blink_led_task_handle = NULL;
+//             }
+//             ESP_LOGE(TAG, "Error state reached!");
+//             break;
 
-        default:
-            ESP_LOGW(TAG, "Unknown state encountered: %d", current_state);
-            break;
-        }
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-    }
-    ESP_LOGI(TAG, "State control task finished"); // Should not reach here unless task is deleted
-}
+//         default:
+//             ESP_LOGW(TAG, "Unknown state encountered: %d", current_state);
+//             break;
+//         }
+//         vTaskDelay(500 / portTICK_PERIOD_MS);
+//     }
+//     ESP_LOGI(TAG, "State control task finished"); // Should not reach here unless task is deleted
+// }
 
 void app_main(void)
 {
     ESP_LOGI(TAG, "App Main Start");
+    xTaskCreate(display_test, "display_test", 4096, NULL, 1, NULL);
+    ESP_LOGI(TAG, "App Main End");
 
-    // Initialize NVS
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-    {
-        // 1.OTA app partition table has a smaller NVS partition size than the non-OTA
-        // partition table. This size mismatch may cause NVS initialization to fail.
-        // 2.NVS partition contains data in new format and cannot be recognized by this version of code.
-        // If this happens, we erase NVS partition and initialize NVS again.
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
-    // ESP_ERROR_CHECK( heap_trace_init_standalone( trace_record, NUM_RECORDS ) );
-    // ESP_LOGI("Memory", "STARTING FREE HEAP SIZE: %lu bytes", (long unsigned int)esp_get_free_heap_size());
-    /* Configure the peripheral according to the LED type */
-    configure_led();
+    // // Initialize NVS
+    // esp_err_t ret = nvs_flash_init();
+    // if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
+    // {
+    //     // 1.OTA app partition table has a smaller NVS partition size than the non-OTA
+    //     // partition table. This size mismatch may cause NVS initialization to fail.
+    //     // 2.NVS partition contains data in new format and cannot be recognized by this version of code.
+    //     // If this happens, we erase NVS partition and initialize NVS again.
+    //     ESP_ERROR_CHECK(nvs_flash_erase());
+    //     ret = nvs_flash_init();
+    // }
+    // ESP_ERROR_CHECK(ret);
+    // // ESP_ERROR_CHECK( heap_trace_init_standalone( trace_record, NUM_RECORDS ) );
+    // // ESP_LOGI("Memory", "STARTING FREE HEAP SIZE: %lu bytes", (long unsigned int)esp_get_free_heap_size());
+    // /* Configure the peripheral according to the LED type */
+    // configure_led();
 
-    // Create semaphore for signaling Wi-Fi init completion
-    wifi_init_semaphore = xSemaphoreCreateBinary();
+    // // Create semaphore for signaling Wi-Fi init completion
+    // wifi_init_semaphore = xSemaphoreCreateBinary();
 
-    xTaskCreate(state_control_task, "state_control_task", 4096 * 2, NULL, 3, NULL);
+    // xTaskCreate(state_control_task, "state_control_task", 4096 * 2, NULL, 3, NULL);
 
-    while (1)
-    {
-        vTaskDelay(4000 / portTICK_PERIOD_MS);
-    }
+    // while (1)
+    // {
+    //     vTaskDelay(4000 / portTICK_PERIOD_MS);
+    // }
 }
 
 #define PROXIMITY_DETECTED BIT0
@@ -226,68 +234,68 @@ typedef enum
     STATE_DISPLAY_RESULT
 } state_t;
 
-static state_t current_state = STATE_IDLE;
+// static state_t current_state = STATE_IDLE;
 
-// Task to handle proximity sensor
-void proximity_task(void *param)
-{
-    while (1)
-    {
-        if (proximity_sensor_detected())
-        {
-            xEventGroupSetBits(event_group, PROXIMITY_DETECTED);
-        }
-        vTaskDelay(pdMS_TO_TICKS(500)); // Check every 500 ms
-    }
-}
+// // Task to handle proximity sensor
+// void proximity_task(void *param)
+// {
+//     while (1)
+//     {
+//         if (proximity_sensor_detected())
+//         {
+//             xEventGroupSetBits(event_group, PROXIMITY_DETECTED);
+//         }
+//         vTaskDelay(pdMS_TO_TICKS(500)); // Check every 500 ms
+//     }
+// }
 
-// Task to handle NFC reading
-void nfc_task(void *param)
-{
-    while (1)
-    {
-        xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
-        if (nfc_read_data())
-        {
-            xEventGroupSetBits(event_group, NFC_READ_SUCCESS);
-        }
-    }
-}
+// // Task to handle NFC reading
+// void nfc_task(void *param)
+// {
+//     while (1)
+//     {
+//         xEventGroupWaitBits(event_group, PROXIMITY_DETECTED, pdTRUE, pdFALSE, portMAX_DELAY);
+//         if (nfc_read_data())
+//         {
+//             xEventGroupSetBits(event_group, NFC_READ_SUCCESS);
+//         }
+//     }
+// }
 
-// Task to validate NFC data online
-void validation_task(void *param)
-{
-    while (1)
-    {
-        xEventGroupWaitBits(event_group, NFC_READ_SUCCESS, pdTRUE, pdFALSE, portMAX_DELAY);
-        bool valid = database_validate_nfc();
-        if (valid)
-        {
-            xEventGroupSetBits(event_group, NFC_VALIDATED);
-        }
-        current_state = STATE_DISPLAY_RESULT;
-    }
-}
+// // Task to validate NFC data online
+// void validation_task(void *param)
+// {
+//     while (1)
+//     {
+//         xEventGroupWaitBits(event_group, NFC_READ_SUCCESS, pdTRUE, pdFALSE, portMAX_DELAY);
+//         bool valid = database_validate_nfc();
+//         if (valid)
+//         {
+//             xEventGroupSetBits(event_group, NFC_VALIDATED);
+//         }
+//         current_state = STATE_DISPLAY_RESULT;
+//     }
+// }
 
-void id_to_database_task(void *pvParameters)
-{
-    char userId[MAX_ID_LEN];
-    xTaskNotifyWait(0, 0, userId, portMAX_DELAY);
-    printf("Receieved Result: %d\n", userId);
-    vTaskDelete(NULL);
-}
+// void id_to_database_task(void *pvParameters)
+// {
+//     char userId[MAX_ID_LEN];
+//     xTaskNotifyWait(0, 0, userId, portMAX_DELAY);
+//     printf("Receieved Result: %d\n", userId);
+//     vTaskDelete(NULL);
+// }
 
-// Task to update the display based on validation result
-void display_task(void *param)
-{
-    while (1)
-    {
-        xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
-        display_show_result(true);       // Show success
-        vTaskDelay(pdMS_TO_TICKS(5000)); // Display result for 5 seconds
-        current_state = STATE_IDLE;
-    }
-}
+// // Task to update the display based on validation result
+// void display_task(void *param)
+// {
+//     while (1)
+//     {
+//         xEventGroupWaitBits(event_group, NFC_VALIDATED, pdTRUE, pdFALSE, portMAX_DELAY);
+//         display_show_result(true);       // Show success
+//         vTaskDelay(pdMS_TO_TICKS(5000)); // Display result for 5 seconds
+//         current_state = STATE_IDLE;
+//     }
+// }
 
 // Main State Machine
 // void app_main(void)

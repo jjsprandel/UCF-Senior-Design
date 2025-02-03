@@ -303,8 +303,8 @@ void ntag2xx_read_user_id_task(void *pvParameters)
                 ESP_LOGI(CARD_READER_TAG, "Received NDEF Message %s and transmitting", outText);
                 esp_log_buffer_hexdump_internal(CARD_READER_TAG, outText, textLen, ESP_LOG_INFO);
                 // #endif
-                xTaskNotify(id_receiver_task_handle, outText, eSetValueWithOverwrite); // Transmit ID to receiver task
-                vTaskDelete(NULL);
+                // xTaskNotify(id_receiver_task_handle, outText, eSetValueWithOverwrite); // Transmit ID to receiver task
+                // vTaskDelete(NULL);
             }
             else
             {
