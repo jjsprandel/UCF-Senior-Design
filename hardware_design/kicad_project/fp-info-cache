@@ -1,4 +1,4 @@
-24215388120243974
+24218869889968820
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -89929,6 +89929,13 @@ ESP32-C6-WROOM-1-N8
 37
 37
 SCAN_footprints
+IC_BQ25798RQMR
+
+
+0
+29
+29
+SCAN_footprints
 IND_IHLP-3232DZ_VIS
 
 IHLP3232DZER2R2M11 
@@ -89974,6 +89981,13 @@ SCAN_footprints
 SPM6530
 SPM6530
 Inductor (FeSi Core)
+0
+2
+2
+SCAN_footprints
+TE_282856-2
+
+
 0
 2
 2

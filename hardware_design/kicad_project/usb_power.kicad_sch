@@ -4314,6 +4314,12 @@
 		(uuid "199c4f5f-9aa2-471c-bbe2-ecf9254125f2")
 	)
 	(junction
+		(at 127 105.41)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "214e1e86-3d03-42bc-bd73-8cd0bd84dafe")
+	)
+	(junction
 		(at 91.44 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4488,6 +4494,12 @@
 		(uuid "dfc20204-11d7-437b-b095-34c129265e3d")
 	)
 	(junction
+		(at 138.43 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e195ce84-58d0-4fbd-8bd0-8e26369c48b9")
+	)
+	(junction
 		(at 353.06 173.99)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4516,12 +4528,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f824365a-24e1-47ff-9f6f-8c3d95673e85")
-	)
-	(junction
-		(at 365.76 162.56)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fdcf4274-88f6-4a09-9b16-6384b0bf2876")
 	)
 	(no_connect
 		(at 187.96 156.21)
@@ -4558,6 +4564,16 @@
 			(type default)
 		)
 		(uuid "0170c58c-ab11-4136-b6eb-64188fc11a7a")
+	)
+	(wire
+		(pts
+			(xy 127 105.41) (xy 138.43 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02619f25-5481-49e7-b32c-9378f34d3ee9")
 	)
 	(wire
 		(pts
@@ -4731,6 +4747,16 @@
 	)
 	(wire
 		(pts
+			(xy 138.43 101.6) (xy 138.43 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2311a021-95e4-4b8f-a1e5-8cf6e87347ac")
+	)
+	(wire
+		(pts
 			(xy 210.82 132.08) (xy 210.82 125.73)
 		)
 		(stroke
@@ -4838,6 +4864,16 @@
 			(type default)
 		)
 		(uuid "309c7856-fd72-4fb9-bba2-0e4dc0e0e6ab")
+	)
+	(wire
+		(pts
+			(xy 138.43 91.44) (xy 138.43 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "31d3008d-56e0-4512-ad04-43a503f430f3")
 	)
 	(wire
 		(pts
@@ -5011,7 +5047,7 @@
 	)
 	(wire
 		(pts
-			(xy 365.76 160.02) (xy 365.76 162.56)
+			(xy 365.76 160.02) (xy 365.76 163.83)
 		)
 		(stroke
 			(width 0)
@@ -5151,6 +5187,16 @@
 	)
 	(wire
 		(pts
+			(xy 127 105.41) (xy 127 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61a5b9fd-6023-41e7-b3d3-7e1a85fd9a05")
+	)
+	(wire
+		(pts
 			(xy 284.48 82.55) (xy 326.39 82.55)
 		)
 		(stroke
@@ -5181,7 +5227,7 @@
 	)
 	(wire
 		(pts
-			(xy 127 104.14) (xy 127 106.68)
+			(xy 127 101.6) (xy 127 105.41)
 		)
 		(stroke
 			(width 0)
@@ -5428,6 +5474,16 @@
 			(type default)
 		)
 		(uuid "90ddfd37-07b7-4cea-8693-ff73a4747a36")
+	)
+	(wire
+		(pts
+			(xy 138.43 91.44) (xy 165.1 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "93bc082f-633b-4386-9e9d-b89e4e0cc537")
 	)
 	(wire
 		(pts
@@ -5731,16 +5787,6 @@
 	)
 	(wire
 		(pts
-			(xy 365.76 162.56) (xy 373.38 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c1c3f85e-0c17-4b64-b079-4ca88b047c6f")
-	)
-	(wire
-		(pts
 			(xy 158.75 138.43) (xy 158.75 161.29)
 		)
 		(stroke
@@ -5791,7 +5837,7 @@
 	)
 	(wire
 		(pts
-			(xy 127 91.44) (xy 165.1 91.44)
+			(xy 127 91.44) (xy 138.43 91.44)
 		)
 		(stroke
 			(width 0)
@@ -5878,16 +5924,6 @@
 			(type default)
 		)
 		(uuid "cfa69db6-768a-4933-ad88-9551295e413e")
-	)
-	(wire
-		(pts
-			(xy 365.76 162.56) (xy 365.76 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cffbf794-77cd-45ca-8572-6776416f11bb")
 	)
 	(wire
 		(pts
@@ -6031,7 +6067,7 @@
 	)
 	(wire
 		(pts
-			(xy 127 91.44) (xy 127 99.06)
+			(xy 127 91.44) (xy 127 96.52)
 		)
 		(stroke
 			(width 0)
@@ -8332,73 +8368,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 373.38 162.56 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "62994f31-fa5a-4f99-9db1-8e08b9ab2644")
-		(property "Reference" "TP17"
-			(at 378.46 161.2899 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TestPoint"
-			(at 378.46 163.8299 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_2.0x2.0mm"
-			(at 373.38 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 373.38 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point"
-			(at 373.38 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1fc5e2ac-8c76-434e-80bf-c8a764790f8f")
-		)
-		(instances
-			(project "SCAN"
-				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3a101d3c-b253-47d5-9633-30f847e68e26"
-					(reference "TP17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "custom_symbols:CYPD3177-24LQXQ")
 		(at 187.96 162.56 0)
 		(unit 1)
@@ -9527,7 +9496,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 127 101.6 0)
+		(at 127 99.06 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9535,7 +9504,7 @@
 		(dnp no)
 		(uuid "a43c577b-03de-4d31-9b7e-9f74da8db83b")
 		(property "Reference" "C49"
-			(at 128.778 100.33 0)
+			(at 128.778 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9544,7 +9513,7 @@
 			)
 		)
 		(property "Value" "3.3u"
-			(at 128.778 102.87 0)
+			(at 128.778 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9553,7 +9522,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
-			(at 127 101.6 0)
+			(at 127 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9562,7 +9531,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 127 101.6 0)
+			(at 127 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9571,7 +9540,7 @@
 			)
 		)
 		(property "Description" "50V, C1210"
-			(at 127 101.6 0)
+			(at 127 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9875,6 +9844,75 @@
 			(project ""
 				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3a101d3c-b253-47d5-9633-30f847e68e26"
 					(reference "Q9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 138.43 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b3c17535-68f5-4594-98fd-1f87e1615d15")
+		(property "Reference" "C68"
+			(at 140.208 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 140.208 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 138.43 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 138.43 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "50V, C1210"
+			(at 138.43 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "7152b094-33c6-4922-876f-6d7c97a882f4")
+		)
+		(pin "1"
+			(uuid "f5b3376e-e3ac-453b-86f0-62e1ae88b756")
+		)
+		(instances
+			(project "SCAN"
+				(path "/888b7abf-3697-4f84-b8b9-46ec94b2d60e/3a101d3c-b253-47d5-9633-30f847e68e26"
+					(reference "C68")
 					(unit 1)
 				)
 			)
