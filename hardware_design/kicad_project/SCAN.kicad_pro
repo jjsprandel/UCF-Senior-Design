@@ -714,6 +714,10 @@
     [
       "6cb3f9f3-aef7-4d63-b92a-62d27a46d72a",
       "NFC"
+    ],
+    [
+      "b4a44b35-f08f-4be2-8663-ffc281f34c59",
+      "Keypad"
     ]
   ],
   "text_variables": {}

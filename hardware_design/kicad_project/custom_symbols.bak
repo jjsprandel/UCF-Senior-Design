@@ -2042,8 +2042,8 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 0 0)
-				(length 7.62)
+				(at 5.08 0 0)
+				(length 2.54)
 				(name "1"
 					(effects
 						(font
@@ -2060,8 +2060,8 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 -2.54 0)
-				(length 7.62)
+				(at 5.08 -2.54 0)
+				(length 2.54)
 				(name "2"
 					(effects
 						(font
@@ -2078,8 +2078,8 @@
 				)
 			)
 			(pin unspecified line
-				(at 0 -5.08 0)
-				(length 7.62)
+				(at 5.08 -5.08 0)
+				(length 2.54)
 				(name "3"
 					(effects
 						(font
@@ -2096,8 +2096,8 @@
 				)
 			)
 			(pin unspecified line
-				(at 40.64 -5.08 180)
-				(length 7.62)
+				(at 35.56 -5.08 180)
+				(length 2.54)
 				(name "4"
 					(effects
 						(font
@@ -2114,8 +2114,8 @@
 				)
 			)
 			(pin unspecified line
-				(at 40.64 -2.54 180)
-				(length 7.62)
+				(at 35.56 -2.54 180)
+				(length 2.54)
 				(name "5"
 					(effects
 						(font
@@ -2132,8 +2132,8 @@
 				)
 			)
 			(pin unspecified line
-				(at 40.64 0 180)
-				(length 7.62)
+				(at 35.56 0 180)
+				(length 2.54)
 				(name "6"
 					(effects
 						(font
