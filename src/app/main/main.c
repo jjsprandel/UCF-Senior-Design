@@ -134,18 +134,18 @@ void state_control_task(void *pvParameter) {
                 //    vTaskDelete(blink_led_task_handle);
                 //    blink_led_task_handle = NULL;
                 //}
-                
+/*
                 if (ota_update_task_handle == NULL) {
                     ESP_LOGI(TAG, "Creating OTA update task");
                     xTaskCreate(ota_update_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &ota_update_task_handle);
                 }
-                
-/*
+*/
+
                 if (database_task_handle == NULL) {
                     ESP_LOGI(TAG, "Creating database task");
                     xTaskCreate(database_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &database_task_handle);
                 }
-*/
+
                 break;
 
             case STATE_ERROR:
