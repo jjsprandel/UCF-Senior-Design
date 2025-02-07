@@ -1,4 +1,4 @@
-24222348175922673
+24224087056193501
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -89997,6 +89997,13 @@ SPM6530
 Inductor (FeSi Core)
 0
 2
+2
+SCAN_footprints
+SW_SPST_PTS647_Sx38
+C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch, 3.8mm Height, see https://www.ckswitches.com/media/2567/pts647.pdf
+SPST Button Switch
+0
+4
 2
 SCAN_footprints
 TE_282856-2
