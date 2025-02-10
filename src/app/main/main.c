@@ -14,6 +14,7 @@
 #include "wifi_init.h"
 #include "ota.h"
 #include "firebase_http_client.h"
+#include "firebase_utils.h"
 
 #include "freertos/semphr.h"
 #include "esp_heap_task_info.h"
@@ -141,9 +142,12 @@ void state_control_task(void *pvParameter) {
                 }
 */
 
+
+
                 if (database_task_handle == NULL) {
-                    ESP_LOGI(TAG, "Creating database task");
-                    xTaskCreate(database_fw_task, "OTA UPDATE TASK", 1024 * 4, NULL, 8, &database_task_handle);
+                    const char *user_id = "5387541";
+                    ESP_LOGI(TAG, "Creating check-in task");
+                    xTaskCreate(check_in_user_task, "CHECK IN TASK", 1024 * 12, (void *)user_id, 8, &database_task_handle);
                 }
 
                 break;

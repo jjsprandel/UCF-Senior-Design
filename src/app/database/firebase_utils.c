@@ -11,80 +11,122 @@
 #include "esp_system.h"
 
 #include "esp_http_client.h"
-#include "cJSON.h"
-#include "json_parser.h"
+#include "firebase_http_client.h"
 
-// Define a struct to store a field name and its value
+static const char *TAG = "FIREBASE_UTILS";
+
+// Global variable to store check-in status
+static bool check_in_successful = false;
+
+// Struct to store user information
 typedef struct {
-    const char *name;   // Name of the field (e.g., "firstName")
-    char value[64];     // Field value (e.g., name of the user)
-} StringField;
+    bool active_student;
+    bool check_in_status;
+    char location[64];
+    char role[32];
+    char passkey[64];
+} UserInfo;
 
+UserInfo *user_info = NULL;
+
+// Struct for mapping Firebase fields to struct fields
 typedef struct {
-    const char *name;   // Name of the field (e.g., "averageStayDuration")
-    float value;        // Field value (e.g., duration in float)
-} FloatField; 
-
-typedef struct {
-    const char *name;   // Name of the field (e.g., "checkInStatus")
-    bool value;         // Field value (true or false)
-} BoolField;
-
-// Define a User struct that contains multiple field structs
-typedef struct {
-    StringField firstName;
-    StringField lastName;
-    StringField averageStayDuration;
-    BoolField checkInStatus;
-    FloatField totalOccupancyTime;
-} User;
+    const char *key;
+    void *field;
+    size_t field_size;
+} UserFieldMapping;
 
 
-// Generic function to parse JSON into a struct
-bool parse_firebase_response(const char *json_response, const char *user_id, void *user_data) {
-    // Parse the JSON response into a cJSON object
-    cJSON *root = cJSON_Parse(json_response);
-    if (!root) {
-        printf("Failed to parse JSON\n");
-        return false;
+// Function to retrieve user data and populate the struct
+void check_in_user_task(void *pvParameters) {
+    const char *user_id = (const char *)pvParameters;
+    //UserInfo *user_info = (UserInfo *)pvParameters + sizeof(char *); // Pointer arithmetic to get the UserInfo struct
+
+    if (user_id == NULL) {
+        ESP_LOGE("Check-In", "Invalid input: user_id is NULL.");
+        vTaskDelete(NULL); // Delete task if input is invalid
     }
 
-    // Get the user data object for the specific user ID
-    cJSON *user_obj = cJSON_GetObjectItem(root, user_id);
-    if (user_obj == NULL) {
-        printf("User ID %s not found in JSON\n", user_id);
-        cJSON_Delete(root);
-        return false;
-    }
-
-    // Loop through the struct fields and parse them dynamically
-    cJSON *json_field;
-    size_t offset = 0;
-    size_t struct_size = sizeof(User);
-    for (offset = 0; offset < struct_size; offset++) {
-        // Get the field as we go through the struct
-        void *field_ptr = (char *)user_data + offset;
-
-        // Use reflection-like behavior to get the field name (e.g., "firstName", "lastName", etc.)
-        StringField *field = (StringField *)field_ptr;
-        
-        // Get the corresponding JSON field
-        json_field = cJSON_GetObjectItem(user_obj, field->name);
-        if (json_field) {
-            // Parse the value based on the type
-            if (cJSON_IsString(json_field)) {
-                strncpy(field->value, json_field->valuestring, sizeof(field->value) - 1);
-            } else if (cJSON_IsNumber(json_field)) {
-                if (strcmp(field->name, "averageStayDuration") == 0 || strcmp(field->name, "totalOccupancyTime") == 0) {
-                    ((FloatField *)field)->value = (float)cJSON_GetNumberValue(json_field);
-                }
-            } else if (cJSON_IsBool(json_field)) {
-                ((BoolField *)field)->value = cJSON_IsTrue(json_field);
-            }
+    // Allocate memory for user_info only once (if not already allocated)
+    if (user_info == NULL) {
+        user_info = (UserInfo *)malloc(sizeof(UserInfo));  // Allocate memory for user_info
+        if (user_info == NULL) {
+            ESP_LOGE(TAG, "Failed to allocate memory for user_info.");
+            vTaskDelete(NULL);  // Exit task if allocation fails
         }
     }
 
-    // Clean up and free the cJSON object
-    cJSON_Delete(root);
-    return true;
+    // Field mappings (Firebase key, struct field, and field size)
+    UserFieldMapping field_mappings[] = {
+        {"activeStudent", &user_info->active_student, sizeof(user_info->active_student)},
+        {"checkInStatus", &user_info->check_in_status, sizeof(user_info->check_in_status)},
+        //{"location", user_info->location, sizeof(user_info->location)},
+        //{"role", user_info->role, sizeof(user_info->role)},
+        //{"passkey", user_info->passkey, sizeof(user_info->passkey)}
+    };
+
+    char url[256];
+    char response_buffer[1024 + 1];
+    int http_code;
+
+    // Iterate through the fields and map them to struct fields
+    for (size_t i = 0; i < sizeof(field_mappings) / sizeof(field_mappings[0]); i++) {
+        // Format the URL
+        snprintf(url, sizeof(url), "https://scan-9ee0b-default-rtdb.firebaseio.com/users/%s/%s.json", user_id, field_mappings[i].key);
+
+        // Perform the GET request
+        http_code = firebase_https_request_get(url, response_buffer, sizeof(response_buffer));
+        if (http_code != 200) {
+            ESP_LOGE("Check-In", "Failed to fetch '%s' for user %s. HTTP Code: %d", field_mappings[i].key, user_id, http_code);
+            check_in_successful = false;  // Mark as failed if any field fails
+            vTaskDelete(NULL); // Exit the task if any field request fails
+        }
+
+        
+        // Directly assign the response to the appropriate struct field
+        if (field_mappings[i].field_size == sizeof(bool)) {
+            // For boolean fields (activeStudent, checkInStatus)
+            ESP_LOGI(TAG, "stored in response buffer: %s", response_buffer);
+            *(bool *)field_mappings[i].field = (strcmp(response_buffer, "true") == 0);
+            ESP_LOGI(TAG, "user_info.active_student: %d", user_info->active_student);
+            ESP_LOGI(TAG, "user_info.check_in_status: %d", user_info->check_in_status);
+        } else {
+            // For string fields (location, role, passkey)
+            strncpy((char *)field_mappings[i].field, response_buffer, field_mappings[i].field_size - 1);
+        }
+    }
+    ESP_LOGI(TAG, "HERE 4");
+
+    if (user_info->active_student)
+    {
+        user_info->check_in_status = !user_info->check_in_status;
+        
+        // Convert the bool to a string
+        if (user_info->check_in_status) {
+            strcpy(response_buffer, "\"true\"");
+        } 
+        else {
+            strcpy(response_buffer, "\"false\"");
+        }
+
+        // Format the URL
+        snprintf(url, sizeof(url), "https://scan-9ee0b-default-rtdb.firebaseio.com/users/%s/checkInStatus.json", user_id);
+        ESP_LOGI(TAG, "%s", url);
+        ESP_LOGI(TAG, "%s", response_buffer);
+        // Perform the PUT request
+        http_code = firebase_https_request_put(url, response_buffer, sizeof(response_buffer));
+        if (http_code != 200) {
+            ESP_LOGE("Check-In", "Failed to update check-in status for user %s. HTTP Code: %d", user_id, http_code);
+            check_in_successful = false;  // Mark as failed if any field fails
+            vTaskDelete(NULL); // Exit the task if any field request fails
+        }
+
+    }
+
+    // If all fields are fetched successfully, mark the check-in as successful
+    check_in_successful = true;
+    ESP_LOGI(TAG, "User check-in/check-out successful for user %s.", user_id);
+
+    // Delete task when done
+    vTaskDelete(NULL);
 }

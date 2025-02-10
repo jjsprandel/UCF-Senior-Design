@@ -21,28 +21,17 @@
 
 #include "esp_http_client.h"
 #include "firebase_utils.h"
-#include "json_parser.h"
+
 
 #define FIREBASE_BASE_URL "https://scan-9ee0b-default-rtdb.firebaseio.com/users/"
 #define MAX_HTTP_RECV_BUFFER 512
-#define MAX_HTTP_OUTPUT_BUFFER 2048
+#define MAX_HTTP_OUTPUT_BUFFER 1024
 static const char *TAG = "FIREBASE_HTTP_CLIENT";
 
 
 extern const char firebase_server_cert_pem_start[] asm("_binary_firebase_cert_pem_start");
 extern const char firebase_server_cert_pem_end[]   asm("_binary_firebase_cert_pem_end");
 
-// Function to format Firebase URL
-esp_err_t format_firebase_url(char *url, size_t url_size, const char *user_id, const char *field) {
-    if (field && strlen(field) > 0) {
-        // Format URL to include the specific field
-        snprintf(url, url_size, "%s/%s/%s.json", FIREBASE_BASE_URL, user_id, field);
-    } else {
-        // Format URL for the whole user node
-        snprintf(url, url_size, "%s/%s.json", FIREBASE_BASE_URL, user_id);
-    }
-    return ESP_OK;
-}
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
@@ -136,21 +125,13 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
-static void https_rest_with_url(void)
+int firebase_https_request_get(char *url, char *response, size_t response_size)
 {
-    const char *user_id = "5387541";
-    const char *field = NULL;
+    int http_code;
     char local_response_buffer[MAX_HTTP_OUTPUT_BUFFER + 1] = {0};
-    char url[512];  // Make sure the URL size is big enough
-
-//    esp_err_t err = format_firebase_url(url, sizeof(url), user_id, field);
-//    if (err != ESP_OK) {
-//        ESP_LOGE(TAG, "Failed to format the URL");
-//        return err;
-//    }
 
     esp_http_client_config_t config = {
-        .url = "https://scan-9ee0b-default-rtdb.firebaseio.com/users/5387541/activeStudent.json",
+        .url = url,
         .event_handler = _http_event_handler,
         .user_data = local_response_buffer,        // Pass address of local buffer to get response
         .disable_auto_redirect = true,
@@ -165,20 +146,16 @@ static void https_rest_with_url(void)
                 esp_http_client_get_status_code(client),
                 esp_http_client_get_content_length(client));
 
+        // Safely copy the response to the user-provided buffer
+        strncpy(response, local_response_buffer, response_size - 1);
+        response[response_size - 1] = '\0';
 
     } else {
         ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
+        response[0] = '\0'; // Set response to an empty string on failure
     }
-    ESP_LOG_BUFFER_HEX(TAG, local_response_buffer, strlen(local_response_buffer));
 
-        // Process the response into your struct
-    //User user_data = {0};
-    //esp_err_t err = parse_firebase_response(local_response_buffer, &user_data);
-    //if (err == ESP_OK) {
-    //    ESP_LOGI(TAG, "Successfully parsed the user data");
-    //} else {
-    //    ESP_LOGE(TAG, "Failed to parse the user data");
-    //}
+    http_code = esp_http_client_get_status_code(client);
 
 /*
     // POST
@@ -246,81 +223,41 @@ static void https_rest_with_url(void)
     }
 */
     esp_http_client_cleanup(client);
+    return http_code;
 }
 
-
-
-static void https_async(void)
+int firebase_https_request_put(char *url, char *data, size_t data_size)
 {
+    int http_code;
+    char local_response_buffer[MAX_HTTP_OUTPUT_BUFFER + 1] = {0};
+    size_t local_response_buffer_size = sizeof(local_response_buffer);
+
     esp_http_client_config_t config = {
-        .url = "https://postman-echo.com/post",
+        .url = url,
         .event_handler = _http_event_handler,
-        //.cert_pem = postman_root_cert_pem_start,
-        .is_async = true,
-        .timeout_ms = 5000,
+        .user_data = local_response_buffer,        // Pass address of local buffer to get response
+        .disable_auto_redirect = true,
+        .cert_pem = (char *)firebase_server_cert_pem_start,
+        .method = HTTP_METHOD_PUT
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
-    esp_err_t err;
-    const char *post_data = "Using a Palantír requires a person with great strength of will and wisdom. The Palantíri were meant to "
-                            "be used by the Dúnedain to communicate throughout the Realms in Exile. During the War of the Ring, "
-                            "the Palantíri were used by many individuals. Sauron used the Ithil-stone to take advantage of the users "
-                            "of the other two stones, the Orthanc-stone and Anor-stone, but was also susceptible to deception himself.";
-    esp_http_client_set_method(client, HTTP_METHOD_POST);
-    esp_http_client_set_post_field(client, post_data, strlen(post_data));
-    while (1) {
-        err = esp_http_client_perform(client);
-        if (err != ESP_ERR_HTTP_EAGAIN) {
-            break;
-        }
-    }
+    esp_http_client_set_post_field(client, data, strlen(data));
+    esp_http_client_set_header(client, "Content-Type", "application/x-www-form-urlencoded");
+
+
+    //PUT
+    esp_err_t err = esp_http_client_perform(client);
     if (err == ESP_OK) {
-        ESP_LOGI(TAG, "HTTPS Status = %d, content_length = %"PRId64,
+        ESP_LOGI(TAG, "HTTP PUT Status = %d, content_length = %"PRId64,
                 esp_http_client_get_status_code(client),
                 esp_http_client_get_content_length(client));
+        ESP_LOGI(TAG, "%s", local_response_buffer);
     } else {
-        ESP_LOGE(TAG, "Error perform http request %s", esp_err_to_name(err));
+        ESP_LOGE(TAG, "HTTP PUT request failed: %s", esp_err_to_name(err));
     }
+
+    http_code = esp_http_client_get_status_code(client);
+
     esp_http_client_cleanup(client);
-
-    // Test HTTP_METHOD_HEAD with is_async enabled
-    config.url = "https://scan-9ee0b-default-rtdb.firebaseio.com/users/4313454/activeStudent.json?";
-    config.event_handler = _http_event_handler;
-    //config.crt_bundle_attach = esp_crt_bundle_attach;
-    config.is_async = true;
-    config.timeout_ms = 5000;
-
-    client = esp_http_client_init(&config);
-    esp_http_client_set_method(client, HTTP_METHOD_HEAD);
-
-    while (1) {
-        err = esp_http_client_perform(client);
-        if (err != ESP_ERR_HTTP_EAGAIN) {
-            break;
-        }
-    }
-    if (err == ESP_OK) {
-        ESP_LOGI(TAG, "HTTPS Status = %d, content_length = %"PRId64,
-                esp_http_client_get_status_code(client),
-                esp_http_client_get_content_length(client));
-    } else {
-        ESP_LOGE(TAG, "Error perform http request %s", esp_err_to_name(err));
-    }
-    esp_http_client_cleanup(client);
-}
-
-
-static void http_test_task(void *pvParameters)
-{
-    https_rest_with_url();
-
-
-
-    ESP_LOGI(TAG, "Finish http example");
-    vTaskDelete(NULL);
-}
-
-void database_fw_task(void *pvParameter)
-{
-    xTaskCreate(&http_test_task, "http_test_task", 8192, NULL, 5, NULL);
-    vTaskDelete(NULL);
+    return http_code;
 }

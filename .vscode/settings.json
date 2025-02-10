@@ -11,6 +11,7 @@
         "sdkconfig.h": "c",
         "stdio.h": "c",
         "semphr.h": "c",
-        "firebase_http_client.h": "c"
+        "firebase_http_client.h": "c",
+        "firebase_utils.h": "c"
     },
 }
