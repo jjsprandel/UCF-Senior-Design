@@ -143,14 +143,14 @@ static void https_rest_with_url(void)
     char local_response_buffer[MAX_HTTP_OUTPUT_BUFFER + 1] = {0};
     char url[512];  // Make sure the URL size is big enough
 
-    esp_err_t err = format_firebase_url(url, sizeof(url), user_id, field);
-    if (err != ESP_OK) {
-        ESP_LOGE(TAG, "Failed to format the URL");
-        return err;
-    }
+//    esp_err_t err = format_firebase_url(url, sizeof(url), user_id, field);
+//    if (err != ESP_OK) {
+//        ESP_LOGE(TAG, "Failed to format the URL");
+//        return err;
+//    }
 
     esp_http_client_config_t config = {
-        .url = url,
+        .url = "https://scan-9ee0b-default-rtdb.firebaseio.com/users/5387541/activeStudent.json",
         .event_handler = _http_event_handler,
         .user_data = local_response_buffer,        // Pass address of local buffer to get response
         .disable_auto_redirect = true,
@@ -169,16 +169,16 @@ static void https_rest_with_url(void)
     } else {
         ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
     }
-    //ESP_LOG_BUFFER_HEX(TAG, local_response_buffer, strlen(local_response_buffer));
+    ESP_LOG_BUFFER_HEX(TAG, local_response_buffer, strlen(local_response_buffer));
 
         // Process the response into your struct
-    User user_data = {0};
-    esp_err_t err = parse_firebase_response(local_response_buffer, &user_data);
-    if (err == ESP_OK) {
-        ESP_LOGI(TAG, "Successfully parsed the user data");
-    } else {
-        ESP_LOGE(TAG, "Failed to parse the user data");
-    }
+    //User user_data = {0};
+    //esp_err_t err = parse_firebase_response(local_response_buffer, &user_data);
+    //if (err == ESP_OK) {
+    //    ESP_LOGI(TAG, "Successfully parsed the user data");
+    //} else {
+    //    ESP_LOGE(TAG, "Failed to parse the user data");
+    //}
 
 /*
     // POST
