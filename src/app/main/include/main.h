@@ -33,6 +33,7 @@
 #define ID_ENTERED_SUCCESS_BIT BIT1
 #define ID_AUTHENTICATED_BIT BIT2
 #define IDLE_BIT BIT4
+#define ENTERING_ID_BIT BIT5
 #define TAG "MAIN"
 #define ID_LEN 7
 
@@ -48,7 +49,6 @@ typedef enum
 {
     STATE_IDLE,
     STATE_USER_DETECTED,
-    STATE_ID_INPUT,
     STATE_VALIDATING,
     STATE_DISPLAY_RESULT
 } state_t;
@@ -58,25 +58,28 @@ typedef enum
 static TaskHandle_t blink_led_task_handle = NULL;
 static TaskHandle_t wifi_init_task_handle = NULL;
 static TaskHandle_t ota_update_task_handle = NULL;
+static TaskHandle_t keypad_task_handle = NULL;
+static TaskHandle_t lvgl_port_task_handle = NULL;
 
 // not static because it is being used in wifi_init.c as extern variable
 SemaphoreHandle_t wifi_init_semaphore = NULL; // Semaphore to signal Wi-Fi init completion
-static EventGroupHandle_t event_group;
+EventGroupHandle_t event_group;
 
 // STATE VARIABLES
 static kiosk_state_t current_kiosk_state = STATE_WIFI_INIT;
 static state_t current_state = STATE_IDLE, prev_state = STATE_IDLE;
 
 // EXTERN VARIABLES
-pn532_t nfc;                    // Defined in ntag_reader.c
-keypad_buffer_t keypad_buffer;  // Defined in keypad_driver.c
-bool keypadEnteredFlag = false; // Defined in keypad_driver.c
-_lock_t lvgl_api_lock;          // Defined in display_config.c
-lv_display_t *display;          // Defined in display_config.c
+pn532_t nfc;                   // Defined in ntag_reader.c
+keypad_buffer_t keypad_buffer; // Defined in keypad_driver.c
+_lock_t lvgl_api_lock;         // Defined in display_config.c
+lv_display_t *display;         // Defined in display_config.c
 
 static char nfcUserID[MAX_ID_LEN];    // Used to store the ID read from NFC
 static char keypadUserID[MAX_ID_LEN]; // Used to store the ID entered from the keypad
 bool idIsValid = true;                // Flag set by database query results
+bool keypadEnteredFlag = false;
+bool nfcReadFlag = false;
 static led_strip_handle_t led_strip;
 static uint8_t s_led_state = 0;
 static lv_obj_t *disp_obj;

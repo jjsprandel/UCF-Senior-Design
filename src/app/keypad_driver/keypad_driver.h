@@ -20,6 +20,7 @@
 
 #define KEYPAD_ADDRESS 0x20
 #define KEYPAD_TAG "keypad_driver"
+#define ID_ENTERED_SUCCESS_BIT BIT1
 
 typedef struct
 {
@@ -28,6 +29,7 @@ typedef struct
 } keypad_buffer_t;
 
 extern keypad_buffer_t keypad_buffer;
+extern EventGroupHandle_t event_group;
 
 char poll_keypad(uint8_t keypad_address);
 

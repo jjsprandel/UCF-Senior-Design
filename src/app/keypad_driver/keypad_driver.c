@@ -10,8 +10,6 @@
 
 #define KEYPAD_DEBUG
 
-extern bool keypadEnteredFlag;
-
 char keypad_array[4][4] = {
     "123A",
     "456B",
@@ -136,10 +134,9 @@ void keypad_handler(void *params)
             prev_time = curr_time;
             break;
         case '#':
-            keypadEnteredFlag = true;
+            xEventGroupSetBits(event_group, ID_ENTERED_SUCCESS_BIT);
 #ifdef KEYPAD_DEBUG
             ESP_LOGI(KEYPAD_TAG, "[Buffer]> %s", keypad_buffer.elements);
-            ESP_LOGI(KEYPAD_TAG, "Setting keypadEnteredFlag to %d", keypadEnteredFlag);
 #endif
             prev_time = curr_time;
             break;
