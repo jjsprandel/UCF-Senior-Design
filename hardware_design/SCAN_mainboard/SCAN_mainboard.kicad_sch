@@ -4399,7 +4399,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 179.07) (xy 170.18 179.07)
+			(xy 151.13 179.07) (xy 170.18 179.07)
 		)
 		(stroke
 			(width 0)
@@ -4529,7 +4529,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 158.75) (xy 170.18 158.75)
+			(xy 151.13 158.75) (xy 170.18 158.75)
 		)
 		(stroke
 			(width 0)
@@ -4549,7 +4549,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 184.15) (xy 170.18 184.15)
+			(xy 151.13 184.15) (xy 170.18 184.15)
 		)
 		(stroke
 			(width 0)
@@ -4609,7 +4609,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 113.03) (xy 153.67 138.43)
+			(xy 149.86 113.03) (xy 149.86 138.43)
 		)
 		(stroke
 			(width 0)
@@ -5159,7 +5159,7 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 45.72) (xy 212.09 45.72)
+			(xy 185.42 45.72) (xy 212.09 45.72)
 		)
 		(stroke
 			(width 0)
@@ -5209,7 +5209,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 199.39) (xy 170.18 199.39)
+			(xy 151.13 199.39) (xy 170.18 199.39)
 		)
 		(stroke
 			(width 0)
@@ -5299,7 +5299,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 138.43) (xy 170.18 138.43)
+			(xy 149.86 138.43) (xy 170.18 138.43)
 		)
 		(stroke
 			(width 0)
@@ -5499,7 +5499,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 189.23) (xy 170.18 189.23)
+			(xy 151.13 189.23) (xy 170.18 189.23)
 		)
 		(stroke
 			(width 0)
@@ -5509,7 +5509,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 194.31) (xy 170.18 194.31)
+			(xy 151.13 194.31) (xy 170.18 194.31)
 		)
 		(stroke
 			(width 0)
@@ -5589,7 +5589,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 153.67) (xy 170.18 153.67)
+			(xy 151.13 153.67) (xy 170.18 153.67)
 		)
 		(stroke
 			(width 0)
@@ -5649,7 +5649,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 113.03) (xy 143.51 113.03)
+			(xy 149.86 113.03) (xy 143.51 113.03)
 		)
 		(stroke
 			(width 0)
@@ -5814,14 +5814,36 @@
 		)
 		(uuid "a21a3770-ffff-4ff0-bbd9-42c398a7914c")
 	)
-	(label "SPI_MOSI"
-		(at 163.83 179.07 180)
+	(label "GPIO13_BREAKOUT"
+		(at 194.31 50.8 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "02e0d409-9a7f-4cc8-af70-a298cf79a664")
+	)
+	(label "UART_RXD"
+		(at 245.11 138.43 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
+		)
+		(uuid "0d2fbe0b-c355-4228-8ec3-15fa413608b5")
+	)
+	(label "SPI_MOSI"
+		(at 151.13 179.07 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
 		)
 		(uuid "0dd6fc3b-71d0-43e3-b790-72be7ae1f6b3")
 	)
@@ -5835,17 +5857,6 @@
 			(justify left bottom)
 		)
 		(uuid "184836c5-bd28-4c2c-b425-7967ae6f974b")
-	)
-	(label "GPIO17_BREAKOUT"
-		(at 194.31 50.8 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "1ad81029-7a11-49c4-b110-ebea0ce7d13d")
 	)
 	(label "NFC_RST"
 		(at 245.11 179.07 180)
@@ -5870,7 +5881,7 @@
 		(uuid "1f2b33d5-e753-4950-bafe-f5b28bbdddac")
 	)
 	(label "MICRO_USB_D-"
-		(at 64.77 222.25 0)
+		(at 63.5 229.87 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5881,13 +5892,13 @@
 		(uuid "24eb7aa8-f9e4-4481-8bc6-67fd548d4540")
 	)
 	(label "BOOT"
-		(at 163.83 189.23 180)
+		(at 151.13 189.23 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "267898e7-4c02-4c3d-9815-edeb8aa50481")
 	)
@@ -5912,6 +5923,17 @@
 			(justify right bottom)
 		)
 		(uuid "298bcf16-6d61-46bf-a280-8c7ba914d34d")
+	)
+	(label "GPIO12_BREAKOUT"
+		(at 194.31 48.26 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2ab8ead1-2cc8-4170-93fb-0a61e6172756")
 	)
 	(label "RGB_12"
 		(at 335.28 176.53 0)
@@ -5947,7 +5969,7 @@
 		(uuid "39ddcbff-4bc2-47d9-94d5-568ea382c160")
 	)
 	(label "UART_TXD"
-		(at 163.83 194.31 180)
+		(at 245.11 133.35 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5958,13 +5980,13 @@
 		(uuid "3cf55e62-6fd6-43fe-a3d5-a5cf7bc6e7b9")
 	)
 	(label "KEYPAD_INT"
-		(at 163.83 158.75 180)
+		(at 151.13 158.75 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "426df466-669b-465a-8c60-9160d24a82c7")
 	)
@@ -6013,24 +6035,24 @@
 		(uuid "50dd8dfa-f461-49ac-9724-11f14a7e3ae0")
 	)
 	(label "RGB_CTRL"
-		(at 163.83 184.15 180)
+		(at 151.13 184.15 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "50f6c4f0-5c28-4a30-b249-0c79f92b5a6b")
 	)
 	(label "SPI_MISO"
-		(at 163.83 153.67 180)
+		(at 151.13 153.67 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "51f170b8-99c9-4c5e-ba26-b56b9d350370")
 	)
@@ -6167,7 +6189,7 @@
 		(uuid "72be1419-1e42-4fc3-9ec6-1bcc39b027b5")
 	)
 	(label "PD_INT"
-		(at 157.48 168.91 0)
+		(at 151.13 168.91 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6189,40 +6211,29 @@
 		(uuid "7c3389ad-c483-4075-a785-e5b1403e8ad4")
 	)
 	(label "CHIP_PU"
-		(at 163.83 138.43 180)
+		(at 151.13 138.43 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "7cb3cae7-6480-4dfa-87b7-263ccfbe0c2e")
 	)
 	(label "PD_GPIO"
-		(at 163.83 163.83 180)
+		(at 151.13 163.83 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "87cfb752-4990-4fdf-8414-8c75d17da7e9")
 	)
-	(label "UART_RXD"
-		(at 163.83 199.39 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "90c4d843-bf5d-487d-bc45-12ba26f96a95")
-	)
 	(label "BOOT"
-		(at 194.31 45.72 0)
+		(at 194.31 33.02 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6309,25 +6320,25 @@
 		)
 		(uuid "b4cea00f-668a-4596-ab83-fe75dc5d6f45")
 	)
-	(label "GPIO16_BREAKOUT"
-		(at 245.11 133.35 180)
+	(label "GPIO13_BREAKOUT"
+		(at 151.13 199.39 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "b64f72dc-1df2-4905-8b98-e4ae3906faf9")
 	)
 	(label "I2C_SDA"
-		(at 163.83 148.59 180)
+		(at 151.13 148.59 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "b8c756a4-4dd2-4194-984a-5653570ccc45")
 	)
@@ -6365,13 +6376,13 @@
 		(uuid "bfe22c5f-feb0-42e5-92fc-7e52c5c672cc")
 	)
 	(label "I2C_SCL"
-		(at 163.83 143.51 180)
+		(at 151.13 143.51 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "c1161aa4-b895-4492-80be-c3242219dfe2")
 	)
@@ -6419,17 +6430,6 @@
 		)
 		(uuid "c62ce3ae-d527-4bb0-9b91-e365bf7c10ee")
 	)
-	(label "GPIO16_BREAKOUT"
-		(at 194.31 33.02 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "cc364203-8d6e-485b-9bc4-18513faa6c1c")
-	)
 	(label "BUZZER_PWM"
 		(at 224.79 246.38 270)
 		(fields_autoplaced yes)
@@ -6441,14 +6441,14 @@
 		)
 		(uuid "d38226cf-bb69-41cd-bdf3-0b468cf9d7ef")
 	)
-	(label "GPIO17_BREAKOUT"
-		(at 245.11 138.43 180)
+	(label "GPIO12_BREAKOUT"
+		(at 151.13 194.31 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "d45b0e97-2ae7-45d4-b2c7-a688acec57b6")
 	)
@@ -6475,7 +6475,7 @@
 		(uuid "db0d688c-8b9e-4b24-990b-c28af7841485")
 	)
 	(label "MICRO_USB_D+"
-		(at 64.77 229.87 0)
+		(at 63.5 222.25 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10379,7 +10379,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 194.31 48.26 270)
+		(at 185.42 45.72 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10387,7 +10387,7 @@
 		(dnp no)
 		(uuid "b5069658-f1f5-4c0c-9210-60678e50242b")
 		(property "Reference" "#PWR028"
-			(at 187.96 48.26 0)
+			(at 179.07 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10396,7 +10396,7 @@
 			)
 		)
 		(property "Value" "AGND"
-			(at 190.246 48.26 0)
+			(at 181.356 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10404,7 +10404,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 194.31 48.26 0)
+			(at 185.42 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10413,7 +10413,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 194.31 48.26 0)
+			(at 185.42 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10422,7 +10422,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 194.31 48.26 0)
+			(at 185.42 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12498,7 +12498,7 @@
 			)
 		)
 		(pin "USB_D+" input
-			(at 85.09 229.87 180)
+			(at 85.09 222.25 180)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12508,7 +12508,7 @@
 			(uuid "bfd54378-ed84-4e8c-bd86-765ad2d09220")
 		)
 		(pin "USB_D-" input
-			(at 85.09 222.25 180)
+			(at 85.09 229.87 180)
 			(effects
 				(font
 					(size 1.27 1.27)
